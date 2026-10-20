@@ -1,9 +1,148 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../../app/**/*.php';
 
+/* ------------------------------------------------------------------
+ | Wonder Himalaya design tokens — "Paths of the Himalaya"
+ | Warm paper, deep juniper, glacier blue; terracotta reserved for action.
+ * ------------------------------------------------------------------ */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-fraunces), Georgia, serif;
+    --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+    --color-stone-50: #fbf9f5;
+    --color-stone-100: #f4efe6;   /* base paper */
+    --color-stone-200: #e9e1d3;
+    --color-stone-300: #d8ccb8;
+    --color-stone-400: #b9a88d;
+    --color-stone-500: #8f7f66;
+
+    --color-juniper-50: #eef3f1;
+    --color-juniper-100: #d5e2dd;
+    --color-juniper-300: #8fb0a5;
+    --color-juniper-500: #3f6b5e;
+    --color-juniper-700: #27463e;
+    --color-juniper-800: #1f3a33;  /* primary */
+    --color-juniper-900: #162b26;
+    --color-juniper-950: #0f1d19;
+
+    --color-glacier-100: #e6eef1;
+    --color-glacier-300: #9db8c2;
+    --color-glacier-500: #5e8796;
+
+    --color-terracotta-400: #cf7350;
+    --color-terracotta-500: #b5532e;  /* CTA */
+    --color-terracotta-600: #9a4424;
+
+    --color-saffron-300: #ecc77e;
+    --color-saffron-500: #d9a441;
+
+    --color-ink: #1b1b1a;
+    --color-ink-soft: #4a4843;
+
+    --radius-organic: 2.25rem 2.25rem 2.25rem 0.5rem;
+
+    --ease-mountain: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --text-display-xl: clamp(3rem, 2rem + 5vw, 7rem);
+    --text-display-xl--line-height: 0.95;
+    --text-display-lg: clamp(2.5rem, 1.6rem + 3.6vw, 5rem);
+    --text-display-lg--line-height: 1;
+    --text-display-md: clamp(2rem, 1.4rem + 2.2vw, 3.5rem);
+    --text-display-md--line-height: 1.05;
+    --text-display-sm: clamp(1.5rem, 1.2rem + 1.1vw, 2.25rem);
+    --text-display-sm--line-height: 1.15;
+
+    --animate-reveal: reveal 0.9s var(--ease-mountain) both;
+    --animate-slow-zoom: slow-zoom 18s ease-out both;
+
+    @keyframes reveal {
+        from { opacity: 0; transform: translateY(1.5rem); }
+        to { opacity: 1; transform: none; }
+    }
+    @keyframes slow-zoom {
+        from { transform: scale(1.08); }
+        to { transform: scale(1); }
+    }
 }
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 ease-(--ease-mountain) disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@layer base {
+    html {
+        @apply scroll-smooth bg-stone-100 text-ink antialiased;
+        font-feature-settings: 'ss01', 'cv11';
+        text-rendering: optimizeLegibility;
+    }
+    body { @apply font-sans text-[1.0625rem] leading-relaxed; }
+    h1, h2, h3, h4 { @apply font-display font-normal tracking-tight text-juniper-800; font-variation-settings: 'SOFT' 50, 'opsz' 96; }
+    ::selection { @apply bg-saffron-300 text-ink; }
+    :focus-visible { @apply outline-2 outline-offset-2 outline-terracotta-500; }
+    [x-cloak] { display: none !important; }
+    img { @apply select-none; }
+}
+
+@layer components {
+    .container-page { @apply mx-auto w-full max-w-[90rem] px-5 sm:px-8 lg:px-12; }
+    .container-narrow { @apply mx-auto w-full max-w-3xl px-5 sm:px-8; }
+
+    .eyebrow { @apply inline-flex items-center gap-3 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-terracotta-500; }
+    .eyebrow::before { content: ''; @apply h-px w-8 bg-current; }
+    .eyebrow-light { @apply text-saffron-300; }
+
+    .btn-primary { @apply btn bg-terracotta-500 text-white shadow-[0_10px_30px_-12px_rgba(181,83,46,0.7)] hover:-translate-y-0.5 hover:bg-terracotta-600; }
+    .btn-dark { @apply btn bg-juniper-800 text-stone-100 hover:-translate-y-0.5 hover:bg-juniper-950; }
+    .btn-outline { @apply btn border border-juniper-800/25 text-juniper-800 hover:border-juniper-800 hover:bg-juniper-800 hover:text-stone-100; }
+    .btn-ghost-light { @apply btn border border-white/40 text-white backdrop-blur-sm hover:bg-white hover:text-juniper-900; }
+    .link-arrow { @apply inline-flex items-center gap-2 font-semibold text-juniper-800 underline decoration-terracotta-500/40 decoration-2 underline-offset-[6px] transition hover:decoration-terracotta-500; }
+
+    .card-surface { @apply rounded-[1.75rem] bg-stone-50 ring-1 ring-stone-300/60; }
+    .chip { @apply inline-flex items-center gap-1.5 rounded-full bg-stone-200/70 px-3 py-1 text-xs font-medium text-ink-soft; }
+    .chip-light { @apply inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-md; }
+
+    .field-label { @apply mb-1.5 block text-sm font-medium text-juniper-800; }
+    .field { @apply block w-full rounded-xl border-0 bg-white px-4 py-3 text-ink shadow-xs ring-1 ring-stone-300 transition placeholder:text-stone-400 focus:ring-2 focus:ring-juniper-500 focus:outline-none; }
+    .field-error { @apply mt-1.5 text-sm text-terracotta-600; }
+
+    .data { @apply font-mono text-[0.8rem] tracking-tight; }
+
+    /* use together with `prose prose-lg` */
+    .prose-wh { @apply max-w-none prose-headings:font-display prose-headings:font-normal prose-headings:text-juniper-800 prose-a:text-juniper-700 prose-a:decoration-terracotta-500/50 prose-a:underline-offset-4 prose-strong:text-ink prose-img:rounded-3xl prose-li:marker:text-terracotta-500 prose-table:text-base prose-th:bg-stone-200/60 prose-th:px-3 prose-td:px-3; }
+
+    /* Paper grain overlay — subtle, organic texture */
+    .grain { position: relative; isolation: isolate; }
+    .grain::after {
+        content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35; mix-blend-mode: multiply;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.48 0 0 0 0 0.38 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Topographic contour backdrop */
+    .topo { background-image: url('/images/topo.svg'); background-size: 900px auto; background-repeat: repeat; }
+
+    .mask-organic { border-radius: 46% 54% 42% 58% / 52% 38% 62% 48%; }
+    .img-organic { border-radius: var(--radius-organic); }
+
+    .scrim-bottom { background: linear-gradient(180deg, rgba(15,29,25,0) 30%, rgba(15,29,25,0.85) 100%); }
+    .scrim-hero { background: linear-gradient(180deg, rgba(15,29,25,0.55) 0%, rgba(15,29,25,0.05) 35%, rgba(15,29,25,0.15) 60%, rgba(15,29,25,0.85) 100%); }
+
+    .prayer-flags { @apply flex h-1 w-24 overflow-hidden rounded-full; }
+    .prayer-flags > span { @apply flex-1; }
+
+    .no-scrollbar { scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+[data-reveal] { opacity: 0; transform: translateY(1.5rem); transition: opacity 0.9s var(--ease-mountain), transform 0.9s var(--ease-mountain); }
+[data-reveal].is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; } }
