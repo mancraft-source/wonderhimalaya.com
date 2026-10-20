@@ -1,0 +1,5 @@
+@extends('errors.minimal')
+@section('title', 'Page expired')
+@section('code', '419 · session expired')
+@section('heading', 'This page sat a little too long at altitude.')
+@section('message', 'Your session expired for security. Please go back, refresh the page and try again.')

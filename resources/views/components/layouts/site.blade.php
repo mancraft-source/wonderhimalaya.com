@@ -13,8 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#1f3a33">
     <x-site.seo-head :seo="$seo" :company="$company" :social="$social" />
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     @fonts
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles(['nonce' => \Illuminate\Support\Facades\Vite::cspNonce()])

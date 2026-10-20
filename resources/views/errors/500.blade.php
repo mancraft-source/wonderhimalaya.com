@@ -1,0 +1,5 @@
+@extends('errors.minimal')
+@section('title', 'Something went wrong')
+@section('code', '500 · weather on the pass')
+@section('heading', 'A storm rolled through — we\'re clearing the trail.')
+@section('message', 'Something went wrong on our side. Please try again in a moment; our team has been notified.')

@@ -4,7 +4,7 @@
         $destination->parent ? ['label' => $destination->parent->name, 'url' => url($destination->parent->publicPath())] : null,
         ['label' => $destination->name],
     ]));
-    $intro = $destination->intro ?: str(strip_tags((string) $destination->description))->limit(240)->toString();
+    $intro = str($destination->intro ?: strip_tags((string) $destination->description))->squish()->limit(230)->toString();
 @endphp
 <x-layouts.site :seo="$seo" :transparent="(bool) $heroMedia">
     <x-site.page-hero :media="$heroMedia" :eyebrow="$destination->tagline ?? ($destination->parent ? $destination->parent->name : 'Destination')" :title="e($destination->name)" :intro="$intro" :crumbs="$crumbs" size="lg">
@@ -14,7 +14,7 @@
         </div>
     </x-site.page-hero>
 
-    @if ($destination->description && strlen(strip_tags($destination->description)) > strlen($intro) + 20)
+    @if ($destination->description && strlen(strip_tags($destination->description)) > 260)
         <section class="container-page grid gap-12 py-20 lg:grid-cols-12">
             <div class="lg:col-span-4"><p class="eyebrow">About {{ str_replace(' Region', '', $destination->name) }}</p></div>
             <div class="prose prose-lg prose-wh lg:col-span-8">{!! $destination->description !!}</div>

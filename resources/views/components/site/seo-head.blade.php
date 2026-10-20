@@ -1,15 +1,15 @@
 @props(['seo', 'company' => [], 'social' => []])
 @php
     $canonical = $seo->canonical ?: url()->current();
-    $image = $seo->image ?: asset('images/og-default.jpg');
+    $image = $seo->image ?: asset('images/brand/logo-badge.png');
     $org = [
         '@context' => 'https://schema.org',
         '@type' => 'TravelAgency',
         '@id' => url('/').'#organization',
         'name' => config('app.name'),
         'url' => url('/'),
-        'logo' => asset('images/logo-mark.svg'),
-        'image' => asset('images/og-default.jpg'),
+        'logo' => asset('images/brand/logo-badge.png'),
+        'image' => asset('images/brand/logo-badge.png'),
         'telephone' => data_get($company ?? [], 'phone', '+977-01-5928066'),
         'email' => data_get($company ?? [], 'email', 'info@wonderhimalaya.com'),
         'address' => ['@type' => 'PostalAddress', 'streetAddress' => 'Thamel', 'addressLocality' => 'Kathmandu', 'addressCountry' => 'NP'],

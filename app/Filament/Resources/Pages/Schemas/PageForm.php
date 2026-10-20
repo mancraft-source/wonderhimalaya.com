@@ -34,6 +34,10 @@ class PageForm
         'landing' => 'Landing',
         'guide' => 'Travel guide',
         'legal' => 'Legal',
+        'guide-hub' => 'Travel guide hub (designed)',
+        'about' => 'About us (designed)',
+        'why' => 'Why choose us (designed)',
+        'sustainability' => 'Sustainable tourism (designed)',
     ];
 
     public static function configure(Schema $schema): Schema

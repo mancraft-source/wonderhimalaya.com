@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Destination;
+use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Testimonial;
+use App\Models\Trip;
 use App\Support\Seo;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class StaticController extends Controller
 {
@@ -32,6 +35,33 @@ class StaticController extends Controller
     {
         return view('site.contact', [
             'seo' => Seo::make('Contact our Kathmandu team', 'Call, WhatsApp or email Wonder Himalaya in Thamel, Kathmandu. Trip specialists reply within 24 hours.'),
+        ]);
+    }
+
+    public function reviews(): View
+    {
+        return view('site.reviews', [
+            'testimonials' => Testimonial::where('is_published', true)->with('trip')->orderByDesc('is_featured')->latest('reviewed_at')->paginate(12),
+            'reviews' => Setting::get('reviews', []),
+            'social' => array_filter(Setting::get('social', [])),
+            'seo' => Seo::make('Traveller reviews', 'Read what travellers say about trekking and touring with Wonder Himalaya — reviews from Google and Tripadvisor.'),
+        ]);
+    }
+
+    public function search(Request $request): View
+    {
+        $q = $request->string('q')->trim()->limit(80, '')->toString();
+        $like = '%'.$q.'%';
+
+        $seo = Seo::make($q !== '' ? 'Search: '.$q : 'Search');
+        $seo->noindex = true;
+
+        return view('site.search', [
+            'q' => $q,
+            'trips' => $q === '' ? collect() : Trip::published()->where(fn ($w) => $w->where('title', 'like', $like)->orWhere('excerpt', 'like', $like))->with(['destination', 'difficulty', 'media'])->limit(12)->get(),
+            'posts' => $q === '' ? collect() : Post::published()->where(fn ($w) => $w->where('title', 'like', $like)->orWhere('excerpt', 'like', $like))->with(['media', 'category'])->latest('published_at')->limit(6)->get(),
+            'destinations' => $q === '' ? collect() : Destination::where('name', 'like', $like)->get(),
+            'seo' => $seo,
         ]);
     }
 

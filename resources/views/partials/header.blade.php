@@ -13,12 +13,7 @@
 >
     <div class="container-page flex h-20 items-center justify-between gap-6 lg:h-24">
         <a href="{{ route('home') }}" class="relative z-10" aria-label="Wonder Himalaya — home">
-            @if ($transparent)
-                <span class="block group-data-[scrolled]/header:hidden" x-bind:class="(open || mega) && '!hidden'"><x-site.logo light /></span>
-                <span class="hidden group-data-[scrolled]/header:block" x-bind:class="(open || mega) && '!block'"><x-site.logo /></span>
-            @else
-                <x-site.logo />
-            @endif
+            <x-site.logo :light="$transparent" />
         </a>
 
         @php
@@ -44,6 +39,7 @@
             <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="hidden items-center gap-2 whitespace-nowrap text-sm font-medium 2xl:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">
                 <x-heroicon-o-phone class="size-4" /> {{ $phone }}
             </a>
+            <a href="{{ route('search') }}" class="hidden size-10 items-center justify-center rounded-full transition hover:bg-black/5 lg:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" aria-label="Search"><x-heroicon-o-magnifying-glass class="size-5" /></a>
             <a href="{{ route('tailor-made') }}" class="btn-primary hidden whitespace-nowrap !px-5 !py-3 sm:inline-flex">Plan your journey</a>
             <button type="button" class="relative z-10 inline-flex size-11 items-center justify-center rounded-full lg:hidden {{ $transparent ? 'text-white group-data-[scrolled]/header:text-juniper-800' : 'text-juniper-800' }}" x-bind:class="open && '!text-juniper-800'" x-on:click="open = !open" x-bind:aria-expanded="open" aria-controls="mobile-menu">
                 <span class="sr-only">Menu</span>
@@ -115,10 +111,11 @@
                             <li><a class="hover:text-terracotta-500" href="{{ route('team.index') }}">Meet the team</a></li>
                             <li><a class="hover:text-terracotta-500" href="{{ url('/why-wonder-himalaya') }}">Why travel with us</a></li>
                             <li><a class="hover:text-terracotta-500" href="{{ url('/sustainable-tourism') }}">Sustainable tourism</a></li>
+                            <li><a class="hover:text-terracotta-500" href="{{ route('reviews') }}">Traveller reviews</a></li>
                             <li><a class="hover:text-terracotta-500" href="{{ route('b2b') }}">For travel partners (B2B)</a></li>
                         </ul>
                         <ul class="col-span-2 grid grid-cols-2 gap-x-10 gap-y-3 text-[0.95rem]">
-                            <li class="col-span-2 mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">Travel guide</li>
+                            <li class="col-span-2 mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-stone-500"><a href="{{ url('/travel-guide') }}" class="hover:text-terracotta-500">Travel guide →</a></li>
                             @foreach ($nav['guides'] as $guide)
                                 <li><a class="hover:text-terracotta-500" href="{{ $guide['url'] }}">{{ $guide['name'] }}</a></li>
                             @endforeach

@@ -1,0 +1,5 @@
+@extends('errors.minimal')
+@section('title', 'Back shortly')
+@section('code', '503 · tea-house break')
+@section('heading', 'We\'re taking a short tea break.')
+@section('message', 'The site is being updated and will be back in a few minutes. Thank you for your patience.')

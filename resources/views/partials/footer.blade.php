@@ -6,7 +6,8 @@
 <footer class="relative mt-24 overflow-hidden bg-juniper-900 text-stone-200">
     <div class="topo pointer-events-none absolute inset-0 opacity-[0.35] invert" aria-hidden="true"></div>
 
-    {{-- Closing call to action --}}
+    {{-- Closing call to action (hidden on transactional pages) --}}
+    @unless (request()->routeIs('quotes.*', 'pay.*', 'bookings.*', 'thanks'))
     <div class="container-page relative border-b border-white/10 py-20 lg:py-28">
         <div class="grid items-end gap-10 lg:grid-cols-12">
             <div class="lg:col-span-8">
@@ -19,10 +20,11 @@
             </div>
         </div>
     </div>
+    @endunless
 
     <div class="container-page relative grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12">
         <div class="lg:col-span-4">
-            <x-site.logo light />
+            <x-site.logo light size="lg" />
             <p class="mt-6 max-w-sm text-stone-300">{{ $company['tagline'] ?? 'Wander Always, Wonder Often' }}. A locally owned Kathmandu operator crafting treks, climbs and cultural journeys across Nepal, Tibet and Bhutan.</p>
             <dl class="mt-8 space-y-3 text-sm">
                 <div class="flex gap-3"><dt class="sr-only">Address</dt><x-heroicon-o-map-pin class="size-5 shrink-0 text-saffron-300" /><dd>{{ $company['address'] ?? 'Thamel, Kathmandu, Nepal' }}</dd></div>
@@ -50,6 +52,8 @@
                 <li><a class="hover:text-white" href="{{ url('/sustainable-tourism') }}">Sustainable tourism</a></li>
                 <li><a class="hover:text-white" href="{{ route('departures') }}">Group departures</a></li>
                 <li><a class="hover:text-white" href="{{ route('b2b') }}">Travel partners (B2B)</a></li>
+                <li><a class="hover:text-white" href="{{ route('reviews') }}">Reviews</a></li>
+                <li><a class="hover:text-white" href="{{ url('/travel-guide') }}">Travel guide</a></li>
                 <li><a class="hover:text-white" href="{{ route('blog.index') }}">Journal</a></li>
                 <li><a class="hover:text-white" href="{{ route('contact') }}">Contact</a></li>
             </ul>
@@ -68,15 +72,25 @@
     </div>
 
     <div class="relative border-t border-white/10">
+        <div class="container-page flex flex-col items-center gap-6 py-10 md:flex-row md:justify-between">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">Registered & affiliated with</p>
+            <ul class="flex flex-wrap items-center justify-center gap-4">
+                @foreach ([['aff-nepal-government.png', 'Government of Nepal'], ['aff-ntb.jpg', 'Nepal Tourism Board'], ['aff-taan.png', 'Trekking Agencies’ Association of Nepal (TAAN)'], ['aff-nma.png', 'Nepal Mountaineering Association (NMA)'], ['aff-keep.webp', 'Kathmandu Environmental Education Project (KEEP)']] as [$file, $label])
+                    <li class="flex size-16 items-center justify-center rounded-2xl bg-white p-2"><img src="{{ asset('images/brand/'.$file) }}" alt="{{ $label }}" title="{{ $label }}" loading="lazy" class="max-h-full max-w-full object-contain"></li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+
+    <div class="relative border-t border-white/10">
         <div class="container-page flex flex-col gap-4 py-8 text-xs text-stone-400 md:flex-row md:items-center md:justify-between">
             <p>© {{ now()->year }} {{ $company['legal_name'] ?? 'Wonder Himalaya' }}. All rights reserved.@if (! empty($company['registration'])) · {{ $company['registration'] }}@endif</p>
             <ul class="flex flex-wrap gap-x-6 gap-y-2">
                 @foreach ($nav['legal'] as $item)
                     <li><a class="hover:text-white" href="{{ $item['url'] }}">{{ $item['name'] }}</a></li>
                 @endforeach
-                <li><a class="hover:text-white" href="{{ url('/privacy-policy') }}">Privacy</a></li>
             </ul>
-            <div class="prayer-flags" aria-hidden="true"><span class="bg-glacier-300"></span><span class="bg-stone-100"></span><span class="bg-terracotta-500"></span><span class="bg-juniper-500"></span><span class="bg-saffron-500"></span></div>
+            <div class="prayer-flags hidden md:flex" aria-hidden="true"><span class="bg-glacier-300"></span><span class="bg-stone-100"></span><span class="bg-terracotta-500"></span><span class="bg-juniper-500"></span><span class="bg-saffron-500"></span></div>
         </div>
     </div>
 </footer>

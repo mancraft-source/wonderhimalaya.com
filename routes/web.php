@@ -26,6 +26,8 @@ Route::get('/tailor-made', [StaticController::class, 'tailorMade'])->name('tailo
 Route::get('/b2b', [StaticController::class, 'b2b'])->name('b2b');
 Route::get('/contact', [StaticController::class, 'contact'])->name('contact');
 Route::get('/thank-you', [StaticController::class, 'thanks'])->name('thanks');
+Route::get('/reviews', [StaticController::class, 'reviews'])->name('reviews');
+Route::get('/search', [StaticController::class, 'search'])->name('search');
 
 Route::get('/our-team', [TeamController::class, 'index'])->name('team.index');
 Route::get('/our-team/{slug}', [TeamController::class, 'show'])->name('team.show');

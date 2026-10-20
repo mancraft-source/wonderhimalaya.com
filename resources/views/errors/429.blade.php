@@ -1,0 +1,5 @@
+@extends('errors.minimal')
+@section('title', 'Slow down')
+@section('code', '429 · acclimatisation stop')
+@section('heading', 'Time for an acclimatisation day.')
+@section('message', 'Too many requests in a short time. Please wait a minute and try again.')

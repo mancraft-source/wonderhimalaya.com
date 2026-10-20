@@ -61,6 +61,17 @@
                         @empty
                             <p class="text-ink-soft">Online payment is not available right now. Please contact us.</p>
                         @endforelse
+
+                        {{-- Layout preview only (never in production): gateways awaiting merchant credentials. --}}
+                        @unless (app()->isProduction())
+                            @foreach (array_diff_key(config('payments.gateways', []), $gateways) as $key => $class)
+                                <div class="flex h-full flex-col items-start rounded-2xl border border-dashed border-stone-300 bg-white/60 p-6 text-left">
+                                    <span class="text-lg font-semibold text-juniper-800/70">{{ app(\App\Payments\PaymentManager::class)->gateway($key)->label() }}</span>
+                                    <span class="mt-1 text-sm text-ink-soft">{{ $icons[$key] ?? '' }}</span>
+                                    <span class="mt-4 rounded-full bg-saffron-300/40 px-3 py-1 text-xs font-semibold text-ink">Preview · awaiting merchant credentials</span>
+                                </div>
+                            @endforeach
+                        @endunless
                     </div>
                     <p class="mt-6 flex items-center gap-2 text-sm text-ink-soft">
                         <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg>

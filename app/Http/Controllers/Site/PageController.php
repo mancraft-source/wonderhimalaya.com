@@ -23,7 +23,9 @@ class PageController extends Controller
 
         $hero = $page->getFirstMedia('hero');
 
-        return view('site.page', [
+        $view = view()->exists('site.templates.'.$page->template) ? 'site.templates.'.$page->template : 'site.page';
+
+        return view($view, [
             'page' => $page,
             'siblings' => $siblings,
             'seo' => Seo::for($page, $page->title, $page->excerpt ?: $this->firstText($page), $hero?->getUrl()),
