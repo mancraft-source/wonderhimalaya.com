@@ -1,0 +1,770 @@
+[
+ {
+  "package": {
+   "id": 6666,
+   "name": "Group",
+   "description": "",
+   "is_primary": true,
+   "traveler_categories": [
+    {
+     "id": 66,
+     "label": "Adult",
+     "price": 1400,
+     "age_group": "",
+     "pricing_type": {
+      "value": "per-person",
+      "label": "Per Person"
+     },
+     "sale_price": "",
+     "has_sale": false,
+     "has_group_pricing": false,
+     "group_pricing": [],
+     "min_pax": 2,
+     "max_pax": "",
+     "description": "",
+     "is_primary": true
+    },
+    {
+     "id": 67,
+     "label": "Child",
+     "price": "",
+     "age_group": "",
+     "pricing_type": {
+      "value": "per-person",
+      "label": "Per Person"
+     },
+     "sale_price": "",
+     "has_sale": false,
+     "has_group_pricing": false,
+     "group_pricing": [],
+     "min_pax": 0,
+     "max_pax": "",
+     "description": "",
+     "is_primary": false
+    }
+   ]
+  },
+  "dates": {
+   "2026-10-30": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-10-31": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-01": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-02": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-03": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-04": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-05": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-06": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-07": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-08": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-09": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-10": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-11": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-12": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-13": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-14": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-15": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-16": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-17": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-18": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-19": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-20": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-21": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-22": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-23": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-24": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-25": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-26": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-27": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   },
+   "2026-11-28": {
+    "times": [],
+    "seats": 10,
+    "pricing": [
+     {
+      "id": 66,
+      "label": "Adult",
+      "price": 1400,
+      "is_primary": true,
+      "has_group_pricing": false,
+      "group_pricing": []
+     },
+     {
+      "id": 67,
+      "label": "Child",
+      "price": "",
+      "is_primary": false,
+      "has_group_pricing": false,
+      "group_pricing": []
+     }
+    ],
+    "capacity": 10,
+    "seats_left": 10
+   }
+  }
+ }
+]

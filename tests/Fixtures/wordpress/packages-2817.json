@@ -1,0 +1,137 @@
+[
+ {
+  "id": 2818,
+  "name": "Basic Package",
+  "description": "<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li><strong>Transportation :</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Kathmandu to Lukla via Domestic Flight (Two way).</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Airport Pickup And Drop Service in a Private Vehicle</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Accommodation  : </strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Eleven Nights Mountain Accommodation at a tea house.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Four Nights in Kathmandu at 2 Star Hotel.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Meal :</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Three Times Meal During the Trek (Breakfast,Lunch &amp; Dinner).</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Three Times Tea or Coffee During the trek.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Breakfast During the Stay in Kathmandu.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Guide :</strong> A Professional English Speaking Guide Including His/Her: Food, Transportation, Accommodation, Salary, Insurance<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Permits</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Sagarmatha National Park Permit</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Khumbu Pasang Lhamu Rural Municipality.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Extra :</strong> First-aid kit. : Things included in first aid kit are: Electro Light, Medicated Plaster, Aquatabs, Panom-40, Metro-400, Paracetamol, Acetazolamide tablet, Digital Thermometer, Pulse Oximeter, Moove Spray, Bandage</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>All Governmental fees and taxes.</strong></li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list -->",
+  "is_primary": true,
+  "min_pax": 0,
+  "traveler_categories": [
+   {
+    "id": 66,
+    "label": "Adult",
+    "price": 1585,
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 1,
+    "max_pax": "",
+    "description": ""
+   },
+   {
+    "id": 67,
+    "label": "Child",
+    "price": "",
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 0,
+    "max_pax": "",
+    "description": ""
+   }
+  ]
+ },
+ {
+  "id": 3247,
+  "name": "Standard Paclage",
+  "description": "<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li><strong>Transportation:</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Kathmandu to Lukla via Domestic Flight (Two way).</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Airport Pickup And Drop Service in a Private Vehicle</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Accommodation</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Eleven Nights Mountain Accommodation at a comfortable tea house with private room.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Four Nights in Kathmandu at 4 Star Hotel.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Breakfast During the Stay in Kathmandu.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Meal</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Three Times Meal During the Trek (Breakfast, Lunch &amp; Dinner) with many options.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Three Times Tea or Coffee During the trek.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Seasonal Fruits During the Trek.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Guide :</strong> A Professional English Speaking Guide Including His/Her: Food, Transportation, Accommodation, Salary, Insurance</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Extra :</strong> First-aid kit. : Things included in first aid kit are: Electro Light, Medicated Plaster, Aquatabs, Panom-40, Metro-400, Paracetamol, Acetazolamide tablet, Digital Thermometer, Pulse Oximeter, Moove Spray, Bandage</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>All Governmental fees and taxes.</strong></li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list -->",
+  "is_primary": false,
+  "min_pax": 0,
+  "traveler_categories": [
+   {
+    "id": 66,
+    "label": "Adult",
+    "price": 1815,
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 1,
+    "max_pax": "",
+    "description": ""
+   },
+   {
+    "id": 67,
+    "label": "Child",
+    "price": "",
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 0,
+    "max_pax": "",
+    "description": ""
+   }
+  ]
+ },
+ {
+  "id": 6988,
+  "name": "Premium Package",
+  "description": "<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li><strong>Transportation</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Kathmandu to Lukla via Helicopter (Two way).</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Airport Pickup And Drop Service in a Private Vehicle</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Accommodation</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Ten Nights Mountain Accommodation at a comfortable tea house with facilities like WIFI, Hot shower and Charging.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>One Night at Everest View Hotel.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Four Nights in Kathmandu at Highly Rated  Hotel.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Meal</strong><!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Three Times Meal During the Trek (Breakfast,Lunch &amp; Dinner) with broader menu and wide range of dishes.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Three Times Tea or Coffee During the trek.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Fresh Seasonal Fruits.</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Breakfast During the Stay in Kathmandu.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Guide :</strong> A Professional English Speaking Guide Including His/Her: Food, Transportation, Accommodation, Salary, Insurance<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Permits</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Sagarmatha National Park Permit</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li>Khumbu Pasang Lhamu Rural Municipality.</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list --></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Extra :</strong> First-aid kit. : Things included in first aid kit are: Electro Light, Medicated Plaster, Aquatabs, Panom-40, Metro-400, Paracetamol, Acetazolamide tablet, Digital Thermometer, Pulse Oximeter, Moove Spray, Bandage</li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>All Governmental fees and taxes.</strong></li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list -->",
+  "is_primary": false,
+  "min_pax": 0,
+  "traveler_categories": [
+   {
+    "id": 66,
+    "label": "Adult",
+    "price": 3100,
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 1,
+    "max_pax": "",
+    "description": ""
+   },
+   {
+    "id": 67,
+    "label": "Child",
+    "price": "",
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 0,
+    "max_pax": "",
+    "description": ""
+   }
+  ]
+ }
+]

@@ -1,0 +1,156 @@
+[
+ {
+  "id": 10,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/category/city-tours/",
+  "name": "City Tours",
+  "slug": "city-tours",
+  "taxonomy": "category",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "City Tours Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/category/city-tours/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 86,
+  "count": 25,
+  "description": "",
+  "link": "https://wonderhimalaya.com/category/uncategorized/expert-guides-travel-advice/",
+  "name": "Expert Guides &amp; Travel Advice",
+  "slug": "expert-guides-travel-advice",
+  "taxonomy": "category",
+  "parent": 1,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Expert Guides &amp; Travel Advice Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/category/uncategorized/blog/expert-guides-travel-advice/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 126,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/category/nepal-ethnical-groups/",
+  "name": "Nepal Ethnical Groups",
+  "slug": "nepal-ethnical-groups",
+  "taxonomy": "category",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Nepal Ethnical Groups Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/category/nepal-ethnical-groups/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 88,
+  "count": 10,
+  "description": "Travelers are actively searching for \"uncrowded\" treks. Having a dedicated category for these gives you a huge advantage over competitors only selling Everest Base Camp.",
+  "link": "https://wonderhimalaya.com/category/uncategorized/off-the-beaten-path-hidden-gems/",
+  "name": "Off the Beaten Path / Hidden Gems",
+  "slug": "off-the-beaten-path-hidden-gems",
+  "taxonomy": "category",
+  "parent": 1,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Off the Beaten Path / Hidden Gems Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/category/uncategorized/blog/off-the-beaten-path-hidden-gems/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 87,
+  "count": 6,
+  "description": "For travelers who want something unique, luxury, or non-trekking related.",
+  "link": "https://wonderhimalaya.com/category/uncategorized/specialty-niche-experiences/",
+  "name": "Specialty &amp; Niche Experiences",
+  "slug": "specialty-niche-experiences",
+  "taxonomy": "category",
+  "parent": 1,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Specialty &amp; Niche Experiences Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/category/uncategorized/blog/specialty-niche-experiences/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 89,
+  "count": 17,
+  "description": "",
+  "link": "https://wonderhimalaya.com/category/uncategorized/trekking-destinations/",
+  "name": "Trekking Destinations",
+  "slug": "trekking-destinations",
+  "taxonomy": "category",
+  "parent": 1,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Trekking Destinations Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/category/uncategorized/blog/trekking-destinations/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 1,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/category/uncategorized/",
+  "name": "Uncategorized",
+  "slug": "uncategorized",
+  "taxonomy": "category",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Uncategorized Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/category/uncategorized/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ }
+]

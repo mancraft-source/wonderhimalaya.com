@@ -1,0 +1,128 @@
+[
+ {
+  "id": 14,
+  "count": 4,
+  "description": "",
+  "link": "https://wonderhimalaya.com/tag/advanture/",
+  "name": "Advanture",
+  "slug": "advanture",
+  "taxonomy": "post_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Advanture Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/tag/advanture/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 15,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/tag/agency/",
+  "name": "Agency",
+  "slug": "agency",
+  "taxonomy": "post_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Agency Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/tag/agency/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 106,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/tag/ama-yangri/",
+  "name": "Ama Yangri",
+  "slug": "ama-yangri",
+  "taxonomy": "post_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Ama Yangri Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/tag/ama-yangri/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 95,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/tag/avanches/",
+  "name": "avanches",
+  "slug": "avanches",
+  "taxonomy": "post_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "avanches Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/tag/avanches/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 119,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/tag/best-agency-for-dordi-himal/",
+  "name": "best agency for dordi himal",
+  "slug": "best-agency-for-dordi-himal",
+  "taxonomy": "post_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "best agency for dordi himal Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/tag/best-agency-for-dordi-himal/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 112,
+  "count": 1,
+  "description": "",
+  "link": "https://wonderhimalaya.com/tag/best-agency-for-island-peak/",
+  "name": "best agency for island peak",
+  "slug": "best-agency-for-island-peak",
+  "taxonomy": "post_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "best agency for island peak Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/tag/best-agency-for-island-peak/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ }
+]

@@ -1,0 +1,95 @@
+[
+ {
+  "id": 77,
+  "count": 11,
+  "description": "",
+  "link": "https://wonderhimalaya.com/trip-types/join-group-departure/",
+  "name": "Fix Departure",
+  "slug": "join-group-departure",
+  "taxonomy": "trip_types",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Fix Departure Archives - Wonder Himalaya",
+   "description": "Join our fix Departure, Budget Friendly but professional guide and best services you will get. explore Nepal in you budget with Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-types/join-group-departure/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  },
+  "thumbnail": {}
+ },
+ {
+  "id": 32,
+  "count": 38,
+  "description": "",
+  "link": "https://wonderhimalaya.com/trip-types/luxury/",
+  "name": "Luxury",
+  "slug": "luxury",
+  "taxonomy": "trip_types",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Luxury Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-types/luxury/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  },
+  "thumbnail": {}
+ },
+ {
+  "id": 36,
+  "count": 39,
+  "description": "",
+  "link": "https://wonderhimalaya.com/trip-types/premium/",
+  "name": "Premium",
+  "slug": "premium",
+  "taxonomy": "trip_types",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Premium Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-types/premium/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  },
+  "thumbnail": {}
+ },
+ {
+  "id": 37,
+  "count": 43,
+  "description": "",
+  "link": "https://wonderhimalaya.com/trip-types/standard/",
+  "name": "Standard",
+  "slug": "standard",
+  "taxonomy": "trip_types",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Standard Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-types/standard/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  },
+  "thumbnail": {}
+ }
+]

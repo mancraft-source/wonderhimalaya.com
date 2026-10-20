@@ -1,3 +1,5 @@
+document.documentElement.classList.add('js');
+
 // Scroll-reveal for elements marked with [data-reveal]; respects reduced motion via CSS.
 const revealObserver = new IntersectionObserver(
     (entries) => {

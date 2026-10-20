@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Storage;
  */
 class FakesWordPress
 {
+    /** @var array<string, string> */
+    protected static array $fixtures = [];
+
     public static function fixture(string $name): string
     {
-        return (string) file_get_contents(base_path('tests/Fixtures/wordpress/'.$name));
+        return self::$fixtures[$name] ??= (string) file_get_contents(base_path('tests/Fixtures/wordpress/'.$name));
     }
 
     public static function json(string $name): array
@@ -47,8 +50,9 @@ class FakesWordPress
         Storage::fake('public');
         Queue::fake();
 
-        $list = fn (string $file) => Http::response(self::fixture($file), 200, ['X-WP-TotalPages' => '1', 'Content-Type' => 'application/json']);
-        $json = fn (string $file) => Http::response(self::fixture($file), 200, ['Content-Type' => 'application/json']);
+        // Lazy: a response is only built when that URL is actually requested.
+        $list = fn (string $file) => fn () => Http::response(self::fixture($file), 200, ['X-WP-TotalPages' => '1', 'Content-Type' => 'application/json']);
+        $json = fn (string $file) => fn () => Http::response(self::fixture($file), 200, ['Content-Type' => 'application/json']);
 
         Http::preventStrayRequests();
         Http::fake([
@@ -75,8 +79,8 @@ class FakesWordPress
                 'source_url' => 'https://wonderhimalaya.com/wp-content/uploads/2025/02/media-'.basename(parse_url($request->url(), PHP_URL_PATH)).'.png',
                 'alt_text' => 'Fixture image',
             ]),
-            'wonderhimalaya.com/wp-content/uploads/*' => Http::response(self::png(), 200, ['Content-Type' => 'image/png']),
-            'wonderhimalaya.com/' => Http::response(self::fixture('home.html'), 200, ['Content-Type' => 'text/html']),
+            'wonderhimalaya.com/wp-content/uploads/*' => fn () => Http::response(self::png(), 200, ['Content-Type' => 'image/png']),
+            'wonderhimalaya.com/' => fn () => Http::response(self::fixture('home.html'), 200, ['Content-Type' => 'text/html']),
             '*' => Http::response('Not found', 404),
         ]);
     }

@@ -1,0 +1,589 @@
+{
+ "id": 2817,
+ "date": "2025-02-12T09:29:41",
+ "date_gmt": "2025-02-12T09:29:41",
+ "guid": {
+  "rendered": "https://wonderhimalaya.com/?post_type=trip&#038;p=2817"
+ },
+ "modified": "2026-08-28T17:28:19",
+ "modified_gmt": "2026-08-28T11:43:19",
+ "slug": "14-days-everest-base-camp-trek",
+ "status": "publish",
+ "type": "trip",
+ "link": "https://wonderhimalaya.com/trip/14-days-everest-base-camp-trek/",
+ "title": {
+  "rendered": "16 Days Everest Base Camp Trek"
+ },
+ "content": {
+  "rendered": "",
+  "protected": false
+ },
+ "excerpt": {
+  "rendered": "",
+  "protected": false
+ },
+ "author": 1,
+ "featured_media": 3263,
+ "comment_status": "open",
+ "ping_status": "closed",
+ "template": "",
+ "destination": [
+  43
+ ],
+ "activities": [
+  39
+ ],
+ "trip_types": [
+  32,
+  36,
+  37
+ ],
+ "difficulty": [
+  7
+ ],
+ "trip_tag": [],
+ "wptravelengine_custom_taxonomy_travelguide": [],
+ "class_list": [
+  "post-2817",
+  "trip",
+  "type-trip",
+  "status-publish",
+  "has-post-thumbnail",
+  "hentry",
+  "destination-everest-region",
+  "activities-guided-trek",
+  "trip_types-luxury",
+  "trip_types-premium",
+  "trip_types-standard",
+  "difficulty-hard"
+ ],
+ "packages_ids": {
+  "0": 2818,
+  "1": 3247,
+  "4": 6988
+ },
+ "trip_extras": [],
+ "cut_off_time": {
+  "period": 7,
+  "unit": "days"
+ },
+ "booked-seats": [],
+ "yoast_head_json": {
+  "title": "16 Days Everest Base Camp Trek - Wonder Himalaya",
+  "description": "Join Wonder Himalaya for the 14-day Everest Base Camp Trek. Explore majestic Himalayan peaks, vibrant Sherpa culture & breathtaking scenery.",
+  "canonical": "https://wonderhimalaya.com/trip/14-days-everest-base-camp-trek/",
+  "robots": {
+   "index": "index",
+   "follow": "follow",
+   "max-snippet": "max-snippet:-1",
+   "max-image-preview": "max-image-preview:large",
+   "max-video-preview": "max-video-preview:-1"
+  }
+ },
+ "fsd": {
+  "hide": false
+ },
+ "trip_code": "WHEBC-0116",
+ "overview": "<!-- wp:paragraph -->\n<p>Everest Base Camp Trek is one of Nepal's and the world's top trekking locations. If you are a passionate trekker and dream of exploring the mysterious Himalayas, this package is tailored for you. You trek to the Everest Base Camp (the highest altitude base camp)<strong> </strong>and have a wonderful lifetime experience of adventure in the sacred Himalayas. Our crew members, guides, and porters are always with you. You will find yourself standing just beneath Mt. Everest (8,848.48 m—the roof of the world).</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Your trek starts with a scenic flight flying between the massive, pristine Mount Everest range. Imagine the thrilling moment you will enjoy living in your life. When you start trekking, you walk on the rugged trails, pass through lush jungles, pastures, and traditional villages, cross rivers and glaciers, climb massive rocks, rest in tea houses, camp in tents, and spend nights at luxurious restaurants.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>On the journey, you also cross Khumbu Glacier (the world's highest glacier), Sagarmatha National Park (the highest elevated national park of Nepal)<strong>, </strong>Hillary School plus Hospital, Tengboche Monastery, Sherpa Culture Museum, and many exciting places/things during your trek.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Also, you capture the glimpse of dazzling snowy-white peaks at<strong> </strong>Nuptse, Ama Dablam, Pumori, Khumbutse, Island Peak, Mera Peak, Lobuche, and more. Truly, your trek is full of awe-inspiring vistas of 4 out of the 14 world's highest and gigantic peaks above 8,000 m:&nbsp;&nbsp;Cho-Oyu (8,201 m), Makalu (8,485 m), Lhotse (8,516 m), Mt. <strong>Everest</strong> (8,848 m).</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Enjoy the fullest—the stunning glimpse of Mt. Everest, the world's highest peak, and the 360° panorama of snow-capped mountains such as Mt Khumbila,&nbsp;Mt. Thamserku, Mt. Everest, Lhotse, Island Peak, and Ama Dablam.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>\"What a heavenly place!\" we're sure that you'll exclaim.</p>\n<!-- /wp:paragraph -->",
+ "cost_includes": [
+  "Round-trip Kathmandu-Lukla flights",
+  "Private transportation (Airport transfers and local transportation)",
+  "Certified English-speaking guide",
+  "Tea house accommodation during the trek",
+  "Luxury hotels in Kathmandu",
+  "All meals during the trek",
+  "Everest Base Camp Trek permits",
+  "Airport shuttle"
+ ],
+ "cost_excludes": [
+  "International Flight Fare",
+  "Meal: Lunch & Dinner in Kathmandu",
+  "Personal Expenses",
+  "Travel insurance and Medical evacuation",
+  "Tipping"
+ ],
+ "duration": {
+  "period": 16,
+  "unit": "days",
+  "nights": 15
+ },
+ "_s_duration": "384",
+ "age_limit": {
+  "min": 0,
+  "max": 0
+ },
+ "participants": {
+  "min": 0,
+  "max": ""
+ },
+ "trip_map": {
+  "images": [
+   {
+    "id": 2717,
+    "alt": "Mount Everest Summit Map 2025 Manaslu Base Camp Trek trekking in nepal highest peak in the world sagarmatha Langtang Region Langtang Base Camp Wonder Himalaya Pvt. Ltd.",
+    "url": "https://wonderhimalaya.com/wp-content/uploads/2024/05/Summit-Map-2025.png"
+   }
+  ],
+  "iframe": ""
+ },
+ "highlights": [
+  "Nepal's top trekking destination – ultimate trekking adventure",
+  "Fly between giant mountains – heart-pounding moments landing at Lukla airport",
+  "Offer amazing, jaw-dropping scenery and views",
+  "Acute altitude sickness friendly itinerary",
+  "10+ years experience local guide and porters"
+ ],
+ "faqs": [
+  {
+   "question": "What is the best time to visit Nepal?",
+   "answer": "<!-- wp:paragraph -->\n<p>Nepal is a year-round destination! Each season offers unique experiences, from lush greenery during monsoons to crystal-clear Himalayan views in autumn and spring.</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "Can I customize my trip?",
+   "answer": "<!-- wp:paragraph -->\n<p>Absolutely! We specialize in crafting personalized itineraries to suit your interests, preferences, and schedule.</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "Do you cater to solo travelers or small groups?",
+   "answer": "<!-- wp:paragraph -->\n<p>Yes! Whether you're exploring on your own or with a group, we ensure a seamless and enriching experience tailored to your needs.</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "What does sustainable tourism mean for your company?",
+   "answer": "<!-- wp:paragraph -->\n<p>Sustainability is at the core of what we do. This means supporting local communities, minimizing environmental impact, and preserving the cultural heritage of the Himalayas.</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "How physically challenging are the treks and tours?",
+   "answer": "<!-- wp:paragraph -->\n<p>We offer options for all fitness levels, from easy cultural tours to strenuous high-altitude treks. Our experts are here to guide you toward the best choice for your abilities.</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "Do you arrange pickup and drop-off service?",
+   "answer": "<!-- wp:paragraph -->\n<p><strong>Yes, we provide both airport pickup and drop-off service for all the Everest Base Camp Trek bookings. One of our representatives will be there with transport facilities to pick you up; also, we will be there throughout check-outs as well.</strong></p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "How many Kilometers is the Everest Base Camp Trek?",
+   "answer": "<!-- wp:paragraph -->\n<p>This trek is approximately 123 kilometers (76 miles) in length, including the Kala Patthar Viewpoint. The Highest Point is 5,545m at Kala Patthar, offering iconic views of Mt. Everest.</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "What is the nearest airport and city from the Mount Everest",
+   "answer": "<!-- wp:paragraph -->\n<p>The nearest city is Namche Bazaar (3,440m / 11,286ft)</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>The nearest airport from the Everest is Tenzing-Hillary Airport in Lukla (2,860m)</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "",
+   "answer": ""
+  },
+  {
+   "question": "What is the best time to visit the Everest region?",
+   "answer": "<!-- wp:paragraph -->\n<p>The best time to visit the Everest region is during the spring season (March to May) and also autumn season (September to November)</p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "Is altitude sickness a concern in the Everest region?",
+   "answer": "<!-- wp:paragraph -->\n<p>Yes, we might suffer from the altitude sickness during our trek to Everest base camp, therefore we should ascend slowly while allowing time for acclimatization. </p>\n<!-- /wp:paragraph -->"
+  },
+  {
+   "question": "Do I need permits to enter the Everest Region?",
+   "answer": "<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li><strong>Yes, you will need some permits as per the location but just to enter the Everest region you will need two mandatory permits.</strong></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Sagarmatha National Park Permit</strong></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Khumbu Pasang Lhamu Rural Municipality Permit</strong></li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list -->"
+  },
+  {
+   "question": "How challenging is the Everest Base Camp Trek?",
+   "answer": "<!-- wp:paragraph -->\n<p>To trek to the Everest Base Camp, we don’t need technical skills, but requires a proper fitness. So, the trek is moderate to challenging.</p>\n<!-- /wp:paragraph -->"
+  }
+ ],
+ "gallery": [
+  {
+   "id": 4607,
+   "alt": "namche-bazzar-everest-base-camp-trek-wonder-himalaya",
+   "url": "https://wonderhimalaya.com/wp-content/uploads/2025/02/namche-bazzar-everest-base-camp-trek-wonder-himalaya.png"
+  },
+  {
+   "id": 4599,
+   "alt": "everest-base-camp-trek-wonder-himalaya-nepal",
+   "url": "https://wonderhimalaya.com/wp-content/uploads/2025/02/everest-base-camp-trek-wonder-himalaya-nepal.png"
+  }
+ ],
+ "video_gallery": [],
+ "itinerary_description": "",
+ "itineraries": [
+  {
+   "title": "Arrival at Tribhuvan International Airport ",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Meals:</td><td>Breakfast,</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>After your arrival at Tribhuvan International Airport, one of the representatives of Wonder Himalaya will be there to greet and welcome you. We, the team of Wonder Himalaya will make sure that you reach to your accommodation safe and comfortably. For the rest of your first day, you can either rest or walk around the Kathmandu city. At the end of the day, you’ll have a short meeting with your guide regarding the trek. We’ll also go through your trekking gears and make you sure you are not missing anything. If something is missing, we will buy or rent it the following day.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Fly from Kathmandu (1,300m/4,245ft) to Lukla (2,845m/9,333ft) and Hike to Phakding",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>8 Km, 3-4 hrs trek</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>Today, your actual adventurous trip to Everest Base Camp begins here.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>We take an early morning 30-40 minute flight from Kathmandu to Lukla. As the plane passes between towering mountains, the flight offers you the thrilling experience of the turbulence and serene picturesque views of the Himalayan range. Finally, you land at Lukla Airport—the gateway to the Everest Region. How would you feel landing at the airport with just a single runway on a cliff?</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Lukla Airport is one of the most dangerous airports in the world. You will get surprised.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>At Lukla, you get to rest for some time, meet your local porters, and arrange the backpacks.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>From Lukla, after submitting your Trekking Permit Card at the Lukla checkpoint, your footsteps step towards Phakding—a Sherpa village renowned for the 500-year-old monastery. You follow the trails down to Thalsaroa and then to Cheplung; the trail traces along the Dudh Koshi valley, enjoying the introductory view of Mt. Khumbila (5,761 m/18,901 ft.). Continuing your pace for a few hours, you reach Ghat (2,520 m/8,350 ft). Further, a short walk from Ghat, we reach Phakding—today's destination. Enjoy the best hotel, hygienic cuisine, and friendly hospitality with superb service at Phakding.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Phakding (2,610m/8,562ft) - Namche (3440 m/11,285ft):",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>11 Km, 6-7 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>Today, we trek from Phakding to Namche—the most significant tourism hub in the Everest region.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>We pass through the dense fir, alpine, and rhododendron forest along the Dudh Koshi River and ascend to Benkar. From Benkar, we pass through dense forest and cross suspension bridges, which take us to Chhumuwa and Monjo.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>At Monjo, you must register your trekking permit at the checkpost and then trek inside the Sagarmatha National Park. You feel completely enthusiastic about the wonderful environment of the park. Also, you may encounter wild animals and several species of vegetation. Watch them out!</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Ahead, we cross the Tenzing-Hillary suspension bridge over the Dudh-Koshi River and ascend via the pine and fir forest to the ridge.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>We have the first glimpse of Mt. Everest on the trail toward the ridge. Enjoy it.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Continue your uphill pace for a couple of hours; finally, you arrive in Namche. Enjoy the rest of your time at Namche—standard lodging and modern facilities like ATMs, internet, cyber cafes, pubs, restaurants, and so on.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Acclimatization and Exploration Day at Namche",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>4 Km, 4-5 hrs hike</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>We acclimate, explore, and rest in Namche on this day.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>As a part of acclimatization, after taking breakfast, we walk towards the Sagarmatha National Park museum. Enjoy and learn about the Sherpa culture and the local flora and fauna of this region.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>After exiting from the museum, we head towards the Everest View Hotel—one of the world's highest hotels. The panoramic view of snow-capped mountains such as Mt. Khumbila (5,761 m/18,901 ft), Mt. Thamserku (6,623 m/21,729 ft), Mt. Everest (8,848 m/29,029 ft), Lhotse (8,516 m/27,940 ft), and AmaDablam (6,812 m/22,349 ft) leaves you speechless.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>If you wish to explore more energetically, we can further visit Khumjung and Kunde villages, where you see Hillary School, Hillary Hospital, and Syangboche airstrip.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Otherwise, you just come down to Namche Bazaar. Then, we take a rest or explore the beautiful tourist hub and enjoy other facilities at Namche Bazaar.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Namche to Tengboche (3,870m/12,696ft)",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>9 Km, 6-7 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>Early in the morning, we take breakfast and start climbing up to the Namche village. On the way, we visualize a spectacular view of Mt. Everest.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>After a few hours, the trail reaches Sanasa junction—the intersection of the Everest<strong> Base Camp Trek</strong> and the Gokyo<strong> Lake Trek</strong>. To get to EBC, we take a right turn. Trekking down to the villages of Lawichasa and Tashinga with the majestic view of sparkling Ama Dablam (6856 m/22,493 ft.) and walking again, we reach Phunki Thanga. After enjoying lunch at Phunki, we ascend to Tengboche, passing through the dense rhododendron, juniper, and alpine woodland.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Tengboche is well-known for the Tengboche Gompa—one of the oldest monasteries in this region. Inspect evening prayer at Gompa, and enjoy comfy accommodation and delicious meals.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Tengboche to Dingboche (4,410m/14,467ft)",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>8 Km, 5-6 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>Early morning, we take a warm breakfast at Tengboche and follow the trails to Dingboche. Trekking along the stone-paved trail, we reach Debuche. Visit Debuche Nunnery and inspect the Thanka paintings, mural paintings, and architecture. Here, you can take a rest for some time.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>After that, we continued our hiking from Debuche and reached Pangboche. From Pangboche, we go down the trails to Somare and then to Orso. Further, we cross a suspension bridge over the Imja River. Then, walking for a few hours alongside the Imja River, we reach the summer village, Dingboche—the last human settlement at this higher altitude. We spend a pleasant night here, enjoy light meals, and relax.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Acclimatize and Explore at Dingboche",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>3 Km, 4-5 hrs hike</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>After Namche, today is our second acclimatization day. This supports trekkers in adjusting to the thinner air at higher elevations.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>As scheduled, after breakfast, we start trekking from the north ridge of Dingboche and climb to Nangkar Tshang Peak (5,616 m/18,425 ft). From the peak, we witness the wonderful glimpse of snow-capped peaks Mt. Makalu (8,463 m/21,204 ft), AmaDablam (6,856 m/22,493 ft), Island Peak (6,189 m/20,305 ft), and Thamserku (6,623 m/21,729 ft). After completely savoring nature's beauty, we come back to Dingboche. In the evening, we catch the finest moment of late sunshine. Then, we enjoy hygienic meals and take proper rest.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Dingboche to Lobuche (4,940m/16,206ft):",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>7 Km, 5-6 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>Today, we ate proper breakfast and be ready to trek a complete uphill trip. From Dingboche, we follow rocky trails to Dusa. We keep hiking uphill, enjoying the fantastic view of numerous peaks such as Taboche (6,542m), Cholatse (6,440m), Ama Dablam (6,856m), Pumori (7,161m), Khumbutse (6,636), and Lhotse (8,516m).</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>We walk for about an hour along the ridge and cross Thokla Pass (4,830m/15,846ft) through the moraine glacial formed by the Khumbu glacier. A further few minutes’ walk takes us to Lobuche – today's destination.&nbsp;</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>At Lobuche, feel comfortable with a warm meal, relax and think of climbing to the Everest Base Camp tomorrow.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Lobuche to Gorakshep (5,160m/16,928ft) to Everest Base Camp (5,364m/17,597ft) and return to Gorakshep",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>14 Km, 8-9 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>Today, you feel more excited. Your dream of climbing the world's highest base camp comes true on this day.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Take an early breakfast and follow the narrow mountain gaps and glacial moraine. Then, keeping your pace for 2-3 hours on the rocky path, you reach Gorakshep—the last human settlement. Here, you check in at the hotel and leave your heavy loads behind.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Following the right side of Gorakshep, we ascend for 2-3 hours, trekking through the rocky sandpit and boulders alongside the glacial river of the world's highest Khumbu glacier. Finally, we reach our destination of the <strong>Everest region, Everest Base Camp</strong> (5,364 m).</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Enjoy the perfect landscape, 360° view of mountains like Nuptse-Lhotse, and Khumbu Glacier just above EBC. You can meet other international trekkers, enjoy your time, capture the best moments, celebrate victory, and exchange happiness with one another.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>For some time, you feel lost in the outstanding beauty of the Everest region—Everest Base Camp. Then, we drop down to Gorakshep, enjoy a warm meal, and rest in the cozy lodging.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Trek from Gorakshep to Kalapatthar (5,550m/18,208ft) and Gorakshep to Pheriche (4,230m/13,878ft)",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>15 Km, 7-8 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>In fact, we cannot see Mt. Everest clearly and exactly from EBC. So, we arranged a side trip to the Kala Patthar summit (5,550 m/18,208 ft.). You enjoy a spectacular sunrise view touching the Mt. Everest peak and a 360° view of snow-capped mountains.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>We leave Gorakshep at 4 am for Kala Patthar to capture this moment. After a couple of hours of tracing down, we reach the Kala Patthar pinnacle. Our eyes continuously watch, enjoy, and capture a 360° view of mountains like Mt. Everest (8848m/29029ft), Mt. Lingtren (6,749m/22,142ft), Khumbutse (6,636m/21,771ft), Nuptse (7,861m/25,790ft), and Pumori (7,161m/23,494ft).</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>After enjoying astonishing panoramic views, we return to Gorakshep. We take breakfast at Gorakshep, and our journey from the land of the Himalayas descends, retracing the previous trail. From Gorakshep, we go down to Lobuche. After taking a few hours alternative way, we reach Pheriche. Visit the famous elementary health camp run by the Himalayan Rescue Association (HRA). We spend a night at Pheriche and have a comfortable sleep.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": " Pheriche to Namche Bazar (3,440m/11,285ft)",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>17 Km, 8-9 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>We're still following the routes backward. After a happy breakfast at Periche, we descend to Orso, Somare, and Pangboche, retracing the west bank of the Imja River. We continue on the trails down to Debuche. Then, we hike up to the hilltop of Tengboche, passing through dense rhododendron forest. From Tengboche, we have a long walk down and finally reach Namche Bazaar. Again, enjoy modern facilities at this high altitude, and stay overnight here.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": "Namche to Lukla (2,845m/9,333ft)",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>19 Km, 8-9 hrs</td></tr><tr><td>Meals:</td><td>Breakfast, Lunch, Dinner</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>On this day, we leave Namche and follow the trails down to the Dudh Koshi River, then retrace our steps to Monjo and Cheplung via the Sagarmatha National Park pathways. You will never forget the excitement of crossing a suspension bridge, walking through deep alpine and rhododendron woods, and hiking along rocky terrain.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>From Cheplung, we climb for more than half an hour and reach Lukla. Participate in the farewell ceremony; thank you, hard-working and ever-smiling porters. Also, give yourself a total rest.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": " Fly from Lukla to Kathmandu",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Accommodation:</td><td>At a Luxury Hotel/Guesthouse</td></tr><tr><td>Activity Duration:</td><td>30-40 min flight</td></tr><tr><td>Meals:</td><td>Breakfast,</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>On this second-to-last day of your trek, we fly back to Kathmandu from Lukla. Restore your memories in the plane flying between giant mountains. After landing at TIA, you will be taken to your hotel.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Relax!</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Or you can explore local markets nearby, taste Nepali and other continental cuisines at various restaurants, and observe the hustle-bustle lifestyle in Kathmandu.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  },
+  {
+   "title": " Final Departure",
+   "content": "<!-- wp:table -->\n<figure class=\"wp-block-table\"><table class=\"has-fixed-layout\"><tbody><tr><td>Meals:</td><td>Breakfast,</td></tr></tbody></table></figure>\n<!-- /wp:table -->\n\n<!-- wp:paragraph -->\n<p>We offer you a light breakfast and transfer to Tribhuvan International Airport via our private transportation. Finally, we bid you a happy 'Goodbye' and wish you a safe flight.</p>\n<!-- /wp:paragraph -->",
+   "period": 0,
+   "unit": "hour",
+   "sleep_mode": {
+    "field_id": "",
+    "description": ""
+   },
+   "meals_included": [],
+   "images": [],
+   "overnights": [
+    {
+     "location": "",
+     "altitude": 0
+    }
+   ]
+  }
+ ],
+ "trip_info": [
+  {
+   "id": 1,
+   "label": "Accomodation",
+   "content": "Star Hotel"
+  },
+  {
+   "id": 4,
+   "label": "Best Season",
+   "content": "Autumn"
+  },
+  {
+   "id": 7,
+   "label": "Guide",
+   "content": "Guided"
+  },
+  {
+   "id": 8,
+   "label": "Hotel Transfer",
+   "content": "Available"
+  },
+  {
+   "id": 11,
+   "label": "Maximum Altitude",
+   "content": "5364m"
+  },
+  {
+   "id": 3,
+   "label": "Arrival City",
+   "content": "Kathmandu"
+  },
+  {
+   "id": 5,
+   "label": "Departure City",
+   "content": "Kathmandu"
+  },
+  {
+   "id": 10,
+   "label": "Language",
+   "content": "English, Spanish, French, German, Chinese"
+  }
+ ],
+ "file_downloads": [],
+ "trip_extra_services": [],
+ "price_types": {
+  "per-person": "Per Person",
+  "per-group": "Per Group",
+  "per-sharing-basis": "Per Sharing Basis"
+ },
+ "custom_tabs": {
+  "tab_7": {
+   "title": "",
+   "content": ""
+  }
+ },
+ "faqs_data": {
+  "sectionTitle": "FAQs",
+  "categories": [
+   {
+    "id": "category-legacy-general",
+    "name": "General",
+    "faqs": [
+     {
+      "id": "faq-legacy-0",
+      "question": "What is the best time to visit Nepal?",
+      "answer": "<!-- wp:paragraph -->\n<p>Nepal is a year-round destination! Each season offers unique experiences, from lush greenery during monsoons to crystal-clear Himalayan views in autumn and spring.</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-1",
+      "question": "Can I customize my trip?",
+      "answer": "<!-- wp:paragraph -->\n<p>Absolutely! We specialize in crafting personalized itineraries to suit your interests, preferences, and schedule.</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-2",
+      "question": "Do you cater to solo travelers or small groups?",
+      "answer": "<!-- wp:paragraph -->\n<p>Yes! Whether you're exploring on your own or with a group, we ensure a seamless and enriching experience tailored to your needs.</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-3",
+      "question": "What does sustainable tourism mean for your company?",
+      "answer": "<!-- wp:paragraph -->\n<p>Sustainability is at the core of what we do. This means supporting local communities, minimizing environmental impact, and preserving the cultural heritage of the Himalayas.</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-4",
+      "question": "How physically challenging are the treks and tours?",
+      "answer": "<!-- wp:paragraph -->\n<p>We offer options for all fitness levels, from easy cultural tours to strenuous high-altitude treks. Our experts are here to guide you toward the best choice for your abilities.</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-5",
+      "question": "Do you arrange pickup and drop-off service?",
+      "answer": "<!-- wp:paragraph -->\n<p><strong>Yes, we provide both airport pickup and drop-off service for all the Everest Base Camp Trek bookings. One of our representatives will be there with transport facilities to pick you up; also, we will be there throughout check-outs as well.</strong></p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-6",
+      "question": "How many Kilometers is the Everest Base Camp Trek?",
+      "answer": "<!-- wp:paragraph -->\n<p>This trek is approximately 123 kilometers (76 miles) in length, including the Kala Patthar Viewpoint. The Highest Point is 5,545m at Kala Patthar, offering iconic views of Mt. Everest.</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-7",
+      "question": "What is the nearest airport and city from the Mount Everest",
+      "answer": "<!-- wp:paragraph -->\n<p>The nearest city is Namche Bazaar (3,440m / 11,286ft)</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>The nearest airport from the Everest is Tenzing-Hillary Airport in Lukla (2,860m)</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-8",
+      "question": "",
+      "answer": ""
+     },
+     {
+      "id": "faq-legacy-9",
+      "question": "What is the best time to visit the Everest region?",
+      "answer": "<!-- wp:paragraph -->\n<p>The best time to visit the Everest region is during the spring season (March to May) and also autumn season (September to November)</p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-10",
+      "question": "Is altitude sickness a concern in the Everest region?",
+      "answer": "<!-- wp:paragraph -->\n<p>Yes, we might suffer from the altitude sickness during our trek to Everest base camp, therefore we should ascend slowly while allowing time for acclimatization. </p>\n<!-- /wp:paragraph -->"
+     },
+     {
+      "id": "faq-legacy-11",
+      "question": "Do I need permits to enter the Everest Region?",
+      "answer": "<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li><strong>Yes, you will need some permits as per the location but just to enter the Everest region you will need two mandatory permits.</strong></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Sagarmatha National Park Permit</strong></li>\n<!-- /wp:list-item -->\n\n<!-- wp:list-item -->\n<li><strong>Khumbu Pasang Lhamu Rural Municipality Permit</strong></li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list -->"
+     },
+     {
+      "id": "faq-legacy-12",
+      "question": "How challenging is the Everest Base Camp Trek?",
+      "answer": "<!-- wp:paragraph -->\n<p>To trek to the Everest Base Camp, we don’t need technical skills, but requires a proper fitness. So, the trek is moderate to challenging.</p>\n<!-- /wp:paragraph -->"
+     }
+    ]
+   }
+  ]
+ }
+}

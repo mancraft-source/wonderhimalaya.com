@@ -30,6 +30,11 @@ class CanonicalUrl
         }
 
         if ($canonical !== '' && $canonical !== $path) {
+            // Jump straight to a managed redirect target (one hop instead of two).
+            if ($managed = \App\Support\RedirectResolver::for($request)) {
+                return $managed;
+            }
+
             $query = $request->getQueryString();
 
             return redirect()->to($canonical.($query ? '?'.$query : ''), 301);

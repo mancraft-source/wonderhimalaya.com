@@ -1,0 +1,47 @@
+[
+ {
+  "id": 6666,
+  "name": "Group",
+  "description": "",
+  "is_primary": true,
+  "min_pax": 2,
+  "traveler_categories": [
+   {
+    "id": 66,
+    "label": "Adult",
+    "price": 1400,
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 2,
+    "max_pax": "",
+    "description": ""
+   },
+   {
+    "id": 67,
+    "label": "Child",
+    "price": "",
+    "age_group": "",
+    "pricing_type": {
+     "value": "per-person",
+     "label": "Person",
+     "description": ""
+    },
+    "sale_price": "",
+    "has_sale": false,
+    "has_group_pricing": false,
+    "group_pricing": [],
+    "min_pax": 0,
+    "max_pax": "",
+    "description": ""
+   }
+  ]
+ }
+]

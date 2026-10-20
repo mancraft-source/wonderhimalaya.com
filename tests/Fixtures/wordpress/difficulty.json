@@ -1,0 +1,90 @@
+[
+ {
+  "id": 5,
+  "count": 18,
+  "description": "The trip is easy and suitable for everyone, including children and older people. It does not require any skills in mountain climbing or traversing difficult terrain.",
+  "link": "https://wonderhimalaya.com/trip-difficulty/easy/",
+  "name": "Easy",
+  "slug": "easy",
+  "taxonomy": "difficulty",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Easy Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-difficulty/easy/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 8,
+  "count": 4,
+  "description": "This level is for mountaineering, backcountry and expeditions. It requires more serious physical preparation and previous experience in similar activities like climbing skills. The preliminary stage starts 3-6 months before heading out so that you can get acclimated by running exercises which will help increase endurance. You will need special clothes and gear.",
+  "link": "https://wonderhimalaya.com/trip-difficulty/extreme/",
+  "name": "Extreme",
+  "slug": "extreme",
+  "taxonomy": "difficulty",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Extreme Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-difficulty/extreme/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 7,
+  "count": 20,
+  "description": "Physical training before the trip should begin no later than 2 months before, as you will have a height of 3,000 meters above sea level and more. Hiking is from 6 km daily with an average pace that can be maintained for hours. It is important to have physical fitness &amp; endurance. You will also need the right gear and clothes according to the weather.",
+  "link": "https://wonderhimalaya.com/trip-difficulty/hard/",
+  "name": "Hard",
+  "slug": "hard",
+  "taxonomy": "difficulty",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Hard Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-difficulty/hard/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 6,
+  "count": 8,
+  "description": "You need to have good physical condition and be in top form. You'll also require the right clothes for weather conditions and food items such as snacks or lunch breaks from your hiking adventure; water is essential too! This type of activity takes time, so ensure you're physically able to get enough rest before starting any trips.",
+  "link": "https://wonderhimalaya.com/trip-difficulty/medium/",
+  "name": "Medium",
+  "slug": "medium",
+  "taxonomy": "difficulty",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Medium Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-difficulty/medium/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ }
+]

@@ -1,0 +1,44 @@
+[
+ {
+  "id": 3,
+  "count": 0,
+  "description": "This is a group tour. Other travellers with a common interest will join this tour and travel together on a schedule.",
+  "link": "https://wonderhimalaya.com/trip-tag/group/",
+  "name": "Group Tour",
+  "slug": "group",
+  "taxonomy": "trip_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Group Tour Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-tag/group/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ },
+ {
+  "id": 2,
+  "count": 0,
+  "description": "This is a guided tour. You will be accompanied by an expert guide.",
+  "link": "https://wonderhimalaya.com/trip-tag/guided/",
+  "name": "Guided Tour",
+  "slug": "guided",
+  "taxonomy": "trip_tag",
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Guided Tour Archives - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/trip-tag/guided/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  }
+ }
+]

@@ -1,0 +1,49 @@
+[
+ {
+  "id": 24,
+  "count": 3,
+  "description": "By means of Nepal's dynamic cities, rich cultural legacy, and historical sites, City Tour Nepal presents an immersive experience The trips combine spirituality, history, and natural beauty from the busy streets of Kathmandu with its UNESCO-listed sites like Pashupatinath Temple, Swayambhunath (Monkey Temple), and Kathmandu Durbar Square to the calm beauty of Pokhara, known for Phewa Lake and the Annapurna range. Visitors can visit the ancient city of Bhaktapur, <span style=\"margin: 0px;padding: 0px\">Patan's artistic appeal, and Chitwan's forest adventures</span>. Whether you're interested in temples, traditional markets, or breathtaking mountain vistas, City Tour Nepal offers an amazing tour into the heart of the country’s culture and environment.\r\n\r\n&nbsp;",
+  "link": "https://wonderhimalaya.com/activities/city-tour/",
+  "name": "City Tour",
+  "slug": "city-tour",
+  "taxonomy": "activities",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "City Tour Archives - Wonder Himalaya",
+   "description": "Join Wonder Himalaya for unforgettable city tours in Nepal. Explore vibrant culture, rich heritage, stunning landscapes & hidden gems across this beautiful country.",
+   "canonical": "https://wonderhimalaya.com/activities/city-tour/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  },
+  "thumbnail": null
+ },
+ {
+  "id": 39,
+  "count": 37,
+  "description": "Experience a life-changing Himalayan journey with Wonder Himalaya's expertly guided adventures. Our all-inclusive trekking tours guarantee a smooth trip whether your dreams are of circling the Annapurna massif, standing in the shadow of Everest, or discovering Nepal's undiscovered paths like Manaslu and Makalu. You may concentrate on the amazing scenery since we take care all the details from permits and lodging to transportation and meals.\r\n\r\nWould you like to rather walk alone yet still doesn't have a guide's knowledge? Choose our guide-only reservations and investigate at your speed. We make mountain dreams come true with licensed local guides, round-the-clock support, and a dedication to safety.",
+  "link": "https://wonderhimalaya.com/activities/guided-trek/",
+  "name": "Guided Trek",
+  "slug": "guided-trek",
+  "taxonomy": "activities",
+  "parent": 0,
+  "meta": [],
+  "yoast_head_json": {
+   "title": "Guided Trek- best guide in Nepal - Wonder Himalaya",
+   "canonical": "https://wonderhimalaya.com/activities/guided-trek/",
+   "robots": {
+    "index": "index",
+    "follow": "follow",
+    "max-snippet": "max-snippet:-1",
+    "max-image-preview": "max-image-preview:large",
+    "max-video-preview": "max-video-preview:-1"
+   }
+  },
+  "thumbnail": null
+ }
+]
