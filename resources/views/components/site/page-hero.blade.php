@@ -2,7 +2,7 @@
 @props(['title', 'eyebrow' => null, 'intro' => null, 'media' => null, 'model' => null, 'crumbs' => [], 'size' => 'md'])
 @php $hasImage = $media || $model?->hasMedia('hero'); @endphp
 @if ($hasImage)
-    <section @class(['relative isolate flex flex-col justify-end overflow-hidden bg-juniper-950 text-white', 'min-h-[72svh]' => $size === 'lg', 'min-h-[58svh]' => $size !== 'lg'])>
+    <section @class(['relative isolate flex flex-col justify-end overflow-hidden bg-juniper-950 text-white', 'h-[72svh] min-h-[34rem] max-h-[48rem]' => $size === 'lg', 'h-[58svh] min-h-[30rem] max-h-[40rem]' => $size !== 'lg'])>
         <div class="absolute inset-0 -z-10" data-parallax>
             <x-site.picture :media="$media" :model="$model" collection="hero" :alt="$title" sizes="100vw" eager class="h-full w-full animate-slow-zoom" />
         </div>

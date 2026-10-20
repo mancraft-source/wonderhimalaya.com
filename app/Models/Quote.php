@@ -103,7 +103,8 @@ class Quote extends Model
 
         $this->subtotal = $subtotal;
         $this->total = $total;
-        $this->deposit_amount = round($total * ($this->deposit_percent / 100), 2);
+        $percent = $this->deposit_percent ?? (int) Setting::get('booking.deposit_percent', 20);
+        $this->deposit_amount = round($total * ($percent / 100), 2);
     }
 
     public function isExpired(): bool

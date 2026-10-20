@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 /**
  * @extends Factory<User>
@@ -30,6 +31,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'is_active' => true,
         ];
     }
 
@@ -41,5 +43,31 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /** Assign a Spatie role (created on the fly if the seeder hasn't run). */
+    public function role(string $role): static
+    {
+        return $this->afterCreating(fn (User $user) => $user->assignRole(Role::findOrCreate($role, 'web')));
+    }
+
+    public function admin(): static
+    {
+        return $this->role('admin');
+    }
+
+    public function sales(): static
+    {
+        return $this->role('sales');
+    }
+
+    public function manager(): static
+    {
+        return $this->role('manager');
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(['is_active' => false]);
     }
 }

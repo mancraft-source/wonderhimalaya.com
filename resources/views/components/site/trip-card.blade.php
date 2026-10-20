@@ -5,7 +5,7 @@
 @endphp
 <article {{ $attributes->class('group relative flex flex-col') }}>
     <a href="{{ url($trip->publicPath()) }}" class="relative block overflow-hidden rounded-[1.75rem] bg-juniper-900" aria-label="{{ $trip->title }}">
-        <div @class(['overflow-hidden', 'aspect-[4/5]' => $size === 'lg', 'aspect-[4/3]' => $size !== 'lg'])>
+        <div @class(['overflow-hidden', 'aspect-[3/2]' => $size === 'lg', 'aspect-[4/3]' => $size !== 'lg'])>
             <x-site.picture :model="$trip" collection="hero" sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 92vw"
                 class="h-full w-full transition duration-[1.4s] ease-(--ease-mountain) group-hover:scale-[1.04]" />
         </div>

@@ -17,6 +17,7 @@ class Menu extends Model
     protected static function booted(): void
     {
         static::saved(fn (self $menu) => Cache::forget('menu.'.$menu->location));
+        static::deleted(fn (self $menu) => Cache::forget('menu.'.$menu->location));
     }
 
     /** @return array<int, array<string, mixed>> */

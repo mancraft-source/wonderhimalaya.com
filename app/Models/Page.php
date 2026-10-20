@@ -46,9 +46,22 @@ class Page extends Model implements HasMedia
 
     public function buildPath(): string
     {
-        $parent = $this->parent_id ? self::find($this->parent_id) : null;
+        $segments = [$this->slug];
+        $seen = [$this->id];
+        $parentId = $this->parent_id;
 
-        return ltrim(($parent ? $parent->buildPath().'/' : '').$this->slug, '/');
+        // Walk up at most 5 levels and stop on cycles (a page set as its own ancestor).
+        while ($parentId && count($segments) < 6 && ! in_array($parentId, $seen, true)) {
+            $parent = self::withTrashed()->find($parentId, ['id', 'slug', 'parent_id']);
+            if (! $parent) {
+                break;
+            }
+            array_unshift($segments, $parent->slug);
+            $seen[] = $parent->id;
+            $parentId = $parent->parent_id;
+        }
+
+        return trim(implode('/', $segments), '/');
     }
 
     public function registerMediaCollections(): void

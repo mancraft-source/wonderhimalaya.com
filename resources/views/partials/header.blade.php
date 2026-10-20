@@ -14,19 +14,19 @@
     <div class="container-page flex h-20 items-center justify-between gap-6 lg:h-24">
         <a href="{{ route('home') }}" class="relative z-10" aria-label="Wonder Himalaya — home">
             @if ($transparent)
-                <x-site.logo light class="group-data-[scrolled]/header:hidden" x-bind:class="(open || mega) && '!hidden'" />
-                <x-site.logo class="hidden group-data-[scrolled]/header:inline-flex" x-bind:class="(open || mega) && '!inline-flex'" />
+                <span class="block group-data-[scrolled]/header:hidden" x-bind:class="(open || mega) && '!hidden'"><x-site.logo light /></span>
+                <span class="hidden group-data-[scrolled]/header:block" x-bind:class="(open || mega) && '!block'"><x-site.logo /></span>
             @else
                 <x-site.logo />
             @endif
         </a>
 
         @php
-            $linkBase = 'relative inline-flex items-center gap-1 py-2 text-[0.95rem] font-medium transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-terracotta-500 after:transition-transform after:duration-300 hover:after:scale-x-100';
+            $linkBase = 'relative inline-flex items-center gap-1 whitespace-nowrap py-2 text-[0.95rem] font-medium transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-terracotta-500 after:transition-transform after:duration-300 hover:after:scale-x-100';
             $linkColor = $transparent ? 'text-white group-data-[scrolled]/header:text-juniper-800' : 'text-juniper-800';
         @endphp
 
-        <nav class="hidden items-center gap-8 lg:flex" aria-label="Main">
+        <nav class="hidden items-center gap-7 lg:flex xl:gap-9" aria-label="Main">
             <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'destinations' ? null : 'destinations'" x-bind:aria-expanded="mega === 'destinations'">
                 Destinations <x-heroicon-m-chevron-down class="size-4 transition" x-bind:class="mega === 'destinations' && 'rotate-180'" />
             </button>
@@ -41,10 +41,10 @@
         </nav>
 
         <div class="flex items-center gap-3">
-            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="hidden items-center gap-2 text-sm font-medium xl:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">
+            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="hidden items-center gap-2 whitespace-nowrap text-sm font-medium 2xl:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">
                 <x-heroicon-o-phone class="size-4" /> {{ $phone }}
             </a>
-            <a href="{{ route('tailor-made') }}" class="btn-primary hidden !px-5 !py-3 sm:inline-flex">Plan your journey</a>
+            <a href="{{ route('tailor-made') }}" class="btn-primary hidden whitespace-nowrap !px-5 !py-3 sm:inline-flex">Plan your journey</a>
             <button type="button" class="relative z-10 inline-flex size-11 items-center justify-center rounded-full lg:hidden {{ $transparent ? 'text-white group-data-[scrolled]/header:text-juniper-800' : 'text-juniper-800' }}" x-bind:class="open && '!text-juniper-800'" x-on:click="open = !open" x-bind:aria-expanded="open" aria-controls="mobile-menu">
                 <span class="sr-only">Menu</span>
                 <x-heroicon-o-bars-2 class="size-7" x-show="!open" />

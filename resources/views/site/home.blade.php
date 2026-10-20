@@ -1,6 +1,6 @@
 <x-layouts.site :seo="$seo" transparent>
     {{-- ============================== HERO ============================== --}}
-    <section class="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-juniper-950 text-white"
+    <section class="relative isolate flex h-[100svh] min-h-[40rem] max-h-[64rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white"
              x-data="{ i: 0, n: {{ max(1, $heroTrips->count()) }} }"
              x-init="n > 1 && setInterval(() => i = (i + 1) % n, 7000)">
         <div class="absolute inset-0 -z-10" data-parallax>
@@ -71,14 +71,14 @@
         </div>
 
         @if ($stats)
-            <dl class="container-page relative mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4" data-reveal>
+            <div class="container-page relative mt-20"><dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4" data-reveal>
                 @foreach ($stats as $stat)
                     <div class="bg-stone-100 p-8 lg:p-10">
                         <dt class="text-sm text-ink-soft">{{ $stat['label'] }}</dt>
                         <dd class="mt-3 font-display text-5xl text-juniper-800 lg:text-6xl">{{ $stat['value'] }}</dd>
                     </div>
                 @endforeach
-            </dl>
+            </dl></div>
         @endif
     </section>
 
@@ -99,7 +99,7 @@
             <x-site.section-heading eyebrow="Travel by feeling" title="How do you want the mountains to <em>feel</em>?" />
             <a href="{{ route('trips.index') }}" class="link-arrow shrink-0" data-reveal>Every journey <x-heroicon-m-arrow-right class="size-4" /></a>
         </div>
-        <div class="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 sm:px-8 lg:px-[max(3rem,calc((100vw-90rem)/2+3rem))]">
+        <div class="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 sm:px-8 lg:px-[max(3rem,calc((100vw_-_90rem)/2_+_3rem))]">
             @foreach ($moods as [$slug, $title, $line, $gradient])
                 @continue(! $activityUrls->has($slug))
                 <a href="{{ $activityUrls[$slug]['url'] }}" class="group relative flex aspect-[3/4] w-[78vw] shrink-0 snap-start flex-col justify-end overflow-hidden rounded-[2rem] bg-gradient-to-br {{ $gradient }} p-7 text-white sm:w-[22rem]" data-reveal>

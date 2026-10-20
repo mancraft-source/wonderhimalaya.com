@@ -17,10 +17,10 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     @fonts
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
+    @livewireStyles(['nonce' => \Illuminate\Support\Facades\Vite::cspNonce()])
     @stack('head')
     @if (! empty($analytics['gtm_id']) && app()->isProduction())
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ $analytics['gtm_id'] }}');</script>
+        <script nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ $analytics['gtm_id'] }}');</script>
     @endif
 </head>
 <body class="min-h-dvh bg-stone-100 text-ink">
@@ -34,7 +34,7 @@
 
     @include('partials.footer')
     @include('partials.whatsapp')
-    @livewireScripts
+    @livewireScripts(['nonce' => \Illuminate\Support\Facades\Vite::cspNonce()])
     @stack('scripts')
 </body>
 </html>

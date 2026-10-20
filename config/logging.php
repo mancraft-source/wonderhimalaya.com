@@ -65,6 +65,15 @@ return [
             'replace_placeholders' => true,
         ],
 
+        // Gateway interactions (never secrets or card data). See App\Payments.
+        'payments' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/payments.log'),
+            'level' => env('LOG_PAYMENTS_LEVEL', 'info'),
+            'days' => env('LOG_PAYMENTS_DAYS', 90),
+            'replace_placeholders' => true,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),

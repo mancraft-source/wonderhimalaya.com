@@ -18,7 +18,7 @@
                 ? turnstile.render($el, { sitekey: @js(config('services.turnstile.site_key')), theme: 'light', callback: (t) => $wire.set('turnstileToken', t, false) })
                 : setTimeout(draw, 250); draw()"></div>
         @once
-            @push('scripts')<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>@endpush
+            @push('scripts')<script nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}" src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>@endpush
         @endonce
         @error('turnstileToken')<p class="field-error !mt-0">{{ $message }}</p>@enderror
     @endif

@@ -23,7 +23,7 @@
 @endphp
 <x-layouts.site :seo="$seo" transparent>
     {{-- ============================== HERO ============================== --}}
-    <section class="relative isolate flex min-h-[86svh] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
+    <section class="relative isolate flex h-[86svh] min-h-[36rem] max-h-[56rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
         <div class="absolute inset-0 -z-10" data-parallax>
             <x-site.picture :model="$trip" collection="hero" sizes="100vw" eager class="h-full w-full animate-slow-zoom" />
         </div>

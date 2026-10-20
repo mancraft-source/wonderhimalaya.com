@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Str;
 
 /**
@@ -18,6 +19,21 @@ trait HasDocumentNumber
             $model->uuid ??= (string) Str::uuid();
             $model->number ??= static::nextNumber();
         });
+    }
+
+    /** Retry with a fresh number if two records grab the same one concurrently. */
+    public function save(array $options = []): bool
+    {
+        for ($attempt = 1; ; $attempt++) {
+            try {
+                return parent::save($options);
+            } catch (UniqueConstraintViolationException $e) {
+                if ($this->exists || $attempt >= 3 || ! str_contains($e->getMessage(), 'number')) {
+                    throw $e;
+                }
+                $this->number = static::nextNumber();
+            }
+        }
     }
 
     public static function nextNumber(): string

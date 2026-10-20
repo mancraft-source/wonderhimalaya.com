@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 
@@ -39,6 +40,21 @@ class Lead extends Model
         static::creating(function (self $lead) {
             $lead->reference ??= self::nextReference();
         });
+    }
+
+    /** Retry with a fresh reference if two enquiries arrive at the same instant. */
+    public function save(array $options = []): bool
+    {
+        for ($attempt = 1; ; $attempt++) {
+            try {
+                return parent::save($options);
+            } catch (UniqueConstraintViolationException $e) {
+                if ($this->exists || $attempt >= 3 || ! str_contains($e->getMessage(), 'reference')) {
+                    throw $e;
+                }
+                $this->reference = self::nextReference();
+            }
+        }
     }
 
     public static function nextReference(): string
