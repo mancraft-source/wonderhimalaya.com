@@ -130,7 +130,31 @@
     .img-organic { border-radius: var(--radius-organic); }
 
     .scrim-bottom { background: linear-gradient(180deg, rgba(15,29,25,0) 30%, rgba(15,29,25,0.85) 100%); }
-    .scrim-hero { background: linear-gradient(180deg, rgba(15,29,25,0.55) 0%, rgba(15,29,25,0.05) 35%, rgba(15,29,25,0.15) 60%, rgba(15,29,25,0.85) 100%); }
+    /* Hero shading: top shade for the nav, plus a soft "spotlight" behind the copy (bottom-left). */
+    .scrim-hero {
+        background:
+            linear-gradient(180deg, rgba(15,29,25,0.6) 0%, rgba(15,29,25,0) 24%),
+            radial-gradient(110% 85% at 12% 100%, rgba(15,29,25,0.9) 0%, rgba(15,29,25,0.62) 38%, rgba(15,29,25,0.18) 68%, rgba(15,29,25,0) 85%),
+            linear-gradient(0deg, rgba(15,29,25,0.55) 0%, rgba(15,29,25,0) 50%);
+    }
+    /* Centred variant (homepage): spotlight behind the middle of the frame. */
+    .scrim-hero-center {
+        background:
+            linear-gradient(180deg, rgba(15,29,25,0.6) 0%, rgba(15,29,25,0) 22%),
+            radial-gradient(70% 55% at 50% 52%, rgba(15,29,25,0.62) 0%, rgba(15,29,25,0.35) 55%, rgba(15,29,25,0) 100%),
+            linear-gradient(0deg, rgba(15,29,25,0.7) 0%, rgba(15,29,25,0) 35%);
+    }
+
+    /* Legible banner copy over any photo. */
+    .hero-copy h1, .hero-copy h2, .hero-copy p, .hero-copy a, .hero-copy span, .hero-copy li { text-shadow: 0 1px 2px rgba(10,20,17,0.45), 0 2px 14px rgba(10,20,17,0.45), 0 8px 40px rgba(10,20,17,0.35); }
+    .hero-copy .eyebrow-light { @apply rounded-full bg-juniper-950/45 px-3.5 py-1.5 ring-1 ring-white/15 backdrop-blur-md; text-shadow: none; }
+    .hero-copy .eyebrow-light::before { @apply w-5; }
+    .hero-copy nav[aria-label="Breadcrumb"] ol { @apply w-max max-w-full rounded-full bg-juniper-950/40 px-4 py-1.5 ring-1 ring-white/10 backdrop-blur-md; }
+    .hero-copy nav[aria-label="Breadcrumb"] * { text-shadow: none; }
+    /* Frosted editorial panel for intro paragraphs. */
+    .hero-glass { @apply rounded-2xl bg-juniper-950/40 px-5 py-4 ring-1 ring-white/12 backdrop-blur-md sm:px-6; border-left: 3px solid var(--color-saffron-300); text-shadow: none !important; }
+    .hero-glass * { text-shadow: none !important; }
+    .hero-copy .chip-light { @apply bg-juniper-950/45 ring-1 ring-white/15; text-shadow: none; }
 
     .prayer-flags { @apply flex h-1 w-24 overflow-hidden rounded-full; }
     .prayer-flags > span { @apply flex-1; }

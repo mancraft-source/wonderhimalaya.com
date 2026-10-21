@@ -8,7 +8,7 @@
     <section class="relative isolate flex h-[72svh] min-h-[34rem] max-h-[48rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
         <div class="absolute inset-0 -z-10" data-parallax><img src="{{ \App\Support\Content::image($c['hero_image'], \App\Support\BrandImage::url('rara-lake-trek-wonder-himalaya-scaled-1.png', $up('2026/01/annapurna-region-mardi-himal-wonder-himalaya.jpg'))) }}" alt="" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high"></div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
-        <div class="container-page pt-36 pb-16 lg:pb-24">
+        <div class="hero-copy container-page pt-36 pb-16 lg:pb-24">
             <x-site.breadcrumbs :items="[['label' => 'About', 'url' => url('/about-us')], ['label' => 'Sustainable tourism']]" light />
             <p class="eyebrow eyebrow-light mt-8">{{ $c['hero_eyebrow'] }}</p>
             <h1 class="mt-5 max-w-4xl font-display text-display-lg text-white">{{ $c['hero_title'] }} <em class="text-saffron-300">{{ $c['hero_title_em'] }}</em></h1>

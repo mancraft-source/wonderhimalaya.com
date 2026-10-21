@@ -22,7 +22,7 @@ final class Seo
 
     public static function make(?string $title = null, ?string $description = null, ?string $image = null): self
     {
-        return new self($title, $description ? str(strip_tags($description))->squish()->limit(158)->toString() : null, $image);
+        return new self($title, $description ? str(html_entity_decode(strip_tags($description), ENT_QUOTES | ENT_HTML5))->squish()->limit(158)->toString() : null, $image);
     }
 
     /** @param  object{seo?: ?array}|null  $model */

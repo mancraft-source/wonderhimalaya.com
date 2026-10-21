@@ -13,11 +13,11 @@
             <img src="{{ \App\Support\Content::image($c['hero_image'], \App\Support\BrandImage::url('annapurna-base-camp-min-scaled.jpg', $up('2026/04/IMG_1124-scaled.jpeg'))) }}" alt="Trekkers on a Himalayan trail with Wonder Himalaya" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high">
         </div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
-        <div class="container-page pt-36 pb-16 lg:pb-24">
+        <div class="hero-copy container-page pt-36 pb-16 lg:pb-24">
             <x-site.breadcrumbs :items="[['label' => 'About us']]" light />
             <p class="eyebrow eyebrow-light mt-8">{{ $c['hero_eyebrow'] }}</p>
             <h1 class="mt-5 max-w-4xl font-display text-display-lg text-white">{{ $c['hero_title'] }} <em class="text-saffron-300">{{ $c['hero_title_em'] }}</em></h1>
-            <p class="mt-6 max-w-2xl text-lg text-white/85">{{ $c['hero_subtitle'] }}</p>
+            <p class="hero-glass mt-6 max-w-2xl text-lg text-white/90">{{ $c['hero_subtitle'] }}</p>
         </div>
     </section>
 

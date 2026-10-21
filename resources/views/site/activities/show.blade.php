@@ -1,5 +1,5 @@
 <x-layouts.site :seo="$seo" :transparent="(bool) $heroMedia">
-    <x-site.page-hero :media="$heroMedia" eyebrow="Travel style" :title="e($activity->name)" :intro="$activity->tagline ?: str(strip_tags((string) $activity->description))->limit(220)->toString()"
+    <x-site.page-hero :media="$heroMedia" eyebrow="Travel style" :title="e($activity->name)" :intro="$activity->tagline ?: str(html_entity_decode(strip_tags((string) $activity->description), ENT_QUOTES | ENT_HTML5))->squish()->limit(220)->toString()"
         :crumbs="[['label' => 'Journeys', 'url' => route('trips.index')], ['label' => $activity->name]]" size="lg">
         @if ($regions->isNotEmpty())
             <div class="mt-8 flex flex-wrap gap-2">

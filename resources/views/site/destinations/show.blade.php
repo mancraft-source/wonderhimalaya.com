@@ -4,7 +4,7 @@
         $destination->parent ? ['label' => $destination->parent->name, 'url' => url($destination->parent->publicPath())] : null,
         ['label' => $destination->name],
     ]));
-    $intro = str($destination->intro ?: strip_tags((string) $destination->description))->squish()->limit(230)->toString();
+    $intro = str(html_entity_decode($destination->intro ?: strip_tags((string) $destination->description), ENT_QUOTES | ENT_HTML5))->squish()->limit(230)->toString();
 @endphp
 <x-layouts.site :seo="$seo" :transparent="(bool) $heroMedia">
     <x-site.page-hero :media="$heroMedia" :eyebrow="$destination->tagline ?? ($destination->parent ? $destination->parent->name : 'Destination')" :title="e($destination->name)" :intro="$intro" :crumbs="$crumbs" size="lg">

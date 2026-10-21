@@ -7,11 +7,11 @@
             <x-site.picture :media="$media" :model="$model" collection="hero" :alt="$title" sizes="100vw" eager class="h-full w-full animate-slow-zoom" />
         </div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
-        <div class="container-page pt-36 pb-14 lg:pb-20">
+        <div class="hero-copy container-page pt-36 pb-14 lg:pb-20">
             @if ($crumbs)<x-site.breadcrumbs :items="$crumbs" light />@endif
             @if ($eyebrow)<p class="eyebrow eyebrow-light mt-6">{{ $eyebrow }}</p>@endif
             <h1 class="mt-5 max-w-5xl font-display text-display-lg text-white">{!! $title !!}</h1>
-            @if ($intro)<p class="mt-6 line-clamp-4 max-w-2xl text-lg text-white/85 sm:line-clamp-none">{{ $intro }}</p>@endif
+            @if ($intro)<div class="hero-glass mt-6 max-w-2xl text-lg text-white/90"><p class="line-clamp-4 sm:line-clamp-none">{{ $intro }}</p></div>@endif
             {{ $slot }}
         </div>
     </section>

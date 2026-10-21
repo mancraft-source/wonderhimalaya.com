@@ -64,7 +64,7 @@
             <x-site.picture :model="$trip" collection="hero" sizes="100vw" eager class="h-full w-full animate-slow-zoom" />
         </div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
-        <div class="container-page pt-36 pb-12 lg:pb-16">
+        <div class="hero-copy container-page pt-36 pb-12 lg:pb-16">
             <x-site.breadcrumbs :items="$crumbs" light />
             <div class="mt-6 flex flex-wrap gap-2">
                 @if ($trip->is_fixed_departure)<span class="chip-light">Fixed group departure</span>@endif

@@ -9,11 +9,11 @@
     <section class="relative isolate flex h-[64svh] min-h-[32rem] max-h-[44rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
         <div class="absolute inset-0 -z-10" data-parallax><img src="{{ \App\Support\Content::image($c['hero_image'], \App\Support\BrandImage::url('langtang-lerung-rest-point-scaled.jpeg', $up('2026/03/IMG_0743-scaled.jpeg'))) }}" alt="" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high"></div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
-        <div class="container-page pt-36 pb-16 lg:pb-20">
+        <div class="hero-copy container-page pt-36 pb-16 lg:pb-20">
             <x-site.breadcrumbs :items="[['label' => 'Travel guide']]" light />
             <p class="eyebrow eyebrow-light mt-8">{{ $c['hero_eyebrow'] }}</p>
             <h1 class="mt-5 max-w-4xl font-display text-display-lg text-white">{{ $c['hero_title'] }} <em class="text-saffron-300">{{ $c['hero_title_em'] }}</em></h1>
-            <p class="mt-6 max-w-2xl text-lg text-white/85">{{ $c['hero_subtitle'] }}</p>
+            <p class="hero-glass mt-6 max-w-2xl text-lg text-white/90">{{ $c['hero_subtitle'] }}</p>
         </div>
     </section>
 

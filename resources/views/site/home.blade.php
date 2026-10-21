@@ -19,10 +19,9 @@
                 <x-site.picture class="h-full w-full" alt="The Himalaya" />
             @endforelse
         </div>
-        <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(15,29,25,0.15)_0%,rgba(15,29,25,0.55)_75%)]"></div>
-        <div class="scrim-hero absolute inset-0 -z-10"></div>
+        <div class="scrim-hero-center absolute inset-0 -z-10"></div>
 
-        <div class="container-page flex flex-1 flex-col items-center justify-center pt-28 text-center">
+        <div class="hero-copy container-page flex flex-1 flex-col items-center justify-center pt-28 text-center">
             <p class="eyebrow eyebrow-light animate-reveal justify-center">{{ $home['hero_eyebrow'] }}</p>
             <h1 class="split mt-6 font-display text-[clamp(3.5rem,2rem+8vw,10rem)] leading-[0.92] font-light tracking-[-0.03em] text-white">
                 @foreach ($headline as $i => [$word, $em])
@@ -57,7 +56,7 @@
         </div>
 
         {{-- Slide captions + progress --}}
-        <div class="container-page relative flex items-end justify-between gap-8 pb-8 lg:pb-10">
+        <div class="hero-copy container-page relative flex items-end justify-between gap-8 pb-8 lg:pb-10">
             <div class="min-w-0">
                 @foreach ($heroSlides as $k => $slide)
                     <a href="{{ $slide['url'] }}" data-hero-caption @if ($k > 0) hidden @endif class="group block text-left">
