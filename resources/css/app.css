@@ -227,3 +227,7 @@
 @keyframes birds-drift { 0% { transform: translate3d(-6%, 0, 0); } 50% { transform: translate3d(4%, -3%, 0); } 100% { transform: translate3d(14%, 0, 0); } }
 .mountain-birds { animation: birds-drift 38s ease-in-out infinite alternate; }
 @media (prefers-reduced-motion: reduce) { .mountain-birds { animation: none; } }
+
+/* Panorama place labels: only where there is room to read them. */
+.mtn-label { display: none; }
+@media (min-width: 768px) { .mtn-label { display: inline; } }
