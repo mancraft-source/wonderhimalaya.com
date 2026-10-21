@@ -64,9 +64,13 @@
                 <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" optional prefix="te" />
                 <x-site.field label="Email" name="email" type="email" wire:model="email" autocomplete="email" required prefix="te" />
                 <x-site.field label="Phone / WhatsApp" name="phone" type="tel" wire:model="phone" autocomplete="tel" optional prefix="te" />
-                <x-site.field label="Country" name="country" type="select" wire:model="country" class="sm:col-span-2" prefix="te">
+                <x-site.field label="Country" name="country" type="select" wire:model="country" prefix="te">
                     <option value="">Select…</option>
                     @foreach (\App\Support\Countries::all() as $c)<option>{{ $c }}</option>@endforeach
+                </x-site.field>
+                <x-site.field label="How did you find us?" name="heard_about" type="select" wire:model="heard_about" optional prefix="te">
+                    <option value="">Select…</option>
+                    @foreach (\App\Livewire\TripEnquiry::HEARD_ABOUT as $option)<option>{{ $option }}</option>@endforeach
                 </x-site.field>
                 <x-site.field label="Anything we should know?" name="message" type="textarea" wire:model="message" class="sm:col-span-2" optional prefix="te"
                     placeholder="Fitness, dietary needs, extra days in Kathmandu, a celebration…" />

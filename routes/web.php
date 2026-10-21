@@ -18,6 +18,7 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/trips', [TripController::class, 'index'])->name('trips.index');
 Route::get('/trip/{slug}', [TripController::class, 'show'])->name('trips.show');
+Route::get('/trip/{slug}/itinerary.pdf', [TripController::class, 'pdf'])->name('trips.pdf')->middleware('throttle:20,1');
 Route::get('/destination/{slug}', [DestinationController::class, 'show'])->name('destinations.show')->where('slug', '[a-z0-9-]+(/[a-z0-9-]+)?');
 Route::get('/activities/{slug}', [ActivityController::class, 'show'])->name('activities.show');
 Route::get('/fixed-departures', [DepartureController::class, 'index'])->name('departures');

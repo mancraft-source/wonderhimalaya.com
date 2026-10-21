@@ -14,6 +14,14 @@ class TripDay extends Model
         return ['meals' => 'array', 'distance_km' => 'decimal:1'];
     }
 
+    /** Walking time without a leading distance (imported values often read "8 Km, 3-4 hrs trek"). */
+    public function durationLabel(): ?string
+    {
+        $label = trim((string) preg_replace('/^\s*[\d.]+\s*km\b[,;\s]*/i', '', (string) $this->duration));
+
+        return $label !== '' ? $label : null;
+    }
+
     public function trip(): BelongsTo
     {
         return $this->belongsTo(Trip::class);

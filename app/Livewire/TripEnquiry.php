@@ -44,6 +44,10 @@ class TripEnquiry extends Component
 
     public string $message = '';
 
+    public string $heard_about = '';
+
+    public const HEARD_ABOUT = ['Google search', 'Tripadvisor', 'Instagram', 'Facebook', 'TikTok', 'YouTube', 'Friend or family', 'Returning traveller', 'Travel blog / article', 'Other'];
+
     public bool $privacy_accepted = false;
 
     public bool $marketing_consent = false;
@@ -104,6 +108,10 @@ class TripEnquiry extends Component
             $this->addError('trip_departure_id', 'Please choose a departure date.');
 
             return;
+        }
+
+        if ($this->heard_about !== '' && in_array($this->heard_about, self::HEARD_ABOUT, true)) {
+            $data['message'] = trim(($data['message'] ?? '')."\n\nFound us via: ".$this->heard_about);
         }
 
         $lead = $this->sendEnquiry($data + [

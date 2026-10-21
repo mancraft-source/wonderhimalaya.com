@@ -5,10 +5,16 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Site\Concerns\FindsPublished;
 use App\Models\Setting;
+use App\Models\Testimonial;
 use App\Models\Trip;
+use App\Support\PackingList;
 use App\Support\Seo;
+use App\Support\TripInclusions;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 
 class TripController extends Controller
 {
@@ -23,10 +29,7 @@ class TripController extends Controller
 
     public function show(string $slug): View
     {
-        $trip = $this->scopeVisible(Trip::query())
-            ->where('slug', $slug)
-            ->with(['destination.parent', 'destinations', 'activities', 'difficulty', 'tiers', 'days', 'faqs', 'prices.tier', 'upcomingDepartures.tier', 'media', 'testimonials' => fn ($q) => $q->where('is_published', true)])
-            ->firstOrFail();
+        $trip = $this->findTrip($slug);
 
         $related = $trip->related()->published()->with(['destination', 'difficulty', 'media'])->limit(3)->get();
         if ($related->count() < 3 && $trip->destination_id) {
@@ -53,9 +56,43 @@ class TripController extends Controller
             'trip' => $trip,
             'related' => $related,
             'seo' => $seo,
-            'altitudes' => $trip->days->filter(fn ($d) => $d->altitude_m)->map(fn ($d) => ['day' => $d->day_number, 'alt' => $d->altitude_m, 'title' => $d->title])->values(),
+            'altitudes' => $this->altitudes($trip),
             'booking' => Setting::get('booking', []),
+            'reviews' => Setting::get('reviews', []),
+            'includes' => TripInclusions::group($trip->includes),
+            'excludes' => TripInclusions::group($trip->excludes),
+            'packing' => PackingList::appliesTo($trip) ? PackingList::default() : [],
+            'testimonials' => $trip->testimonials->isNotEmpty()
+                ? $trip->testimonials
+                : Testimonial::where('is_published', true)->orderByDesc('is_featured')->latest('reviewed_at')->limit(4)->get(),
         ]);
+    }
+
+    /** Printable itinerary (the "brochure" travellers can download or forward). */
+    public function pdf(string $slug): Response
+    {
+        $trip = $this->findTrip($slug);
+
+        return Pdf::loadView('site.trips.pdf', [
+            'trip' => $trip,
+            'includes' => TripInclusions::clean($trip->includes),
+            'excludes' => TripInclusions::clean($trip->excludes),
+            'company' => Setting::get('company', []),
+        ])->setPaper('a4')->download($trip->slug.'-itinerary.pdf');
+    }
+
+    private function findTrip(string $slug): Trip
+    {
+        return $this->scopeVisible(Trip::query())
+            ->where('slug', $slug)
+            ->with(['destination.parent', 'destinations', 'activities', 'difficulty', 'tiers', 'days', 'faqs', 'prices.tier', 'upcomingDepartures.tier', 'media', 'testimonials' => fn ($q) => $q->where('is_published', true)])
+            ->firstOrFail();
+    }
+
+    /** @return Collection<int, array{day: int, alt: int, title: string}> */
+    private function altitudes(Trip $trip): Collection
+    {
+        return $trip->days->filter(fn ($d) => $d->altitude_m)->map(fn ($d) => ['day' => $d->day_number, 'alt' => $d->altitude_m, 'title' => $d->title])->values();
     }
 
     /** @return array<string, mixed> */

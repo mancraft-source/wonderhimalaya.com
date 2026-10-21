@@ -13,7 +13,7 @@ final class AltitudeProfile
 
     /**
      * @param  Collection<int, array{day: int, alt: int, title: string}>  $points
-     * @return array{line: string, area: string, dots: array<int, array{x: float, y: float, day: int, alt: int, title: string}>, ticks: array<int, array{y: float, label: string}>, max: int}|null
+     * @return array{line: string, area: string, dots: array<int, array{x: float, y: float, day: int, alt: int, title: string}>, ticks: array<int, array{y: float, label: string, label_ft: string}>, max: int}|null
      */
     public static function make(Collection $points): ?array
     {
@@ -50,7 +50,7 @@ final class AltitudeProfile
         $area = $d.' L'.$dots[$n - 1]['x'].','.self::H.' L'.$dots[0]['x'].','.self::H.' Z';
 
         $ticks = collect(range($min, $max, max(500, (int) (ceil(($max - $min) / 4 / 500) * 500))))
-            ->map(fn ($v) => ['y' => round($pad + (1 - ($v - $min) / max(1, $max - $min)) * (self::H - 2 * $pad), 1), 'label' => number_format($v).' m'])
+            ->map(fn ($v) => ['y' => round($pad + (1 - ($v - $min) / max(1, $max - $min)) * (self::H - 2 * $pad), 1), 'label' => number_format($v).' m', 'label_ft' => number_format($v * 3.28084).' ft'])
             ->all();
 
         return ['line' => $d, 'area' => $area, 'dots' => $dots->all(), 'ticks' => $ticks, 'max' => (int) $points->max('alt')];
