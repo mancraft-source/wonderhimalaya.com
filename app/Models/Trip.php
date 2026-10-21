@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 use Spatie\MediaLibrary\HasMedia;
@@ -33,6 +34,7 @@ class Trip extends Model implements HasMedia
             'excludes' => 'array',
             'facts' => 'array',
             'videos' => 'array',
+            'packing' => 'array',
             'price_from' => 'decimal:2',
             'sale_price' => 'decimal:2',
             'is_fixed_departure' => 'boolean',
@@ -135,6 +137,81 @@ class Trip extends Model implements HasMedia
         $price = $this->sale_price ?? $this->price_from;
 
         return $price !== null ? (float) $price : null;
+    }
+
+    /**
+     * Per-person price for a group size (and optional package/tier), from the group-pricing bands.
+     * Falls back to the advertised price when no band matches.
+     */
+    public function priceFor(int $pax, ?int $tierId = null): ?float
+    {
+        $pax = max(1, $pax);
+        $rows = $this->relationLoaded('prices') ? $this->prices : $this->prices()->get();
+
+        $candidates = $rows->filter(fn (TripPrice $p) => $tierId === null || (int) $p->tier_id === $tierId);
+        if ($candidates->isEmpty()) {
+            $candidates = $rows;
+        }
+
+        $match = $candidates
+            ->filter(fn (TripPrice $p) => $pax >= (int) $p->pax_min && ($p->pax_max === null || $pax <= (int) $p->pax_max))
+            ->sortBy(fn (TripPrice $p) => $p->effectivePrice())
+            ->first();
+
+        return $match?->effectivePrice() ?? $this->displayPrice();
+    }
+
+    /**
+     * Group pricing grouped by package: [{key, name, tier_id, bands: [{min, max, label, price, was}]}].
+     *
+     * @return Collection<int, array<string, mixed>>
+     */
+    public function pricingMatrix(): Collection
+    {
+        $rows = $this->relationLoaded('prices') ? $this->prices : $this->prices()->with('tier')->get();
+
+        return $rows
+            ->groupBy(fn (TripPrice $p) => $p->tier_id ? 'tier-'.$p->tier_id : 'label-'.str($p->label ?: 'Package')->slug())
+            ->map(function ($bands, string $key) {
+                $first = $bands->first();
+
+                return [
+                    'key' => $key,
+                    'name' => $first->tier?->name ?? ($first->label ?: 'Package'),
+                    'tier_id' => $first->tier_id,
+                    'bands' => self::bandRows($bands->sortBy('pax_min')->values()),
+                    'from' => $bands->min(fn (TripPrice $p) => $p->effectivePrice()),
+                ];
+            })
+            ->sortBy('from')
+            ->values();
+    }
+
+    /**
+     * Display rows for one package's bands. An open-ended band followed by larger bands is
+     * capped visually at the next band's minimum (e.g. "1+" before "2–5" reads "1 pax").
+     *
+     * @param  Collection<int, TripPrice>  $bands
+     * @return array<int, array{min: int, max: ?int, label: string, price: float, was: ?float}>
+     */
+    private static function bandRows(Collection $bands): array
+    {
+        return $bands->map(function (TripPrice $p, int $i) use ($bands) {
+            $min = (int) $p->pax_min;
+            $max = $p->pax_max !== null ? (int) $p->pax_max : null;
+            $next = $bands->get($i + 1);
+            if ($max === null && $next && (int) $next->pax_min > $min) {
+                $max = (int) $next->pax_min - 1;
+            }
+
+            return [
+                'min' => $min,
+                'max' => $max,
+                'label' => $max === null ? ($min > 1 ? $min.'+ people' : 'Per person') : ($min === $max ? $min.' '.str('person')->plural($min) : $min.'–'.$max.' people'),
+                'price' => $p->effectivePrice(),
+                'was' => $p->sale_price !== null && (float) $p->sale_price < (float) $p->price ? (float) $p->price : null,
+            ];
+        })->all();
     }
 
     public function durationLabel(): ?string

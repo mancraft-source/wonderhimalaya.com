@@ -24,7 +24,7 @@ class Page extends Model implements HasMedia
 
     protected function casts(): array
     {
-        return ['blocks' => 'array', 'show_in_footer' => 'boolean'];
+        return ['blocks' => 'array', 'content' => 'array', 'show_in_footer' => 'boolean'];
     }
 
     protected static function booted(): void

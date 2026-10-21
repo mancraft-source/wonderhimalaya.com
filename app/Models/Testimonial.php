@@ -9,9 +9,11 @@ class Testimonial extends Model
 {
     protected $guarded = ['id'];
 
+    protected $hidden = ['author_email'];
+
     protected function casts(): array
     {
-        return ['reviewed_at' => 'date', 'is_featured' => 'boolean', 'is_published' => 'boolean'];
+        return ['reviewed_at' => 'date', 'travelled_on' => 'date', 'is_featured' => 'boolean', 'is_published' => 'boolean'];
     }
 
     public function trip(): BelongsTo

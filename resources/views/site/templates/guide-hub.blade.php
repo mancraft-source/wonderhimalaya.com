@@ -2,17 +2,18 @@
 @php
     $up = fn (string $p) => asset('storage/wp-content/uploads/'.$p);
     $icons = ['nepal-visa' => 'identification', 'equipment-checklist' => 'briefcase', 'nepal-at-glance' => 'globe-asia-australia', 'flight-delayed-or-cancellation' => 'paper-airplane', 'best-trekking-seasons' => 'sun', 'trip-grade' => 'chart-bar', 'travel-insurance' => 'shield-check', 'insurance' => 'shield-check', 'recommended-medical-kit' => 'heart', 'recommended-flights' => 'globe-alt'];
+    $c = \App\Support\Content::page($page);
     $guides = \App\Models\TeamMember::where('is_published', true)->where('is_guide', true)->with('media')->orderBy('sort')->limit(6)->get();
 @endphp
 <x-layouts.site :seo="$seo" transparent>
     <section class="relative isolate flex h-[64svh] min-h-[32rem] max-h-[44rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
-        <div class="absolute inset-0 -z-10" data-parallax><img src="{{ \App\Support\BrandImage::url('langtang-lerung-rest-point-scaled.jpeg', $up('2026/03/IMG_0743-scaled.jpeg')) }}" alt="" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high"></div>
+        <div class="absolute inset-0 -z-10" data-parallax><img src="{{ \App\Support\Content::image($c['hero_image'], \App\Support\BrandImage::url('langtang-lerung-rest-point-scaled.jpeg', $up('2026/03/IMG_0743-scaled.jpeg'))) }}" alt="" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high"></div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
         <div class="container-page pt-36 pb-16 lg:pb-20">
             <x-site.breadcrumbs :items="[['label' => 'Travel guide']]" light />
-            <p class="eyebrow eyebrow-light mt-8">Travel guide</p>
-            <h1 class="mt-5 max-w-4xl font-display text-display-lg text-white">Adventure awaits those who dare to take <em class="text-saffron-300">the first step.</em></h1>
-            <p class="mt-6 max-w-2xl text-lg text-white/85">Everything you need to prepare — visas, kit, seasons, insurance and how hard each trek really is.</p>
+            <p class="eyebrow eyebrow-light mt-8">{{ $c['hero_eyebrow'] }}</p>
+            <h1 class="mt-5 max-w-4xl font-display text-display-lg text-white">{{ $c['hero_title'] }} <em class="text-saffron-300">{{ $c['hero_title_em'] }}</em></h1>
+            <p class="mt-6 max-w-2xl text-lg text-white/85">{{ $c['hero_subtitle'] }}</p>
         </div>
     </section>
 
@@ -35,7 +36,7 @@
         <section class="bg-stone-200/50 py-24">
             <div class="container-page">
                 <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                    <x-site.section-heading eyebrow="Your safety, our priority" title="Meet our guides" intro="Licensed, experienced and first-aid trained — many grew up in the mountain villages you'll walk through." />
+                    <x-site.section-heading :eyebrow="$c['guides_eyebrow']" :title="e($c['guides_title'])" :intro="$c['guides_intro']" />
                     <a href="{{ route('team.index') }}" class="link-arrow shrink-0">All guides <x-heroicon-m-arrow-right class="size-4" /></a>
                 </div>
                 <div class="mt-12 grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">

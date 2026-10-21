@@ -10,6 +10,7 @@ use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\Trip;
 use App\Models\TripDeparture;
+use App\Support\Content;
 use App\Support\Seo;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -46,9 +47,11 @@ class HomeController extends Controller
 
     public function __invoke(): View
     {
+        $home = Content::home();
         $trips = Trip::published()->with(['destination', 'difficulty', 'media'])->orderBy('sort')->latest('published_at')->get();
 
-        $signature = $trips->where('is_featured', true)
+        $picked = collect($home['signature_trip_ids'])->map(fn ($id) => $trips->firstWhere('id', (int) $id))->filter();
+        $signature = $picked->isNotEmpty() ? $picked->values() : $trips->where('is_featured', true)
             ->merge($trips->where('is_popular', true))
             ->merge($trips->where('is_fixed_departure', true))
             ->unique('id')
@@ -81,10 +84,13 @@ class HomeController extends Controller
                 'Wonder Himalaya — Treks, Tours & Expeditions in Nepal, Tibet & Bhutan',
                 'Locally owned Kathmandu operator crafting guided treks, peak climbs and cultural journeys across Nepal, Tibet and Bhutan. Everest, Annapurna, Manaslu, Langtang and beyond.',
             ),
-            'heroSlides' => $this->heroSlides($trips),
-            'moods' => $this->moods(),
+            'home' => $home,
+            'heroSlides' => $this->heroSlides($trips, $home['hero_slides']),
+            'moods' => $this->moods($home['moods']),
+            'collage' => $this->collage($trips, $home['collage_trip_ids'], $signature),
             'signature' => $signature,
-            'featureTrip' => $trips->firstWhere('is_trip_of_month', true) ?? $trips->firstWhere('is_top_selling', true),
+            'featureTrip' => ($home['feature_trip_id'] ? $trips->firstWhere('id', (int) $home['feature_trip_id']) : null)
+                ?? $trips->firstWhere('is_trip_of_month', true) ?? $trips->firstWhere('is_top_selling', true),
             'isTripOfMonth' => $trips->contains('is_trip_of_month', true),
             'departures' => $departures,
             'fixedTrips' => $trips->where('is_fixed_departure', true)->filter(fn (Trip $t) => $t->hasMedia('hero'))->take(3)->values(),
@@ -104,14 +110,34 @@ class HomeController extends Controller
      * @param  Collection<int, Trip>  $trips
      * @return array<int, array{media: Media, eyebrow: string, title: string, url: string}>
      */
-    private function heroSlides(Collection $trips): array
+    private function heroSlides(Collection $trips, array $custom = []): array
     {
         $slides = [];
+
+        foreach ($custom as $row) {
+            $trip = $trips->firstWhere('id', (int) ($row['trip_id'] ?? 0));
+            $image = Content::image($row['image'] ?? null);
+            $media = $trip?->getFirstMedia('hero');
+            if (! $trip || (! $image && ! $media)) {
+                continue;
+            }
+            $slides[] = [
+                'media' => $image ? null : $media,
+                'src' => $image,
+                'eyebrow' => $row['eyebrow'] ?? ($trip->destination?->name ?? ''),
+                'title' => $row['title'] ?? $trip->title,
+                'url' => url($trip->publicPath()),
+            ];
+        }
+
+        if ($slides !== []) {
+            return $slides;
+        }
 
         foreach (self::HERO_SLIDES as $slug => $caption) {
             $trip = $trips->firstWhere('slug', $slug);
             if ($media = $trip?->getFirstMedia('hero')) {
-                $slides[] = $caption + ['media' => $media, 'url' => url($trip->publicPath())];
+                $slides[] = $caption + ['media' => $media, 'src' => null, 'url' => url($trip->publicPath())];
             }
         }
 
@@ -119,6 +145,7 @@ class HomeController extends Controller
             $slides = $trips->filter(fn (Trip $t) => $t->hasMedia('hero'))->take(3)
                 ->map(fn (Trip $t) => [
                     'media' => $t->getFirstMedia('hero'),
+                    'src' => null,
                     'eyebrow' => $t->destination?->name ?? 'Nepal',
                     'title' => $t->title,
                     'url' => url($t->publicPath()),
@@ -126,6 +153,19 @@ class HomeController extends Controller
         }
 
         return $slides;
+    }
+
+    /**
+     * @param  Collection<int, Trip>  $trips
+     * @param  array<int, int|string>  $ids
+     * @param  Collection<int, Trip>  $fallback
+     * @return Collection<int, Trip>
+     */
+    private function collage(Collection $trips, array $ids, Collection $fallback): Collection
+    {
+        $picked = collect($ids)->map(fn ($id) => $trips->firstWhere('id', (int) $id))->filter(fn (?Trip $t) => $t?->hasMedia('hero'));
+
+        return ($picked->isNotEmpty() ? $picked : $fallback)->take(3)->values();
     }
 
     /** @param  Collection<int, Trip>  $trips */
@@ -143,28 +183,40 @@ class HomeController extends Controller
      *
      * @return array<int, array{title: string, line: string, url: string, count: int, media: ?Media}>
      */
-    private function moods(): array
+    private function moods(array $custom = []): array
     {
-        $activities = Activity::whereIn('slug', array_keys(self::MOODS))
+        $rows = collect($custom)->filter(fn ($r) => ! empty($r['activity_id']));
+        $activities = Activity::query()
+            ->when($rows->isNotEmpty(), fn ($q) => $q->whereIn('id', $rows->pluck('activity_id')), fn ($q) => $q->whereIn('slug', array_keys(self::MOODS)))
             ->with(['trips' => fn ($q) => $q->published()->with('media')])
-            ->get()
-            ->keyBy('slug');
+            ->get();
+
+        $config = $rows->isNotEmpty()
+            ? $rows->mapWithKeys(fn ($r) => [$activities->firstWhere('id', (int) $r['activity_id'])?->slug ?? 'missing-'.$r['activity_id'] => [
+                'title' => $r['title'] ?? '', 'line' => $r['line'] ?? '', 'image' => $r['image'] ?? null,
+            ]])->all()
+            : self::MOODS;
+        $activities = $activities->keyBy('slug');
 
         $panels = [];
 
-        foreach (self::MOODS as $slug => $copy) {
+        foreach ($config as $slug => $copy) {
             $activity = $activities->get($slug);
             if (! $activity || $activity->trips->isEmpty()) {
                 continue;
             }
 
-            $media = $this->largestHero($activity->trips);
+            $src = Content::image($copy['image'] ?? null);
+            $media = $src ? null : $this->largestHero($activity->trips);
 
-            if (! $media) {
+            if (! $media && ! $src) {
                 continue;
             }
 
-            $panels[] = $copy + [
+            $panels[] = [
+                'title' => ($copy['title'] ?? '') ?: $activity->name,
+                'line' => $copy['line'] ?? '',
+                'src' => $src,
                 'url' => url($activity->publicPath()),
                 'count' => $activity->trips->count(),
                 'media' => $media,

@@ -1,33 +1,26 @@
 {{-- Why Wonder Himalaya — designed template. Reasons from the client's existing page. --}}
 @php
     $up = fn (string $p) => asset('storage/wp-content/uploads/'.$p);
-    $reasons = [
-        ['clock', '24/7 service', 'Our Thamel office is open around the clock — drop in or call any time for questions, help on the trail or last-minute planning.'],
-        ['shield-check', 'Reputable & trustworthy', 'Hundreds of travellers have trusted us with their Himalayan journeys — and many come back. We treat every guest as family.'],
-        ['adjustments-horizontal', 'Tailored itineraries', 'Every itinerary can be reshaped around you: pace, lodges, extra acclimatisation days, a helicopter return. Flexibility is our default.'],
-        ['heart', 'Social contributions', 'A share of every booking goes to charitable work in Nepal. When you travel with us, you give back too.'],
-        ['light-bulb', 'Young, fresh thinking', 'A young founding team with fresh ideas — balancing business with responsibility to society and to sustainable tourism.'],
-        ['sparkles', 'Unique packages', 'From helicopter tours to Everest and Annapurna base camps to cultural tours and peak climbing — something for every traveller.'],
-        ['bolt', 'Last-minute booking', 'Plans changed? We accept bookings up to two days before departure — and will still make it wonderful.'],
-    ];
+    $c = \App\Support\Content::page($page);
+    $reasons = collect($c['reasons'])->map(fn ($r) => [$r['icon'] ?? 'check-badge', $r['title'] ?? '', $r['text'] ?? ''])->all();
     $testimonials = \App\Models\Testimonial::where('is_published', true)->orderByDesc('is_featured')->limit(3)->get();
 @endphp
 <x-layouts.site :seo="$seo" transparent>
     <section class="relative isolate flex h-[72svh] min-h-[34rem] max-h-[48rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
-        <div class="absolute inset-0 -z-10" data-parallax><img src="{{ \App\Support\BrandImage::url('gokyo-ri.png', $up('2026/03/IMG_0752-scaled.jpeg')) }}" alt="" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high"></div>
+        <div class="absolute inset-0 -z-10" data-parallax><img src="{{ \App\Support\Content::image($c['hero_image'], \App\Support\BrandImage::url('gokyo-ri.png', $up('2026/03/IMG_0752-scaled.jpeg'))) }}" alt="" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high"></div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
         <div class="container-page pt-36 pb-16 lg:pb-24">
             <x-site.breadcrumbs :items="[['label' => 'About', 'url' => url('/about-us')], ['label' => 'Why Wonder Himalaya']]" light />
-            <p class="eyebrow eyebrow-light mt-8">Why Wonder Himalaya</p>
-            <h1 class="mt-5 max-w-4xl font-display text-display-lg text-white">There's an agency on every street in Kathmandu. <em class="text-saffron-300">Here's why travellers choose us.</em></h1>
+            <p class="eyebrow eyebrow-light mt-8">{{ $c['hero_eyebrow'] }}</p>
+            <h1 class="mt-5 max-w-4xl font-display text-display-lg text-white">{{ $c['hero_title'] }} <em class="text-saffron-300">{{ $c['hero_title_em'] }}</em></h1>
         </div>
     </section>
 
     <section class="container-page grid gap-12 py-24 lg:grid-cols-12 lg:py-32">
         <div class="lg:col-span-4">
             <div class="lg:sticky lg:top-36">
-                <p class="eyebrow">The simple answer</p>
-                <p class="mt-6 font-display text-display-sm leading-snug text-juniper-800">Proper hospitality — and a team that helps you through every question, before, during and after your trip.</p>
+                <p class="eyebrow">{{ $c['lead_eyebrow'] }}</p>
+                <p class="mt-6 font-display text-display-sm leading-snug text-juniper-800">{{ $c['lead_text'] }}</p>
                 <a href="{{ route('tailor-made') }}" class="btn-primary mt-10">Start planning</a>
             </div>
         </div>
@@ -46,7 +39,7 @@
     @if ($testimonials->isNotEmpty())
         <section class="bg-stone-200/50 py-24">
             <div class="container-page">
-                <x-site.section-heading eyebrow="Don't take our word for it" title="What travellers say" />
+                <x-site.section-heading :eyebrow="$c['reviews_eyebrow']" :title="e($c['reviews_title'])" />
                 <div class="mt-12 grid gap-6 md:grid-cols-3">
                     @foreach ($testimonials as $t)
                         <figure class="rounded-[1.75rem] bg-stone-50 p-8 ring-1 ring-stone-300/60" data-reveal>

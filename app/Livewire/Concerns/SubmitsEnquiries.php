@@ -5,6 +5,7 @@ namespace App\Livewire\Concerns;
 use App\Actions\Leads\SubmitEnquiry;
 use App\Http\Requests\EnquiryRules;
 use App\Models\Lead;
+use App\Support\Turnstile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
@@ -65,11 +66,11 @@ trait SubmitsEnquiries
 
     private function verifyTurnstile(): void
     {
-        if (! config('services.turnstile.secret') || ! class_exists(\App\Support\Turnstile::class)) {
+        if (! config('services.turnstile.secret') || ! class_exists(Turnstile::class)) {
             return;
         }
 
-        if (! \App\Support\Turnstile::verify($this->turnstileToken, request()->ip())) {
+        if (! Turnstile::verify($this->turnstileToken, request()->ip())) {
             throw ValidationException::withMessages(['turnstileToken' => 'Please complete the security check.']);
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Pages\Pages;
 
 use App\Filament\Resources\Pages\PageResource;
+use App\Filament\Resources\Pages\Schemas\PageForm;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
@@ -11,6 +12,14 @@ use Filament\Resources\Pages\EditRecord;
 class EditPage extends EditRecord
 {
     protected static string $resource = PageResource::class;
+
+    /** Designed templates: show the live copy (saved values over defaults) so editors edit the real text. */
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['content'] = PageForm::templateContent($data['template'] ?? null, $data['content'] ?? null);
+
+        return $data;
+    }
 
     protected function getHeaderActions(): array
     {

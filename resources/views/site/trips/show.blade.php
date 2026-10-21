@@ -21,7 +21,6 @@
         ['Guide language', $facts['Language'] ?? null, 'language'],
         ['Start / end', $start ? $start.($end && $end !== $start ? ' → '.$end : ($end ? ' (return)' : '')) : null, 'map-pin'],
     ], fn ($f) => filled($f[1])));
-    $packages = $trip->prices->sortBy(fn ($p) => $p->effectivePrice())->values();
     $crumbs = array_values(array_filter([
         ['label' => 'Journeys', 'url' => route('trips.index')],
         $trip->destination?->parent ? ['label' => $trip->destination->parent->name, 'url' => url($trip->destination->parent->publicPath())] : null,
@@ -29,10 +28,15 @@
         ['label' => $trip->title],
     ]));
     $videos = collect($trip->videos ?? [])->map(function ($v) {
-        $url = is_array($v) ? ($v['url'] ?? reset($v)) : $v;
-        preg_match('~(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|shorts/))([\w-]{11})~', (string) $url, $m);
+        $url = (string) (is_array($v) ? ($v['url'] ?? reset($v)) : $v);
+        if (preg_match('~(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|shorts/|live/))([\w-]{11})~', $url, $m)) {
+            return ['embed' => 'https://www.youtube-nocookie.com/embed/'.$m[1].'?autoplay=1&rel=0', 'thumb' => 'https://i.ytimg.com/vi/'.$m[1].'/hqdefault.jpg'];
+        }
+        if (preg_match('~vimeo\.com/(?:video/)?(\d+)~', $url, $m)) {
+            return ['embed' => 'https://player.vimeo.com/video/'.$m[1].'?autoplay=1', 'thumb' => null];
+        }
 
-        return isset($m[1]) ? $m[1] : null;
+        return null;
     })->filter()->values();
     $wa = preg_replace('/\D/', '', (string) \App\Models\Setting::get('company.whatsapp'));
     $phone = (string) \App\Models\Setting::get('company.phone');
@@ -44,8 +48,9 @@
         'includes' => ($includes || $excludes) ? 'Includes' : null,
         'map' => ($profile || $map) ? 'Map & elevation' : null,
         'packing' => $packing ? 'What to pack' : null,
+        'video' => $videos->isNotEmpty() ? 'Video' : null,
         'faqs' => $trip->faqs->isNotEmpty() ? 'FAQs' : null,
-        'reviews' => $testimonials->isNotEmpty() ? 'Reviews' : null,
+        'reviews' => 'Reviews',
         'enquire' => 'Book / enquire',
     ]);
 @endphp
@@ -215,7 +220,7 @@
                             @endforeach
                         </ol>
                     </div>
-                    <p class="mt-6 rounded-2xl border border-saffron-500/40 bg-saffron-300/20 p-4 text-sm text-ink-soft"><strong class="text-juniper-800">Note:</strong> mountain itineraries can change with weather, trail and flight conditions. Your guide always puts safety and acclimatisation first.</p>
+                    <p class="mt-6 rounded-2xl border border-saffron-500/40 bg-saffron-300/20 p-4 text-sm text-ink-soft"><strong class="text-juniper-800">Note:</strong> {{ $trip->itinerary_note ?: $tripContent['itinerary_note'] }}</p>
                 </section>
             @endif
 
@@ -274,20 +279,32 @@
 
                 <div x-show="tab === 'private'" x-cloak class="mt-8">
                     <p class="mb-5 text-ink-soft">Your own guide and porter team, on the dates you choose. Every element — lodges, pace, extra days — can be tailored.</p>
-                    @if ($packages->isNotEmpty())
-                        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                            @foreach ($packages as $i => $row)
-                                <div @class(['relative rounded-[1.75rem] p-7 ring-1', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $i === 1 || $packages->count() === 1, 'bg-stone-50 ring-stone-300/60' => ! ($i === 1 || $packages->count() === 1)])>
-                                    @if ($i === 1)<span class="absolute -top-3 left-7 rounded-full bg-saffron-500 px-3 py-1 text-xs font-bold text-ink">Most chosen</span>@endif
-                                    <p @class(['font-display text-2xl', 'text-white' => $i === 1 || $packages->count() === 1])>{{ $row->tier?->name ?? $row->label ?? 'Package' }}</p>
-                                    @if ($row->label && $row->tier && ! str_contains(strtolower($row->label), strtolower($row->tier->name)))<p class="text-sm opacity-70">{{ $row->label }}</p>@endif
-                                    <p class="mt-5"><span class="font-display text-4xl">US${{ number_format($row->effectivePrice()) }}</span> <span class="text-sm opacity-70">/ person</span></p>
-                                    @if ($row->pax_max || $row->pax_min > 1)<p class="mt-1 text-sm opacity-70">{{ $row->pax_max ? $row->pax_min.'–'.$row->pax_max : $row->pax_min.'+' }} travellers</p>@endif
-                                    <button type="button" @class(['btn mt-6 w-full !py-3', 'bg-white text-juniper-900 hover:bg-saffron-300' => $i === 1 || $packages->count() === 1, 'bg-juniper-800 text-white hover:bg-juniper-950' => ! ($i === 1 || $packages->count() === 1)]) x-on:click="$dispatch('pick-departure', { id: 0 })">Request this package</button>
+                    @if ($pricing->isNotEmpty())
+                        <div @class(['grid gap-4', 'sm:grid-cols-2' => $pricing->count() >= 2, 'xl:grid-cols-3' => $pricing->count() >= 3])>
+                            @foreach ($pricing as $i => $pkg)
+                                @php $hl = $pricing->count() === 1 || ($pricing->count() >= 3 && $i === 1); @endphp
+                                <div @class(['relative flex flex-col rounded-[1.75rem] p-7 ring-1', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $hl, 'bg-stone-50 ring-stone-300/60' => ! $hl])>
+                                    <p @class(['font-display text-2xl', 'text-white' => $hl])>{{ $pkg['name'] }}</p>
+                                    <p class="mt-4 text-sm opacity-70">from</p>
+                                    <p><span class="font-display text-4xl">US${{ number_format($pkg['from']) }}</span> <span class="text-sm opacity-70">/ person</span></p>
+                                    @if (count($pkg['bands']) > 1)
+                                        <table class="mt-5 w-full text-sm">
+                                            <thead><tr @class(['text-left text-[0.65rem] uppercase tracking-[0.14em]', 'text-stone-400' => $hl, 'text-stone-500' => ! $hl])><th class="pb-2 font-semibold">No. of people</th><th class="pb-2 text-right font-semibold">Per person</th></tr></thead>
+                                            <tbody>
+                                                @foreach ($pkg['bands'] as $band)
+                                                    <tr @class(['border-t', 'border-white/10' => $hl, 'border-stone-300/60' => ! $hl])>
+                                                        <td class="py-2">{{ $band['label'] }}</td>
+                                                        <td class="py-2 text-right">@if ($band['was'])<s class="mr-1 text-xs opacity-60">US${{ number_format($band['was']) }}</s>@endif<span class="font-semibold">US${{ number_format($band['price']) }}</span></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                    <button type="button" @class(['btn mt-auto w-full !py-3 [margin-top:max(1.5rem,auto)]', 'bg-white text-juniper-900 hover:bg-saffron-300' => $hl, 'bg-juniper-800 text-white hover:bg-juniper-950' => ! $hl]) x-on:click="$dispatch('prefill-enquiry', { adults: 2, tier: @js($pkg['tier_id']) })">Request this package</button>
                                 </div>
                             @endforeach
                         </div>
-                        <p class="mt-4 text-sm text-stone-500">Group discounts apply for 4+ travellers — ask us for a group quote.</p>
+                        <p class="mt-4 flex items-center gap-2 text-sm text-stone-500"><x-heroicon-o-user-group class="size-4" /> {{ $tripContent['group_discount_note'] }}</p>
                     @else
                         <div class="rounded-[1.75rem] bg-stone-200/50 p-8">
                             <p class="font-display text-2xl text-juniper-800">{{ $price ? 'From US$'.number_format($price).' per person' : 'Priced to your group' }}</p>
@@ -412,24 +429,6 @@
                 </section>
             @endif
 
-            {{-- ============================== VIDEO ============================== --}}
-            @if ($videos->isNotEmpty())
-                <section>
-                    <p class="eyebrow">Trip video</p>
-                    <div class="mt-8 grid gap-4 @if ($videos->count() > 1) sm:grid-cols-2 @endif">
-                        @foreach ($videos as $id)
-                            <div class="relative aspect-video overflow-hidden rounded-[1.75rem] bg-juniper-950" x-data="{ play: false }">
-                                <template x-if="play"><iframe class="absolute inset-0 h-full w-full" src="https://www.youtube-nocookie.com/embed/{{ $id }}?autoplay=1&rel=0" title="{{ $trip->title }} video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></template>
-                                <button type="button" x-show="!play" x-on:click="play = true" class="group absolute inset-0" aria-label="Play video">
-                                    <img src="https://i.ytimg.com/vi/{{ $id }}/hqdefault.jpg" alt="" loading="lazy" class="h-full w-full object-cover opacity-80 transition group-hover:opacity-100">
-                                    <span class="absolute inset-0 m-auto flex size-20 items-center justify-center rounded-full bg-terracotta-500 text-white shadow-2xl transition group-hover:scale-110"><x-heroicon-s-play class="ml-1 size-8" /></span>
-                                </button>
-                            </div>
-                        @endforeach
-                    </div>
-                </section>
-            @endif
-
             {{-- ============================== WHAT TO PACK ============================== --}}
             @if ($packing)
                 <section id="packing" data-section class="scroll-mt-44" x-data="{ open: 0 }">
@@ -441,7 +440,7 @@
                         <a href="{{ url('/travel-guide/equipment-checklist') }}" class="link-arrow">Full equipment guide <x-heroicon-m-arrow-right class="size-4" /></a>
                     </div>
                     <div class="mt-8 grid items-start gap-3 md:grid-cols-2">
-                        @foreach ($packing as $group => $items)
+                        @foreach ($packing as ['group' => $group, 'items' => $items])
                             <div class="rounded-[1.5rem] bg-stone-50 ring-1 ring-stone-300/60">
                                 <button type="button" class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" x-on:click="open = open === {{ $loop->index }} ? -1 : {{ $loop->index }}" x-bind:aria-expanded="open === {{ $loop->index }}">
                                     <span class="font-display text-xl text-juniper-800">{{ $group }}</span>
@@ -455,7 +454,26 @@
                             </div>
                         @endforeach
                     </div>
-                    <p class="mt-4 text-sm text-stone-500">Sleeping bags and down jackets can be borrowed from us in Kathmandu. Luggage you don't need on the trek can be stored at your hotel.</p>
+                    @if ($tripContent['packing_note'])<p class="mt-4 text-sm text-stone-500">{{ $tripContent['packing_note'] }}</p>@endif
+                </section>
+            @endif
+
+            {{-- ============================== VIDEO ============================== --}}
+            @if ($videos->isNotEmpty())
+                <section id="video" data-section class="scroll-mt-44">
+                    <p class="eyebrow">Trip video</p>
+                    <h2 class="mt-4 font-display text-display-sm">See the trail</h2>
+                    <div class="mt-8 grid gap-4 @if ($videos->count() > 1) sm:grid-cols-2 @endif">
+                        @foreach ($videos as $video)
+                            <div class="relative aspect-video overflow-hidden rounded-[1.75rem] bg-juniper-950" x-data="{ play: false }">
+                                <template x-if="play"><iframe class="absolute inset-0 h-full w-full" src="{{ $video['embed'] }}" title="{{ $trip->title }} video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></template>
+                                <button type="button" x-show="!play" x-on:click="play = true" class="group absolute inset-0" aria-label="Play video">
+                                    @if ($video['thumb'])<img src="{{ $video['thumb'] }}" alt="" loading="lazy" class="h-full w-full object-cover opacity-80 transition group-hover:opacity-100">@else<x-site.picture :model="$trip" collection="hero" class="h-full w-full opacity-60" />@endif
+                                    <span class="absolute inset-0 m-auto flex size-20 items-center justify-center rounded-full bg-terracotta-500 text-white shadow-2xl transition group-hover:scale-110"><x-heroicon-s-play class="ml-1 size-8" /></span>
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
                 </section>
             @endif
 
@@ -485,45 +503,56 @@
             @endif
 
             {{-- ============================== REVIEWS ============================== --}}
-            @if ($testimonials->isNotEmpty())
-                <section id="reviews" data-section class="scroll-mt-44">
-                    <div class="flex flex-wrap items-end justify-between gap-4">
-                        <div>
-                            <p class="eyebrow">Traveller reviews</p>
-                            <h2 class="mt-4 font-display text-display-sm">{{ $trip->testimonials->isNotEmpty() ? 'What travellers say about this trip' : 'What our travellers say' }}</h2>
-                        </div>
-                        <a href="{{ route('reviews') }}" class="flex items-center gap-3 rounded-full bg-stone-50 py-2 pr-5 pl-2 text-sm ring-1 ring-stone-300/60 hover:ring-juniper-500">
-                            <span class="flex size-9 items-center justify-center rounded-full bg-white shadow-sm"><x-heroicon-s-star class="size-5 text-saffron-500" /></span>
-                            <span><span class="font-semibold text-juniper-800">{{ $reviews['google_label'] ?? 'Excellent' }}</span> · {{ $reviews['google_count'] ?? 78 }} reviews</span>
+            <section id="reviews" data-section class="scroll-mt-44">
+                @php $avg = $tripReviews->isNotEmpty() ? round($tripReviews->avg('rating'), 1) : null; @endphp
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p class="eyebrow">Traveller reviews</p>
+                        <h2 class="mt-4 font-display text-display-sm">{{ $tripReviews->isNotEmpty() ? 'Reviews of this trip' : 'What our travellers say' }}</h2>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        @if ($avg)
+                            <span class="flex items-center gap-2 rounded-full bg-juniper-800 py-2 pr-5 pl-3 text-sm text-white">
+                                <span class="flex gap-0.5 text-saffron-300">@for ($i = 1; $i <= 5; $i++)<x-heroicon-s-star @class(['size-4', 'opacity-30' => $i > round($avg)]) />@endfor</span>
+                                <span class="font-semibold">{{ number_format($avg, 1) }}</span> · {{ $tripReviews->count() }} {{ str('review')->plural($tripReviews->count()) }}
+                            </span>
+                        @endif
+                        <a href="{{ route('reviews') }}" class="flex items-center gap-2 rounded-full bg-stone-50 py-2 pr-5 pl-3 text-sm ring-1 ring-stone-300/60 hover:ring-juniper-500">
+                            <x-heroicon-s-star class="size-4 text-saffron-500" /><span><span class="font-semibold text-juniper-800">{{ $reviews['google_label'] ?? 'Excellent' }}</span> · {{ $reviews['google_count'] ?? 78 }} Google reviews</span>
                         </a>
                     </div>
-                    <div class="mt-8 grid gap-5 md:grid-cols-2">
-                        @foreach ($testimonials->take(4) as $t)
-                            <figure class="flex flex-col rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex gap-0.5 text-saffron-500">@for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-4" />@endfor</div>
-                                    <span class="text-[0.65rem] uppercase tracking-[0.16em] text-stone-400">{{ $t->source }}</span>
-                                </div>
-                                <blockquote class="mt-4 line-clamp-6 text-ink-soft">“{{ $t->body }}”</blockquote>
-                                <figcaption class="mt-auto flex items-center gap-3 pt-5">
-                                    <span class="flex size-9 items-center justify-center rounded-full bg-juniper-800 font-display text-sm text-stone-100">{{ str($t->author_name)->substr(0, 1)->upper() }}</span>
-                                    <span class="text-sm font-semibold text-juniper-800">{{ $t->author_name }}<span class="block text-xs font-normal text-stone-500">{{ $t->author_country ?? $t->reviewed_at?->format('M Y') }}</span></span>
-                                </figcaption>
-                            </figure>
-                        @endforeach
-                    </div>
-                </section>
-            @endif
+                </div>
+
+                @foreach ([[$tripReviews->take(6), true], [$otherReviews, false]] as [$list, $isTrip])
+                    @if ($list->isNotEmpty())
+                        @unless ($isTrip || $tripReviews->isEmpty())<p class="mt-10 text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">More from our travellers</p>@endunless
+                        <div class="mt-6 grid gap-5 md:grid-cols-2">
+                            @foreach ($list as $t)
+                                <figure class="flex flex-col rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60" x-data="{ more: false }">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex gap-0.5 text-saffron-500" aria-label="{{ $t->rating }} out of 5">@for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-4" />@endfor</div>
+                                        <span class="text-[0.65rem] uppercase tracking-[0.16em] text-stone-400">{{ $t->source === 'website' ? 'Verified traveller' : $t->source }}</span>
+                                    </div>
+                                    @if ($t->title)<p class="mt-4 font-display text-xl text-juniper-800">{{ $t->title }}</p>@endif
+                                    <blockquote class="mt-3 text-ink-soft" x-bind:class="! more && 'line-clamp-5'">“{{ $t->body }}”</blockquote>
+                                    @if (strlen($t->body) > 280)<button type="button" class="mt-2 self-start text-xs font-semibold text-terracotta-500" x-on:click="more = ! more" x-text="more ? 'Show less' : 'Read more'"></button>@endif
+                                    <figcaption class="mt-auto flex items-center gap-3 pt-5">
+                                        <span class="flex size-9 items-center justify-center rounded-full bg-juniper-800 font-display text-sm text-stone-100">{{ str($t->author_name)->substr(0, 1)->upper() }}</span>
+                                        <span class="text-sm font-semibold text-juniper-800">{{ $t->author_name }}<span class="block text-xs font-normal text-stone-500">{{ collect([$t->author_country, $t->travelled_on ? 'Travelled '.$t->travelled_on->format('M Y') : $t->reviewed_at?->format('M Y')])->filter()->implode(' · ') }}</span></span>
+                                    </figcaption>
+                                </figure>
+                            @endforeach
+                        </div>
+                    @endif
+                @endforeach
+
+                <div class="mt-8"><livewire:trip-review-form :trip="$trip" /></div>
+            </section>
 
             {{-- ============================== WHY BOOK WITH US ============================== --}}
             <section class="overflow-hidden rounded-[2rem] bg-stone-200/60">
                 <div class="grid gap-px bg-stone-300/50 sm:grid-cols-2">
-                    @foreach ([
-                        ['shield-check', 'Book with confidence', 'Secure your place with a '.($booking['deposit_percent'] ?? 20).'% deposit; flexible changes and a risk-free booking policy.'],
-                        ['user-group', 'Local, licensed guides', 'First-aid trained guides from the mountains themselves — and porters who are fairly paid and insured.'],
-                        ['globe-asia-australia', 'Responsible travel', 'Local lodges, community-first spending and a leave-no-trace ethic on every trail.'],
-                        ['lifebuoy', '24/7 support', 'Our Thamel office is on call around the clock while you travel.'],
-                    ] as [$icon, $title, $text])
+                    @foreach (collect($tripContent['trust'])->map(fn ($t) => [$t['icon'] ?? 'check-badge', $t['title'] ?? '', $t['text'] ?? '']) as [$icon, $title, $text])
                         <div class="flex gap-4 bg-stone-100 p-7">
                             <x-dynamic-component :component="'heroicon-o-'.$icon" class="size-7 shrink-0 text-terracotta-500" />
                             <div><h3 class="font-display text-xl">{{ $title }}</h3><p class="mt-1 text-sm text-ink-soft">{{ $text }}</p></div>
@@ -571,15 +600,53 @@
                             @endif
                         </div>
 
-                        @if ($packages->count() > 1)
-                            <table class="mt-6 w-full text-sm">
-                                <thead><tr class="text-left text-[0.65rem] uppercase tracking-[0.16em] text-stone-400"><th class="pb-2 font-semibold">Package</th><th class="pb-2 text-right font-semibold">Per person</th></tr></thead>
-                                <tbody class="divide-y divide-white/10">
-                                    @foreach ($packages as $row)
-                                        <tr><td class="py-2.5 text-stone-200">{{ $row->tier?->name ?? $row->label }}@if ($row->pax_max || $row->pax_min > 1) <span class="text-stone-400">· {{ $row->pax_max ? $row->pax_min.'–'.$row->pax_max : $row->pax_min.'+' }} pax</span>@endif</td><td class="py-2.5 text-right font-display text-lg text-white">US${{ number_format($row->effectivePrice()) }}</td></tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        @if ($pricing->isNotEmpty())
+                            <div class="mt-6 rounded-2xl bg-juniper-950/40 p-5"
+                                 x-data="{
+                                    pkgs: @js($pricing->map(fn ($p) => ['key' => $p['key'], 'name' => $p['name'], 'tier' => $p['tier_id'], 'bands' => $p['bands']])->values()),
+                                    pkg: 0, pax: 2,
+                                    get bands() { return this.pkgs[this.pkg]?.bands ?? [] },
+                                    get min() { return this.bands.length ? this.bands[0].min : 1 },
+                                    get band() { return this.bands.find(b => this.pax >= b.min && (b.max === null || this.pax <= b.max)) ?? (this.pax < this.min ? this.bands[0] : this.bands[this.bands.length - 1]) },
+                                    get pp() { return this.band ? this.band.price : null },
+                                    money(v) { return 'US$' + Math.round(v).toLocaleString('en-US') },
+                                 }">
+                                <p class="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-saffron-300">Group price calculator</p>
+                                <template x-if="pkgs.length > 1">
+                                    <div class="mt-3 flex flex-wrap gap-1.5">
+                                        <template x-for="(p, i) in pkgs" :key="p.key">
+                                            <button type="button" x-on:click="pkg = i" class="rounded-full px-3 py-1.5 text-xs font-semibold ring-1 transition"
+                                                    x-bind:class="pkg === i ? 'bg-white text-juniper-900 ring-white' : 'text-stone-200 ring-white/25 hover:ring-white/60'" x-text="p.name"></button>
+                                        </template>
+                                    </div>
+                                </template>
+                                <div class="mt-4 flex items-center justify-between gap-3">
+                                    <span class="text-sm text-stone-300">Travellers</span>
+                                    <div class="flex items-center gap-1 rounded-full bg-white/10 p-1">
+                                        <button type="button" class="flex size-8 items-center justify-center rounded-full hover:bg-white/15" x-on:click="pax = Math.max(1, pax - 1)" aria-label="Fewer travellers"><x-heroicon-m-minus class="size-4" /></button>
+                                        <span class="w-8 text-center font-display text-xl text-white" x-text="pax" aria-live="polite"></span>
+                                        <button type="button" class="flex size-8 items-center justify-center rounded-full hover:bg-white/15" x-on:click="pax = Math.min(30, pax + 1)" aria-label="More travellers"><x-heroicon-m-plus class="size-4" /></button>
+                                    </div>
+                                </div>
+                                <p x-show="pax < min" x-cloak class="mt-2 text-xs text-saffron-300">Minimum <span x-text="min"></span> travellers for this package — solo? Ask us about joining a group.</p>
+                                <div class="mt-4 flex items-end justify-between border-t border-white/10 pt-4">
+                                    <div><p class="text-xs text-stone-400">Per person</p><p class="font-display text-2xl text-white" x-text="pp ? money(pp) : 'On request'"></p></div>
+                                    <div class="text-right"><p class="text-xs text-stone-400">Total</p><p class="font-display text-2xl text-saffron-300" x-text="pp ? money(pp * Math.max(pax, min)) : '—'"></p></div>
+                                </div>
+                                <template x-if="bands.length > 1">
+                                    <table class="mt-4 w-full text-xs">
+                                        <thead><tr class="text-left text-stone-400"><th class="pb-1.5 font-semibold">No. of people</th><th class="pb-1.5 text-right font-semibold">Price per person</th></tr></thead>
+                                        <tbody>
+                                            <template x-for="b in bands" :key="b.min">
+                                                <tr class="border-t border-white/10" x-bind:class="band === b && 'text-saffron-300'">
+                                                    <td class="py-1.5" x-text="b.label"></td><td class="py-1.5 text-right font-semibold" x-text="money(b.price)"></td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </template>
+                                <button type="button" class="btn mt-4 w-full bg-white !py-2.5 text-xs text-juniper-900 hover:bg-saffron-300" x-on:click="$dispatch('prefill-enquiry', { adults: pax, tier: pkgs[pkg]?.tier })">Request a quote for <span x-text="pax"></span></button>
+                            </div>
                         @endif
 
                         <div class="mt-6 grid gap-2.5">

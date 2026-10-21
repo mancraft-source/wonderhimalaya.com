@@ -166,7 +166,7 @@ class ManageSiteSettings extends Page
                                 TagsInput::make('b2b.credentials')
                                     ->label('Credentials')
                                     ->placeholder('e.g. Nepal Tourism Board licensed')
-                                    ->helperText('Badges shown on the B2B partners page. Press Enter after each one.')
+                                    ->helperText('Badges shown on the B2B partners page. Press Enter after each one. The rest of the B2B page copy is under Content → Landing pages.')
                                     ->reorderable(),
                             ]),
                         Tab::make('Notifications')

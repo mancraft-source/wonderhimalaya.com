@@ -53,7 +53,7 @@ class SubmitEnquiry
                 'adults' => $adults,
                 'children' => (int) ($data['children'] ?? 0),
                 'budget' => $data['budget'] ?? null,
-                'estimated_value' => $this->estimateValue($tripId, $departure, $adults),
+                'estimated_value' => $this->estimateValue($tripId, $departure, $adults + (int) ($data['children'] ?? 0), $data['tier_id'] ?? null),
                 'message' => $data['message'] ?? null,
                 'source' => $data['source'] ?? 'website',
                 'utm' => Arr::only($data['utm'] ?? [], ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid']) ?: null,
@@ -114,10 +114,12 @@ class SubmitEnquiry
         );
     }
 
-    private function estimateValue(?int $tripId, ?TripDeparture $departure, int $adults): ?float
+    /** Departure price when joining a group, otherwise the trip's group-pricing band for this party size. */
+    private function estimateValue(?int $tripId, ?TripDeparture $departure, int $travellers, ?int $tierId): ?float
     {
-        $price = $departure?->effectivePrice() ?? ($tripId ? Trip::find($tripId)?->displayPrice() : null);
+        $travellers = max(1, $travellers);
+        $price = $departure?->effectivePrice() ?? ($tripId ? Trip::with('prices')->find($tripId)?->priceFor($travellers, $tierId) : null);
 
-        return $price ? round($price * max(1, $adults), 2) : null;
+        return $price ? round($price * $travellers, 2) : null;
     }
 }

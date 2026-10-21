@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
 
 class TestimonialResource extends Resource
@@ -26,6 +27,23 @@ class TestimonialResource extends Resource
     protected static ?int $navigationSort = 50;
 
     protected static ?string $recordTitleAttribute = 'author_name';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $pending = Testimonial::query()->where('is_published', false)->count();
+
+        return $pending > 0 ? (string) $pending : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
+
+    public static function getNavigationBadgeTooltip(): string|Htmlable|null
+    {
+        return 'Reviews pending approval';
+    }
 
     public static function form(Schema $schema): Schema
     {

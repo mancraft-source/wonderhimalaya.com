@@ -1,10 +1,10 @@
 @php
-    $headline = [['Walk', false], ['among', false], ['giants.', true]];
-    $tickerItems = array_merge(
+    $headline = collect(preg_split('/\s+/', trim($home['hero_title'])))->filter()->map(fn ($w) => [$w, false])
+        ->merge(collect(preg_split('/\s+/', trim((string) $home['hero_title_em'])))->filter()->map(fn ($w) => [$w, true]))->values();
+    $tickerItems = $home['ticker'] ?: array_merge(
         collect($regions)->map(fn ($r) => str_replace(' Region', '', $r->name))->all(),
         $countries->where('slug', '!=', 'nepal')->where('trips_count', '>', 0)->pluck('name')->all(),
     );
-    $collage = $signature->take(3)->values();
 @endphp
 <x-layouts.site :seo="$seo" transparent>
 
@@ -13,7 +13,7 @@
         <div class="absolute inset-0 -z-10">
             @forelse ($heroSlides as $k => $slide)
                 <div @class(['hero-slide absolute inset-0', 'is-active' => $k === 0])>
-                    <x-site.picture :media="$slide['media']" :alt="$slide['title']" sizes="100vw" :eager="$k === 0" class="h-full w-full" />
+                    <x-site.picture :media="$slide['media']" :src="$slide['src'] ?? null" :alt="$slide['title']" sizes="100vw" :eager="$k === 0" class="h-full w-full" />
                 </div>
             @empty
                 <x-site.picture class="h-full w-full" alt="The Himalaya" />
@@ -23,14 +23,14 @@
         <div class="scrim-hero absolute inset-0 -z-10"></div>
 
         <div class="container-page flex flex-1 flex-col items-center justify-center pt-28 text-center">
-            <p class="eyebrow eyebrow-light animate-reveal justify-center">Nepal · Tibet · Bhutan</p>
+            <p class="eyebrow eyebrow-light animate-reveal justify-center">{{ $home['hero_eyebrow'] }}</p>
             <h1 class="split mt-6 font-display text-[clamp(3.5rem,2rem+8vw,10rem)] leading-[0.92] font-light tracking-[-0.03em] text-white">
                 @foreach ($headline as $i => [$word, $em])
                     <span class="w"><span style="--i: {{ $i }}" @class(['italic text-saffron-300' => $em])>{{ $word }}</span></span>
                 @endforeach
             </h1>
             <p class="mt-7 max-w-xl text-lg text-white/85 animate-reveal [animation-delay:600ms] sm:text-xl">
-                Treks, climbs and quiet journeys through the high Himalaya — designed and guided by a small Kathmandu team who call these mountains home.
+                {{ $home['hero_subtitle'] }}
             </p>
 
             <form action="{{ route('trips.index') }}" method="get" role="search"
@@ -119,7 +119,7 @@
                 <div class="absolute top-[58%] left-[52%] flex size-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-terracotta-500 text-white shadow-xl sm:size-36">
                     <svg viewBox="0 0 120 120" class="spin-slow absolute inset-0 h-full w-full" aria-hidden="true">
                         <defs><path id="badge-circle" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0" /></defs>
-                        <text font-size="10.5" letter-spacing="3.2" fill="currentColor" font-family="var(--font-inter)" font-weight="600"><textPath href="#badge-circle">WANDER ALWAYS · WONDER OFTEN · </textPath></text>
+                        <text font-size="10.5" letter-spacing="3.2" fill="currentColor" font-family="var(--font-inter)" font-weight="600"><textPath href="#badge-circle">{{ str($home['intro_badge'])->upper()->limit(34, '') }}</textPath></text>
                     </svg>
                     <img src="{{ asset('images/brand/logo-badge-64.webp') }}" alt="" class="size-14 rounded-full bg-white p-0.5 sm:size-16">
                 </div>
@@ -127,10 +127,10 @@
 
             {{-- Copy --}}
             <div class="lg:col-span-5 lg:col-start-8" data-stagger>
-                <p class="eyebrow">Welcome to Wonder Himalaya</p>
-                <h2 class="mt-6 font-display text-display-md">A small Thamel team, a lifetime on these trails.</h2>
-                <p class="mt-6 text-lg text-ink-soft">For years we have done one thing — taking people into the mountains and bringing them back with stories they'll tell for the rest of their lives.</p>
-                <p class="mt-4 text-ink-soft">From the teahouses of the Everest region to the monastery corridors of Lhasa, from the rhododendron forests of the Annapurna Circuit to the fortress towns of Bhutan — this part of the world is what we know, and sharing it is what we do.</p>
+                <p class="eyebrow">{{ $home['intro_eyebrow'] }}</p>
+                <h2 class="mt-6 font-display text-display-md">{{ $home['intro_title'] }}</h2>
+                <p class="mt-6 text-lg text-ink-soft">{{ $home['intro_lead'] }}</p>
+                @if ($home['intro_body'])<p class="mt-4 text-ink-soft">{{ $home['intro_body'] }}</p>@endif
                 <div class="mt-10 flex flex-wrap items-center gap-6">
                     <a href="{{ url('/about-us') }}" class="btn-dark">Our story <x-heroicon-m-arrow-right class="size-4" /></a>
                     <a href="{{ route('team.index') }}" class="link-arrow">Meet the team</a>
@@ -154,14 +154,14 @@
     @if ($moods)
         <section class="pb-24 lg:pb-36">
             <div class="container-page flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                <x-site.section-heading eyebrow="Travel by feeling" title="How do you want the mountains to <em class='text-terracotta-500'>feel</em>?" />
+                <x-site.section-heading :eyebrow="$home['moods_eyebrow']" :title="str(e($home['moods_title']))->replace('feel', '<em class=\'text-terracotta-500\'>feel</em>')" />
                 <a href="{{ route('trips.index') }}" class="link-arrow shrink-0" data-reveal>Every journey <x-heroicon-m-arrow-right class="size-4" /></a>
             </div>
             <div class="container-page mt-14">
                 <div class="panels no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:-mx-8 sm:px-8 lg:mx-0 lg:overflow-visible lg:px-0 lg:pb-0" data-reveal>
                     @foreach ($moods as $k => $mood)
                         <a href="{{ $mood['url'] }}" class="group relative flex aspect-[3/4] w-[76vw] shrink-0 snap-start flex-col justify-end overflow-hidden rounded-[2rem] bg-juniper-900 text-white sm:w-[22rem] lg:aspect-auto lg:w-auto lg:shrink">
-                            <x-site.picture :media="$mood['media']" :alt="$mood['title']" sizes="(min-width: 1024px) 40vw, 76vw" class="absolute inset-0 h-full w-full transition duration-[1.6s] ease-(--ease-mountain) group-hover:scale-105" />
+                            <x-site.picture :media="$mood['media']" :src="$mood['src'] ?? null" :alt="$mood['title']" sizes="(min-width: 1024px) 40vw, 76vw" class="absolute inset-0 h-full w-full transition duration-[1.6s] ease-(--ease-mountain) group-hover:scale-105" />
                             <div class="absolute inset-0 bg-gradient-to-t from-juniper-950/90 via-juniper-950/25 to-juniper-950/10"></div>
                             <span class="data absolute top-5 right-5 rounded-full bg-white/15 px-3 py-1 backdrop-blur-md">{{ $mood['count'] }} {{ str('trip')->plural($mood['count']) }}</span>
                             {{-- Collapsed (desktop): vertical title --}}
@@ -183,7 +183,7 @@
     @if ($signature->isNotEmpty())
         <section class="overflow-hidden bg-stone-200/50 py-24 lg:py-32" data-carousel>
             <div class="container-page flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-                <x-site.section-heading eyebrow="Signature journeys" title="The trails our travellers love most" intro="Classics we've walked hundreds of times — and still can't get enough of." />
+                <x-site.section-heading :eyebrow="$home['signature_eyebrow']" :title="e($home['signature_title'])" :intro="$home['signature_intro']" />
                 <div class="flex shrink-0 items-center gap-3" data-reveal>
                     <button type="button" data-prev class="flex size-14 items-center justify-center rounded-full border border-juniper-800/20 text-juniper-800 transition hover:bg-juniper-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-juniper-800" aria-label="Previous journeys"><x-heroicon-m-arrow-left class="size-5" /></button>
                     <button type="button" data-next class="flex size-14 items-center justify-center rounded-full border border-juniper-800/20 text-juniper-800 transition hover:bg-juniper-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-juniper-800" aria-label="Next journeys"><x-heroicon-m-arrow-right class="size-5" /></button>
@@ -261,7 +261,7 @@
         <section class="py-24 lg:py-36" x-data="{ r: 0 }">
             <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-10">
                 <div class="lg:col-span-5">
-                    <x-site.section-heading eyebrow="Choose your mountains" title="Nepal, valley by valley" intro="Sherpa villages and glaciers, rhododendron forests, Tibetan-Buddhist hidden valleys — each region has its own soul." />
+                    <x-site.section-heading :eyebrow="$home['regions_eyebrow']" :title="e($home['regions_title'])" :intro="$home['regions_intro']" />
                     <ol class="mt-12 border-t border-stone-300/70">
                         @foreach ($regions as $k => $region)
                             <li class="border-b border-stone-300/70">
@@ -329,7 +329,7 @@
             <div class="topo pointer-events-none absolute inset-0 opacity-20 invert"></div>
             <div class="container-page relative">
                 <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-                    <x-site.section-heading light eyebrow="Fixed group departures" title="Travel solo, <em class='text-saffron-300'>trek together</em>" intro="Small, guaranteed groups on set dates — shared costs and the same expert guiding as our private journeys." />
+                    <x-site.section-heading light :eyebrow="$home['departures_eyebrow']" :title="str(e($home['departures_title']))->replace(', ', ', <em class=\'text-saffron-300\'>')->append(str_contains($home['departures_title'], ', ') ? '</em>' : '')" :intro="$home['departures_intro']" />
                     <a href="{{ route('departures') }}" class="btn-ghost-light shrink-0" data-reveal>All departure dates</a>
                 </div>
 
@@ -363,7 +363,7 @@
     {{-- ============================== WHY US (bento) ============================== --}}
     <section class="py-24 lg:py-36">
         <div class="container-page">
-            <x-site.section-heading eyebrow="Why Wonder Himalaya" title="The trusted partner in the Himalaya" align="center" />
+            <x-site.section-heading :eyebrow="$home['why_eyebrow']" :title="e($home['why_title'])" align="center" />
             <div class="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-12 lg:grid-rows-2" data-stagger>
                 <div class="relative flex min-h-[24rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-juniper-900 p-8 text-white md:col-span-2 lg:col-span-6 lg:row-span-2 lg:p-12">
                     @if ($collage->count() >= 3)
@@ -373,15 +373,11 @@
                     <div class="relative">
                         <span class="inline-flex items-center gap-2 rounded-full bg-[#34E0A1] px-3 py-1.5 text-xs font-bold text-ink"><x-heroicon-s-trophy class="size-4" /> Tripadvisor</span>
                         <p class="mt-5 font-display text-4xl leading-tight lg:text-5xl">{{ $reviews['tripadvisor_award'] ?? "Travellers' Choice" }}</p>
-                        <p class="mt-3 max-w-md text-white/80">Officially recognised by travellers — a true reflection of the confidence people place in us, journey after journey.</p>
+                        <p class="mt-3 max-w-md text-white/80">{{ $home['why_award_text'] }}</p>
                     </div>
                 </div>
-                @foreach ([
-                    ['Guided by experts', 'Licensed, first-aid trained local guides who grew up on these trails.', 'user-group', 'bg-stone-200/70'],
-                    ['Sustainable travel', 'Local guides and lodges, fair treatment of porters, and leave-no-trace on every trek.', 'globe-asia-australia', 'bg-saffron-300/35'],
-                    ['Tailored to you', 'Extra acclimatisation, lodge upgrades, a heli return — every itinerary bends to you.', 'adjustments-horizontal', 'bg-glacier-100'],
-                    ['24/7 hospitality', 'From airport pick-up to the farewell dinner, our Thamel office is always on call.', 'heart', 'bg-terracotta-500 text-white'],
-                ] as [$title, $text, $icon, $tone])
+                @php $tones = ['bg-stone-200/70', 'bg-saffron-300/35', 'bg-glacier-100', 'bg-terracotta-500 text-white']; @endphp
+                @foreach (collect($home['why_tiles'])->take(4)->values()->map(fn ($t, $i) => [$t['title'] ?? '', $t['text'] ?? '', $t['icon'] ?? 'check-badge', $tones[$i % 4]]) as [$title, $text, $icon, $tone])
                     <div class="flex min-h-[15rem] flex-col rounded-[2rem] p-8 lg:col-span-3 {{ $tone }}">
                         <x-dynamic-component :component="'heroicon-o-'.$icon" class="size-9 {{ str_contains($tone, 'text-white') ? 'text-white' : 'text-terracotta-500' }}" />
                         <h3 class="mt-auto pt-10 font-display text-2xl {{ str_contains($tone, 'text-white') ? '!text-white' : '' }}">{{ $title }}</h3>
@@ -397,7 +393,7 @@
         @php $rows = $testimonials->count() >= 6 ? $testimonials->split(2) : collect([$testimonials]); @endphp
         <section class="overflow-hidden bg-stone-200/50 py-24 lg:py-32">
             <div class="container-page flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-                <x-site.section-heading eyebrow="In their words" title="‘Memorable’, ‘exciting’, <em class='text-terracotta-500'>‘unforgettable’</em>" />
+                <x-site.section-heading :eyebrow="$home['reviews_eyebrow']" :title="e($home['reviews_title'])" />
                 <a href="{{ route('reviews') }}" class="flex items-center gap-4 rounded-full bg-stone-50 py-2 pr-6 pl-2 ring-1 ring-stone-300/60 transition hover:ring-juniper-500" data-reveal>
                     <span class="flex size-11 items-center justify-center rounded-full bg-white shadow-sm">
                         <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.2-2.1 3.5-5.1 3.5-8.7z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 7.9-2.9l-3.9-3c-1.1.7-2.4 1.2-4 1.2-3.1 0-5.7-2.1-6.6-4.9H1.4v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.4 14.4a7.2 7.2 0 0 1 0-4.7V6.6h-4a12 12 0 0 0 0 10.8z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.4 6.6l4 3.1C6.3 6.9 8.9 4.8 12 4.8z"/></svg>
@@ -433,7 +429,7 @@
         <section class="py-24 lg:py-32">
             <div class="container-page">
                 <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                    <x-site.section-heading eyebrow="The Journal" title="Notes from the trail" />
+                    <x-site.section-heading :eyebrow="$home['journal_eyebrow']" :title="e($home['journal_title'])" />
                     <a href="{{ route('blog.index') }}" class="link-arrow shrink-0" data-reveal>All stories <x-heroicon-m-arrow-right class="size-4" /></a>
                 </div>
                 <div class="mt-14 grid gap-10 lg:grid-cols-12">

@@ -70,6 +70,15 @@ class TripEnquiry extends Component
         return Trip::with('tiers')->findOrFail($this->trip_id);
     }
 
+    /** Packages offered: tiers used in group pricing plus the trip's tier tags. */
+    #[Computed]
+    public function tierOptions(): Collection
+    {
+        $trip = Trip::with(['tiers', 'prices.tier'])->findOrFail($this->trip_id);
+
+        return $trip->prices->pluck('tier')->filter()->merge($trip->tiers)->unique('id')->sortBy('sort')->values();
+    }
+
     #[Computed]
     public function departures(): Collection
     {
@@ -78,6 +87,17 @@ class TripEnquiry extends Component
             ->orderBy('start_date')
             ->get()
             ->filter(fn (TripDeparture $d) => $d->isBookable());
+    }
+
+    /** From the price calculator: switch to a private trip and prefill party size / package. */
+    #[On('prefill-enquiry')]
+    public function prefill(int $adults = 2, ?int $tier = null): void
+    {
+        $this->mode = 'private';
+        $this->trip_departure_id = null;
+        $this->adults = max(1, min(40, $adults));
+        $this->tier_id = $tier && $this->tierOptions->contains('id', $tier) ? $tier : $this->tier_id;
+        $this->dispatch('scroll-to-enquiry');
     }
 
     #[On('pick-departure')]

@@ -1,6 +1,6 @@
-@php $c = \App\Models\Setting::get('company', []); $wa = preg_replace('/\D/', '', $c['whatsapp'] ?? ''); @endphp
+@php $cc = \App\Support\Content::landing('contact'); $c = \App\Models\Setting::get('company', []); $wa = preg_replace('/\D/', '', $c['whatsapp'] ?? ''); @endphp
 <x-layouts.site :seo="$seo">
-    <x-site.page-hero eyebrow="Contact" title="Namaste — <em class='text-terracotta-500'>let's talk.</em>" intro="Questions about a route, the right season, fitness or permits? Our Thamel team replies personally, usually within a few hours." :crumbs="[['label' => 'Contact']]" />
+    <x-site.page-hero :eyebrow="$cc['eyebrow']" :title="e($cc['title']).' <em class=\'text-terracotta-500\'>'.e($cc['title_em']).'</em>'" :intro="$cc['intro']" :crumbs="[['label' => 'Contact']]" />
     <section class="container-page grid gap-14 py-16 lg:grid-cols-12 lg:py-24">
         <div class="space-y-6 lg:col-span-4">
             @foreach (array_filter([
@@ -20,7 +20,7 @@
     </section>
     <section class="container-page pb-10">
         <div class="overflow-hidden rounded-[2rem] ring-1 ring-stone-300/60">
-            <iframe title="Map: Wonder Himalaya, Thamel" src="https://www.google.com/maps?q={{ rawurlencode('Thamel, Kathmandu, Nepal') }}&output=embed" class="h-[26rem] w-full grayscale-[60%]" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe title="Map: Wonder Himalaya, Thamel" src="https://www.google.com/maps?q={{ rawurlencode($cc['map_query']) }}&output=embed" class="h-[26rem] w-full grayscale-[60%]" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </section>
 </x-layouts.site>

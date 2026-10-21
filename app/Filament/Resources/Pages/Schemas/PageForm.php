@@ -3,11 +3,13 @@
 namespace App\Filament\Resources\Pages\Schemas;
 
 use App\Enums\PublishStatus;
+use App\Filament\Support\ContentEditorFields;
 use App\Filament\Support\ContentFields;
 use App\Models\Activity;
 use App\Models\Destination;
 use App\Models\Page;
 use App\Models\Trip;
+use App\Support\Content;
 use Closure;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
@@ -40,6 +42,29 @@ class PageForm
         'sustainability' => 'Sustainable tourism (designed)',
     ];
 
+    /** Templates with a designed layout whose copy lives in Page::$content (see App\Support\Content). */
+    public const DESIGNED_TEMPLATES = ['about', 'why', 'sustainability', 'guide-hub'];
+
+    public static function isDesigned(?string $template): bool
+    {
+        return in_array($template, self::DESIGNED_TEMPLATES, true);
+    }
+
+    /**
+     * Content for a designed template: saved values merged over the template defaults.
+     *
+     * @param  array<string, mixed>|null  $content
+     * @return array<string, mixed>|null
+     */
+    public static function templateContent(?string $template, ?array $content): ?array
+    {
+        if (! self::isDesigned($template)) {
+            return $content;
+        }
+
+        return Content::merge(Content::pageDefaults((string) $template), $content ?? []);
+    }
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -61,7 +86,9 @@ class PageForm
                                 ->rows(3)
                                 ->columnSpanFull(),
                         ]),
+                    ...self::templateContentSections(),
                     Section::make('Content blocks')
+                        ->hidden(fn (Get $get): bool => self::isDesigned($get('template')))
                         ->schema([self::blocks()]),
                     ContentFields::seoSection(),
                 ])->columnSpan(['lg' => 2]),
@@ -78,7 +105,21 @@ class PageForm
                             Select::make('template')
                                 ->options(self::TEMPLATES)
                                 ->default('default')
-                                ->required(),
+                                ->required()
+                                ->live()
+                                ->helperText(fn (Get $get): ?string => self::isDesigned($get('template'))
+                                    ? 'Designed template: edit its copy under "Template content". Content blocks are not used.'
+                                    : null)
+                                ->afterStateUpdated(function (?string $state, Select $component): void {
+                                    if (self::isDesigned($state)) {
+                                        // Start the editor from the template's real copy.
+                                        $component->getRootContainer()->fillPartially(
+                                            ['content' => Content::pageDefaults($state)],
+                                            ['content'],
+                                            shouldFillStateWithNull: false,
+                                        );
+                                    }
+                                }),
                             Toggle::make('show_in_footer'),
                             TextInput::make('sort')
                                 ->numeric()
@@ -95,6 +136,20 @@ class PageForm
                         ]),
                 ])->columnSpan(['lg' => 1]),
             ]);
+    }
+
+    /** @return array<int, Section> One "Template content" section per designed template. */
+    protected static function templateContentSections(): array
+    {
+        return collect(self::DESIGNED_TEMPLATES)
+            ->map(fn (string $template): Section => Section::make('Template content')
+                ->key("template-content-{$template}")
+                ->description(self::TEMPLATES[$template].' — the copy shown on this designed page. Empty fields fall back to the launch copy.')
+                ->icon(Heroicon::OutlinedPencilSquare)
+                ->columns(2)
+                ->visible(fn (Get $get): bool => $get('template') === $template)
+                ->schema(ContentEditorFields::pageTemplateFields($template)))
+            ->all();
     }
 
     /** The page's full path must be unique (slug + parent chain). */

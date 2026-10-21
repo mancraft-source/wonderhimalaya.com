@@ -46,10 +46,10 @@
                     </div>
                 @else
                     <x-site.field label="Preferred start date" name="start_date" type="date" wire:model="start_date" min="{{ now()->addDays(7)->toDateString() }}" optional prefix="te" />
-                    @if ($this->trip->tiers->count() > 1)
-                        <x-site.field label="Comfort level" name="tier_id" type="select" wire:model="tier_id" optional prefix="te">
+                    @if ($this->tierOptions->count() > 1)
+                        <x-site.field label="Package" name="tier_id" type="select" wire:model="tier_id" optional prefix="te">
                             <option value="">No preference</option>
-                            @foreach ($this->trip->tiers as $tier)<option value="{{ $tier->id }}">{{ $tier->name }}</option>@endforeach
+                            @foreach ($this->tierOptions as $tier)<option value="{{ $tier->id }}">{{ $tier->name }}</option>@endforeach
                         </x-site.field>
                     @else
                         <div></div>

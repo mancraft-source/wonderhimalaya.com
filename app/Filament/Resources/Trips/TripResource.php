@@ -6,6 +6,7 @@ use App\Filament\Resources\Trips\Pages\CreateTrip;
 use App\Filament\Resources\Trips\Pages\EditTrip;
 use App\Filament\Resources\Trips\Pages\ListTrips;
 use App\Filament\Resources\Trips\RelationManagers\DeparturesRelationManager;
+use App\Filament\Resources\Trips\RelationManagers\TestimonialsRelationManager;
 use App\Filament\Resources\Trips\Schemas\TripForm;
 use App\Filament\Resources\Trips\Tables\TripsTable;
 use App\Models\Trip;
@@ -45,6 +46,7 @@ class TripResource extends Resource
     {
         return [
             DeparturesRelationManager::class,
+            TestimonialsRelationManager::class,
         ];
     }
 

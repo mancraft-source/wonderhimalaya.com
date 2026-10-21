@@ -7,7 +7,7 @@ use App\Http\Controllers\Site\Concerns\FindsPublished;
 use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\Trip;
-use App\Support\PackingList;
+use App\Support\Content;
 use App\Support\Seo;
 use App\Support\TripInclusions;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -61,10 +61,13 @@ class TripController extends Controller
             'reviews' => Setting::get('reviews', []),
             'includes' => TripInclusions::group($trip->includes),
             'excludes' => TripInclusions::group($trip->excludes),
-            'packing' => PackingList::appliesTo($trip) ? PackingList::default() : [],
-            'testimonials' => $trip->testimonials->isNotEmpty()
-                ? $trip->testimonials
-                : Testimonial::where('is_published', true)->orderByDesc('is_featured')->latest('reviewed_at')->limit(4)->get(),
+            'packing' => Content::packingFor($trip),
+            'tripContent' => Content::tripPage(),
+            'pricing' => $trip->pricingMatrix(),
+            'tripReviews' => $trip->testimonials->sortByDesc(fn (Testimonial $t) => [$t->is_featured, $t->reviewed_at?->timestamp])->values(),
+            'otherReviews' => $trip->testimonials->count() >= 4 ? collect() : Testimonial::where('is_published', true)
+                ->where(fn ($q) => $q->whereNull('trip_id')->orWhere('trip_id', '!=', $trip->id))
+                ->orderByDesc('is_featured')->latest('reviewed_at')->limit(4 - min(4, $trip->testimonials->count()))->get(),
         ]);
     }
 

@@ -7,6 +7,7 @@ use App\Livewire\Concerns\SubmitsEnquiries;
 use App\Models\Destination;
 use App\Models\Tier;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -147,7 +148,7 @@ class TailorMadeBuilder extends Component
         foreach (range(1, 4) as $s) {
             try {
                 $this->validateStep($s);
-            } catch (\Illuminate\Validation\ValidationException $e) {
+            } catch (ValidationException $e) {
                 $this->step = $s;
                 throw $e;
             }

@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\Trips\Schemas;
 
 use App\Enums\PublishStatus;
+use App\Filament\Support\ContentEditorFields;
 use App\Filament\Support\FormHelpers;
 use App\Models\Tag;
 use App\Models\Tier;
+use App\Support\Content;
+use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\KeyValue;
@@ -21,6 +24,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
@@ -42,6 +46,7 @@ class TripForm
                         self::overviewTab(),
                         self::itineraryTab(),
                         self::pricingTab(),
+                        self::packingTab(),
                         self::faqsTab(),
                         self::mediaTab(),
                         Tab::make('SEO')
@@ -219,32 +224,122 @@ class TripForm
 
     private static function pricingTab(): Tab
     {
-        return Tab::make('Pricing')
+        return Tab::make('Group pricing')
             ->icon(Heroicon::OutlinedCurrencyDollar)
             ->schema([
                 Grid::make(3)->schema([
-                    TextInput::make('price_from')->label('Price from (pp)')->numeric()->minValue(0),
+                    TextInput::make('price_from')->label('Price from (pp)')->numeric()->minValue(0)
+                        ->helperText('Headline "from" price on cards and listings.'),
                     TextInput::make('sale_price')->label('Sale price (pp)')->numeric()->minValue(0)
                         ->helperText('Shown instead of the regular price when set.'),
                     Select::make('currency')->options(self::CURRENCIES)->default('USD')->required(),
                 ]),
                 Repeater::make('prices')
-                    ->label('Price bands')
+                    ->label('Group pricing (per person)')
+                    ->helperText("Add one row per package and group-size band, e.g. Standard · 1 pax · 1,900 / Standard · 2–5 pax · 1,585 / Standard · 6–12 pax · 1,450. Leave Pax max empty for 'and above'. The site shows the right per-person price for the chosen group size.")
                     ->relationship('prices')
                     ->orderColumn('sort')
                     ->defaultItems(0)
-                    ->addActionLabel('Add price band')
-                    ->columns(6)
+                    ->collapsible()
+                    ->addActionLabel('Add price row')
+                    ->itemLabel(fn (array $state, Get $get): string => self::priceRowLabel($state, $get('currency')))
+                    ->columns(['default' => 2, 'md' => 6])
                     ->schema([
                         Select::make('tier_id')
-                            ->label('Tier')
-                            ->options(fn () => Tier::query()->orderBy('sort')->pluck('name', 'id')),
-                        TextInput::make('label')->maxLength(255)->placeholder('e.g. 2–5 people'),
-                        TextInput::make('pax_min')->label('Pax min')->numeric()->default(1)->minValue(1)->required(),
-                        TextInput::make('pax_max')->label('Pax max')->numeric()->minValue(1),
-                        TextInput::make('price')->numeric()->required()->minValue(0),
-                        TextInput::make('sale_price')->numeric()->minValue(0),
+                            ->label('Package')
+                            ->options(fn () => self::tierOptions())
+                            ->placeholder('Standard')
+                            ->live()
+                            ->columnSpan(['default' => 2, 'md' => 2]),
+                        TextInput::make('label')
+                            ->maxLength(255)
+                            ->placeholder('Optional, e.g. 2–5 people')
+                            ->columnSpan(['default' => 2, 'md' => 2]),
+                        TextInput::make('pax_min')
+                            ->label('Pax min')
+                            ->numeric()
+                            ->integer()
+                            ->default(1)
+                            ->minValue(1)
+                            ->required()
+                            ->live(onBlur: true),
+                        TextInput::make('pax_max')
+                            ->label('Pax max')
+                            ->numeric()
+                            ->integer()
+                            ->placeholder('and above')
+                            ->minValue(fn (Get $get): int => max(1, (int) $get('pax_min')))
+                            ->validationMessages(['min' => 'Pax max must be at least Pax min.'])
+                            ->live(onBlur: true),
+                        TextInput::make('price')
+                            ->label('Price (pp)')
+                            ->numeric()
+                            ->required()
+                            ->minValue(0)
+                            ->live(onBlur: true)
+                            ->columnSpan(['default' => 1, 'md' => 3]),
+                        TextInput::make('sale_price')
+                            ->label('Sale price (pp)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->columnSpan(['default' => 1, 'md' => 3]),
                     ]),
+            ]);
+    }
+
+    /** @return array<int, string> */
+    private static function tierOptions(): array
+    {
+        return once(fn (): array => Tier::query()->orderBy('sort')->pluck('name', 'id')->all());
+    }
+
+    /** e.g. "Standard · 2–5 pax · US$1,585" */
+    private static function priceRowLabel(array $state, ?string $currency): string
+    {
+        $tier = self::tierOptions()[$state['tier_id'] ?? null] ?? 'Standard';
+        $min = (int) ($state['pax_min'] ?? 1) ?: 1;
+        $max = filled($state['pax_max'] ?? null) ? (int) $state['pax_max'] : null;
+
+        $pax = match (true) {
+            $max === null => "{$min}+ pax",
+            $max === $min => "{$min} pax",
+            default => "{$min}–{$max} pax",
+        };
+
+        $price = filled($state['price'] ?? null)
+            ? ($currency === 'USD' || blank($currency) ? 'US$' : $currency.' ').number_format((float) $state['price'])
+            : null;
+
+        return implode(' · ', array_filter([$tier, $pax, $price]));
+    }
+
+    private static function packingTab(): Tab
+    {
+        return Tab::make('Packing & notes')
+            ->icon(Heroicon::OutlinedBriefcase)
+            ->schema([
+                Textarea::make('itinerary_note')
+                    ->label('Itinerary note')
+                    ->rows(2)
+                    ->placeholder(Content::tripPageDefaults()['itinerary_note'])
+                    ->helperText('Leave empty to use the default note from Content → Trip page content.'),
+                ContentEditorFields::packingGroups('packing')
+                    ->label('Packing list')
+                    ->helperText('Leave empty to use the default packing list (Content → Trip page content) for treks and climbs.')
+                    ->hintAction(
+                        Action::make('copyDefaultPacking')
+                            ->label('Copy default packing list')
+                            ->icon(Heroicon::OutlinedClipboardDocumentList)
+                            ->requiresConfirmation(fn (Get $get): bool => filled($get('packing')))
+                            ->modalDescription('This replaces the packing list below with the default list.')
+                            ->action(function (Repeater $component): void {
+                                $component->getRootContainer()->fillPartially(
+                                    ['packing' => Content::tripPage()['packing_default']],
+                                    ['packing'],
+                                    shouldFillStateWithNull: false,
+                                );
+                            }),
+                    ),
             ]);
     }
 
@@ -294,7 +389,9 @@ class TripForm
                     ->maxSize(8192)
                     ->columnSpanFull(),
                 Repeater::make('videos')
-                    ->simple(TextInput::make('url')->url()->required()->placeholder('https://www.youtube.com/watch?v=…'))
+                    ->label('Videos (shown above the FAQs)')
+                    ->helperText('YouTube or Vimeo links.')
+                    ->simple(TextInput::make('url')->url()->required()->placeholder('https://www.youtube.com/watch?v=… or https://vimeo.com/…'))
                     ->addActionLabel('Add video URL')
                     ->defaultItems(0)
                     ->columnSpanFull(),

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Testimonials\Schemas;
 
+use App\Models\Testimonial;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -16,6 +17,7 @@ class TestimonialForm
     public const SOURCES = [
         'google' => 'Google',
         'tripadvisor' => 'Tripadvisor',
+        'website' => 'Website submission',
         'manual' => 'Manual',
     ];
 
@@ -27,7 +29,7 @@ class TestimonialForm
             ->all();
     }
 
-    public static function configure(Schema $schema): Schema
+    public static function configure(Schema $schema, bool $withTrip = true): Schema
     {
         return $schema
             ->columns(3)
@@ -43,6 +45,20 @@ class TestimonialForm
                         TextInput::make('author_country')
                             ->label('Country')
                             ->maxLength(255),
+                        TextInput::make('author_email')
+                            ->label('Email')
+                            ->email()
+                            ->maxLength(255)
+                            ->helperText('Private — never shown on the site.')
+                            // author_email is $hidden on the model, so attributesToArray() leaves it out of the fill.
+                            ->afterStateHydrated(function (TextInput $component, ?Testimonial $record): void {
+                                if ($record) {
+                                    $component->state($record->author_email);
+                                }
+                            }),
+                        DatePicker::make('travelled_on')
+                            ->label('Travelled on')
+                            ->maxDate(now()),
                         TextInput::make('title')
                             ->maxLength(255)
                             ->columnSpanFull(),
@@ -55,6 +71,7 @@ class TestimonialForm
                             ->relationship('trip', 'title')
                             ->searchable()
                             ->preload()
+                            ->visible($withTrip)
                             ->columnSpanFull(),
                     ]),
                 Group::make([
