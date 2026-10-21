@@ -23,8 +23,17 @@
 
                 @if ($mode === 'group')
                     <div class="sm:col-span-2">
-                        <p class="field-label">Choose a departure</p>
-                        @if ($this->departures->isEmpty())
+                        <p class="field-label">{{ $this->departures->isEmpty() && $this->trip->departsDaily() ? 'When would you like to start?' : 'Choose a departure' }}</p>
+                        @if ($this->departures->isEmpty() && $this->trip->departsDaily())
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <x-site.field label="Start date" name="start_date" type="date" wire:model="start_date" min="{{ $this->trip->earliestStartDate()->toDateString() }}" required prefix="te"
+                                    hint="This group trip departs every day. Bookings close {{ $this->trip->departure_cutoff_days }} days before departure." />
+                                <div class="flex items-center gap-3 self-start rounded-2xl bg-juniper-50 p-4 text-sm text-juniper-800 sm:mt-7">
+                                    <x-heroicon-o-calendar-days class="size-6 shrink-0 text-juniper-500" />
+                                    <span>Daily departures{{ $this->trip->departure_capacity ? ' · up to '.$this->trip->departure_capacity.' travellers per group' : '' }}</span>
+                                </div>
+                            </div>
+                        @elseif ($this->departures->isEmpty())
                             <p class="rounded-2xl bg-stone-200/60 p-5 text-sm text-ink-soft">No group dates are published for this trip right now — switch to <button type="button" class="font-semibold text-juniper-800 underline" wire:click="$set('mode', 'private')">a private trip</button> and we'll run it on the dates you choose.</p>
                         @else
                             <div class="grid gap-2 sm:grid-cols-2">

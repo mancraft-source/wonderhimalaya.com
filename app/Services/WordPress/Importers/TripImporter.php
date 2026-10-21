@@ -283,6 +283,8 @@ class TripImporter extends Importer
                 continue;
             }
 
+            $child = $categories->first(fn ($c) => strtolower($c['label'] ?? '') === 'child' && is_numeric($c['price'] ?? null) && (float) $c['price'] > 0);
+
             $rows[] = [
                 'tier_id' => $tierSlug ? ($tiers[$tierSlug] ?? null) : null,
                 'label' => $label,
@@ -290,6 +292,9 @@ class TripImporter extends Importer
                 'pax_max' => $max,
                 'price' => (float) $category['price'],
                 'sale_price' => $sale && $sale > 0 ? $sale : null,
+                'child_price' => $child ? (float) $child['price'] : null,
+                'description' => $this->cleaner()->clean((string) ($package['description'] ?? '')) ?: null,
+                'is_primary' => ! empty($package['is_primary']),
             ];
         }
 
@@ -334,6 +339,13 @@ class TripImporter extends Importer
         return $min ? (float) $min : null;
     }
 
+    /** Re-sync only the commercial data (packages, prices, departure mode) for one trip from the live site. */
+    public function syncCommercials(Trip $trip): void
+    {
+        $this->syncPrices($trip, $this->prices((int) $trip->wp_id));
+        $this->syncDepartures($trip, (int) $trip->wp_id, $trip->duration_days);
+    }
+
     protected function syncPrices(Trip $trip, array $prices): void
     {
         $trip->prices()->delete();
@@ -371,9 +383,16 @@ class TripImporter extends Importer
         $span = max(1, $first->diffInDays($last) + 1);
 
         if (count($dates) / $span > 0.25) {
-            $this->stats->add('trip_departures', 'skipped');
+            // Rolling daily availability (the live setup): the trip departs any day after the cut-off.
+            $capacity = collect($dates)->pluck('capacity')->filter(fn ($c) => is_numeric($c))->max();
+            $trip->update([
+                'departure_mode' => 'daily',
+                'departure_capacity' => $capacity ? (int) $capacity : null,
+                'departure_cutoff_days' => $this->cutoffDays($wpId),
+            ]);
+            $this->stats->add('trip_departures', 'updated');
 
-            return; // rolling daily availability, not fixed dates
+            return;
         }
 
         foreach ($dates as $date => $info) {
@@ -393,6 +412,19 @@ class TripImporter extends Importer
 
             $this->stats->record('trip_departures', $departure);
         }
+    }
+
+    /** WTE "cut_off_time": bookings close this many days before departure (default 10). */
+    protected function cutoffDays(int $wpId): int
+    {
+        $cut = $this->source->tripDetail($wpId)['cut_off_time'] ?? [];
+        $period = (int) ($cut['period'] ?? 10);
+
+        return match ($cut['unit'] ?? 'days') {
+            'hours' => (int) ceil($period / 24),
+            'weeks' => $period * 7,
+            default => $period,
+        };
     }
 
     // ----------------------------------------------------------- children

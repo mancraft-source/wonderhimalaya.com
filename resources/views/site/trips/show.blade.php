@@ -4,6 +4,9 @@
     $map = $trip->getFirstMedia('map');
     $price = $trip->displayPrice();
     $groupDepartures = $trip->upcomingDepartures->filter->isBookable();
+    $joinsDaily = $trip->is_fixed_departure && $trip->departsDaily() && $groupDepartures->isEmpty();
+    $hasGroup = $groupDepartures->isNotEmpty() || $joinsDaily;
+    $groupPrice = $pricing->first()['from'] ?? $price;
     $facts = $trip->facts ?? [];
     $country = $trip->destination?->parent?->name ?? $trip->destination?->name;
     $start = $trip->start_point ?: ($facts['Arrival City'] ?? null);
@@ -80,7 +83,7 @@
             </div>
 
             <div class="mt-8 flex flex-wrap items-center gap-4">
-                <a href="#departures" class="btn-primary">{{ $groupDepartures->isNotEmpty() ? 'Check dates & book' : 'Request a quote' }} <x-heroicon-m-arrow-down class="size-4" /></a>
+                <a href="#departures" class="btn-primary">{{ $hasGroup ? 'Check dates & book' : 'Request a quote' }} <x-heroicon-m-arrow-down class="size-4" /></a>
                 @if ($gallery->isNotEmpty())
                     <button type="button" class="btn-ghost-light" x-data x-on:click="$dispatch('open-gallery', { i: 0 })"><x-heroicon-o-photo class="size-4" /> See all {{ $gallery->count() + 1 }} photos</button>
                 @endif
@@ -225,21 +228,45 @@
             @endif
 
             {{-- ============================== DEPARTURES & AVAILABILITY ============================== --}}
-            <section id="departures" data-section class="scroll-mt-44" x-data="{ tab: '{{ $groupDepartures->isNotEmpty() ? 'group' : 'private' }}' }">
+            <section id="departures" data-section class="scroll-mt-44" x-data="{ tab: '{{ $hasGroup ? 'group' : 'private' }}' }">
                 <div class="flex flex-wrap items-end justify-between gap-4">
                     <div>
                         <p class="eyebrow">Departures & availability</p>
                         <h2 class="mt-4 font-display text-display-sm">Dates & prices</h2>
                     </div>
-                    <div class="inline-flex rounded-full bg-stone-200/70 p-1 text-sm font-semibold" role="tablist">
-                        <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'group' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="tab = 'group'">Group departures</button>
-                        <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'private' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="tab = 'private'">Private trip</button>
-                    </div>
+                    @if ($hasGroup)
+                        <div class="inline-flex rounded-full bg-stone-200/70 p-1 text-sm font-semibold" role="tablist">
+                            <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'group' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="tab = 'group'">Group departures</button>
+                            <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'private' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="tab = 'private'">Private trip</button>
+                        </div>
+                    @endif
                 </div>
 
-                <div x-show="tab === 'group'" class="mt-8">
+                <div x-show="tab === 'group'" @unless ($hasGroup) x-cloak @endunless class="mt-8">
+                    @if ($joinsDaily)
+                        <div class="overflow-hidden rounded-[1.75rem] bg-juniper-800 text-stone-100" x-data="{ date: '{{ $trip->earliestStartDate()->toDateString() }}' }">
+                            <div class="grid gap-8 p-7 sm:p-9 md:grid-cols-[1fr_auto] md:items-end">
+                                <div>
+                                    <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-saffron-300"><x-heroicon-o-calendar-days class="size-4" /> Departs every day</p>
+                                    <p class="mt-3 font-display text-3xl text-white">Join a small group on the date that suits you</p>
+                                    <p class="mt-3 max-w-xl text-stone-300">Choose any start date from {{ $trip->earliestStartDate()->format('j M Y') }} — bookings close {{ $trip->departure_cutoff_days }} days before departure.{{ $trip->departure_capacity ? ' Groups of up to '.$trip->departure_capacity.' travellers.' : '' }} No payment is taken now.</p>
+                                </div>
+                                @if ($groupPrice)
+                                    <p class="text-right"><span class="block text-sm text-stone-400">per person from</span><span class="font-display text-4xl text-white">US${{ number_format($groupPrice) }}</span></p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col gap-3 border-t border-white/10 bg-juniper-900/50 p-5 sm:flex-row sm:items-center sm:px-9">
+                                <label for="daily-start" class="text-sm text-stone-300">Start date</label>
+                                <input id="daily-start" type="date" x-model="date" min="{{ $trip->earliestStartDate()->toDateString() }}" class="rounded-xl border-0 bg-white px-4 py-2.5 text-ink focus:ring-2 focus:ring-saffron-300">
+                                <span class="text-sm text-stone-300" x-show="date" x-text="'Returns ' + new Date(new Date(date).getTime() + {{ max(0, ($trip->duration_days ?? 1) - 1) }} * 864e5).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })"></span>
+                                <button type="button" class="btn-primary sm:ml-auto" x-on:click="$dispatch('pick-date', { date })">Join this date</button>
+                            </div>
+                        </div>
+                    @elseif ($groupDepartures->isNotEmpty())
                     <p class="mb-5 text-ink-soft">Join a small group on a fixed date. Choose a departure to request your place — no payment is taken now.</p>
-                    @if ($groupDepartures->isEmpty())
+                    @endif
+                    @if ($joinsDaily)
+                    @elseif ($groupDepartures->isEmpty())
                         <div class="rounded-[1.75rem] bg-stone-200/50 p-8">
                             <p class="font-display text-2xl text-juniper-800">No fixed dates published yet.</p>
                             <p class="mt-2 text-ink-soft">We run this journey privately on any date you choose — and can often match you with other travellers.</p>
@@ -283,10 +310,18 @@
                         <div @class(['grid gap-4', 'sm:grid-cols-2' => $pricing->count() >= 2, 'xl:grid-cols-3' => $pricing->count() >= 3])>
                             @foreach ($pricing as $i => $pkg)
                                 @php $hl = $pricing->count() === 1 || ($pricing->count() >= 3 && $i === 1); @endphp
-                                <div @class(['relative flex flex-col rounded-[1.75rem] p-7 ring-1', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $hl, 'bg-stone-50 ring-stone-300/60' => ! $hl])>
+                                <div @class(['relative flex flex-col self-start rounded-[1.75rem] p-7 ring-1', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $hl, 'bg-stone-50 ring-stone-300/60' => ! $hl])>
                                     <p @class(['font-display text-2xl', 'text-white' => $hl])>{{ $pkg['name'] }}</p>
                                     <p class="mt-4 text-sm opacity-70">from</p>
-                                    <p><span class="font-display text-4xl">US${{ number_format($pkg['from']) }}</span> <span class="text-sm opacity-70">/ person</span></p>
+                                    <p><span class="font-display text-4xl">US${{ number_format($pkg['from']) }}</span> <span class="text-sm opacity-70">/ adult</span></p>
+                                    @if ($pkg['child'])<p class="mt-1 text-sm opacity-80">Child: US${{ number_format($pkg['child']) }}</p>@endif
+                                    @if ($pkg['min'] > 1)<p class="mt-1 text-sm opacity-70">Minimum {{ $pkg['min'] }} travellers</p>@endif
+                                    @if ($pkg['description'])
+                                        <details class="group/pkg mt-5 border-t pt-4 {{ $hl ? 'border-white/15' : 'border-stone-300/60' }}">
+                                            <summary class="flex cursor-pointer list-none items-center justify-between text-sm font-semibold [&::-webkit-details-marker]:hidden">What this package includes <x-heroicon-m-chevron-down class="size-4 transition group-open/pkg:rotate-180" /></summary>
+                                            <div @class(['prose prose-sm mt-3 max-w-none [&_ul]:pl-4 [&_li]:my-0.5', 'prose-invert' => $hl, 'prose-wh' => ! $hl])>{!! $pkg['description'] !!}</div>
+                                        </details>
+                                    @endif
                                     @if (count($pkg['bands']) > 1)
                                         <table class="mt-5 w-full text-sm">
                                             <thead><tr @class(['text-left text-[0.65rem] uppercase tracking-[0.14em]', 'text-stone-400' => $hl, 'text-stone-500' => ! $hl])><th class="pb-2 font-semibold">No. of people</th><th class="pb-2 text-right font-semibold">Per person</th></tr></thead>
@@ -650,7 +685,7 @@
                         @endif
 
                         <div class="mt-6 grid gap-2.5">
-                            <a href="#departures" class="btn-primary">{{ $groupDepartures->isNotEmpty() ? 'Book now' : 'Request a quote' }}</a>
+                            <a href="#departures" class="btn-primary">{{ $hasGroup ? 'Book now' : 'Request a quote' }}</a>
                             <div class="grid grid-cols-2 gap-2.5">
                                 <a href="#departures" class="btn-ghost-light !px-3 !py-3 !text-xs">Check availability</a>
                                 <a href="#enquire" class="btn-ghost-light !px-3 !py-3 !text-xs" x-data x-on:click="$dispatch('pick-departure', { id: 0 })">Enquire now</a>

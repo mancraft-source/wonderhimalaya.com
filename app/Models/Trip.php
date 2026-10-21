@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
@@ -131,6 +132,17 @@ class Trip extends Model implements HasMedia
         $query->where('is_featured', true);
     }
 
+    public function departsDaily(): bool
+    {
+        return $this->departure_mode === 'daily';
+    }
+
+    /** Earliest start date a traveller can book (bookings close N days ahead). */
+    public function earliestStartDate(): Carbon
+    {
+        return today()->addDays(max(0, (int) $this->departure_cutoff_days));
+    }
+
     /** Lowest advertised price, preferring an active sale price. */
     public function displayPrice(): ?float
     {
@@ -181,9 +193,13 @@ class Trip extends Model implements HasMedia
                     'tier_id' => $first->tier_id,
                     'bands' => self::bandRows($bands->sortBy('pax_min')->values()),
                     'from' => $bands->min(fn (TripPrice $p) => $p->effectivePrice()),
+                    'child' => $bands->pluck('child_price')->filter()->min() !== null ? (float) $bands->pluck('child_price')->filter()->min() : null,
+                    'min' => (int) $bands->min('pax_min'),
+                    'description' => $bands->pluck('description')->filter()->first(),
+                    'primary' => (bool) $bands->firstWhere('is_primary', true),
                 ];
             })
-            ->sortBy('from')
+            ->sortBy(fn (array $p) => [! $p['primary'], $p['from']])
             ->values();
     }
 

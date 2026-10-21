@@ -27,12 +27,15 @@ class DestinationController extends Controller
 
         $heroImage = $destination->getFirstMedia('hero') ?? $trips->first(fn (Trip $t) => $t->hasMedia('hero'))?->getFirstMedia('hero');
 
+        $seo = Seo::for($destination, $destination->name.' treks & tours', $destination->intro ?: strip_tags((string) $destination->description) ?: "Guided treks, tours and expeditions in {$destination->name} with Wonder Himalaya.", $heroImage?->getUrl());
+        $seo->canonical ??= url($destination->publicPath());
+
         return view('site.destinations.show', [
             'destination' => $destination,
             'trips' => $trips,
             'children' => $children,
             'heroMedia' => $heroImage,
-            'seo' => Seo::for($destination, $destination->name.' treks & tours', $destination->intro ?: strip_tags((string) $destination->description) ?: "Guided treks, tours and expeditions in {$destination->name} with Wonder Himalaya.", $heroImage?->getUrl()),
+            'seo' => $seo,
         ]);
     }
 }

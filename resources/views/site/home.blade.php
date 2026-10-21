@@ -150,6 +150,31 @@
         @endif
     </section>
 
+    {{-- ============================== WHAT WE OFFER ============================== --}}
+    @if ($home['offers'])
+        <section class="pb-24 lg:pb-32">
+            <div class="container-page">
+                <div class="grid gap-10 rounded-[2.5rem] bg-juniper-900 p-8 text-stone-100 sm:p-12 lg:grid-cols-12 lg:p-16">
+                    <div class="lg:col-span-4">
+                        <p class="eyebrow eyebrow-light">{{ $home['offer_eyebrow'] }}</p>
+                        <h2 class="mt-5 font-display text-display-sm text-white">{{ $home['offer_title'] }}</h2>
+                    </div>
+                    <div class="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:col-span-8" data-stagger>
+                        @foreach ($home['offers'] as $offer)
+                            <a href="{{ url($offer['url'] ?? route('trips.index')) }}" class="group flex gap-5">
+                                <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/10 text-saffron-300 transition group-hover:bg-terracotta-500 group-hover:text-white"><x-dynamic-component :component="'heroicon-o-'.($offer['icon'] ?? 'check-badge')" class="size-6" /></span>
+                                <span>
+                                    <span class="flex items-center gap-2 font-display text-2xl text-white">{{ $offer['title'] ?? '' }} <x-heroicon-m-arrow-up-right class="size-4 opacity-0 transition group-hover:opacity-100" /></span>
+                                    <span class="mt-1 block text-stone-300">{{ $offer['text'] ?? '' }}</span>
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- ============================== TRAVEL BY FEELING ============================== --}}
     @if ($moods)
         <section class="pb-24 lg:pb-36">
@@ -273,7 +298,7 @@
                                             <span class="overflow-hidden"><span class="block pt-1 text-sm text-ink-soft">{{ $region->tagline }}</span></span>
                                         </span>
                                     </span>
-                                    <span class="text-sm text-ink-soft">{{ $region->trips_count }}</span>
+                                    <span class="hidden text-right text-sm text-ink-soft sm:block">@php $rp = $region->trips->map->displayPrice()->filter()->min(); @endphp @if ($rp)<span class="block text-[0.65rem] uppercase tracking-[0.14em] text-stone-400">from</span><span class="font-display text-lg text-juniper-800">US${{ number_format($rp) }}</span>@else{{ $region->trips_count }} trips @endif</span>
                                     <span class="flex size-10 items-center justify-center rounded-full border border-stone-300 transition group-hover:border-terracotta-500 group-hover:bg-terracotta-500 group-hover:text-white"><x-heroicon-m-arrow-up-right class="size-4" /></span>
                                 </a>
                             </li>
@@ -353,7 +378,23 @@
                             </a>
                         @endforeach
                     @else
-                        @foreach ($fixedTrips as $trip)<x-site.trip-card :trip="$trip" class="[&_h3]:!text-white [&_p]:!text-stone-300" />@endforeach
+                        @foreach ($fixedTrips as $trip)
+                            <a href="{{ url($trip->publicPath()) }}#departures" class="group relative flex overflow-hidden rounded-[1.75rem] bg-stone-100 text-ink transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-25px_rgba(0,0,0,0.6)]">
+                                <div class="flex w-28 shrink-0 flex-col items-center justify-center border-r-2 border-dashed border-stone-300 bg-saffron-300/30 px-3 py-6 text-center">
+                                    <x-heroicon-o-calendar-days class="size-7 text-terracotta-600" />
+                                    <span class="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-terracotta-600">Daily</span>
+                                    <span class="mt-1 text-[0.7rem] text-stone-500">from {{ $trip->earliestStartDate()->format('j M') }}</span>
+                                </div>
+                                <div class="flex min-w-0 flex-1 flex-col p-6">
+                                    <p class="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-stone-500">{{ $trip->destination?->name }} · {{ $trip->durationLabel() }}</p>
+                                    <h3 class="mt-2 font-display text-xl leading-snug text-juniper-800 group-hover:underline">{{ $trip->title }}</h3>
+                                    <div class="mt-auto flex items-end justify-between pt-5">
+                                        <span class="rounded-full bg-juniper-100 px-2.5 py-1 text-xs font-semibold text-juniper-800">Join any day</span>
+                                        <span class="font-display text-2xl text-juniper-800">{{ $trip->displayPrice() ? 'US$'.number_format($trip->displayPrice()) : 'On request' }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
                     @endif
                 </div>
             </div>

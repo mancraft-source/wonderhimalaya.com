@@ -12,7 +12,7 @@ class TripPrice extends Model
 
     protected function casts(): array
     {
-        return ['price' => 'decimal:2', 'sale_price' => 'decimal:2'];
+        return ['price' => 'decimal:2', 'sale_price' => 'decimal:2', 'child_price' => 'decimal:2', 'is_primary' => 'boolean'];
     }
 
     public function trip(): BelongsTo

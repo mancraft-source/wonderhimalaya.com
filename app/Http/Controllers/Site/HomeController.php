@@ -93,7 +93,7 @@ class HomeController extends Controller
                 ?? $trips->firstWhere('is_trip_of_month', true) ?? $trips->firstWhere('is_top_selling', true),
             'isTripOfMonth' => $trips->contains('is_trip_of_month', true),
             'departures' => $departures,
-            'fixedTrips' => $trips->where('is_fixed_departure', true)->filter(fn (Trip $t) => $t->hasMedia('hero'))->take(3)->values(),
+            'fixedTrips' => $trips->where('is_fixed_departure', true)->sortBy(fn (Trip $t) => $t->displayPrice() ?? PHP_INT_MAX)->take(6)->values(),
             'regions' => $regions,
             'regionMedia' => $regions->mapWithKeys(fn (Destination $region) => [
                 $region->id => $region->getFirstMedia('hero') ?? $this->largestHero($region->trips),

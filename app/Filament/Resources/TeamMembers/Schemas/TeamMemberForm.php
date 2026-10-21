@@ -4,6 +4,7 @@ namespace App\Filament\Resources\TeamMembers\Schemas;
 
 use App\Filament\Support\ContentFields;
 use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
@@ -40,6 +41,21 @@ class TeamMemberForm
                                 ->columnSpanFull(),
                             RichEditor::make('bio')
                                 ->columnSpanFull(),
+                        ]),
+                    Section::make('Profile highlights & guest stories')
+                        ->collapsible()
+                        ->schema([
+                            TagsInput::make('highlights')
+                                ->placeholder('e.g. Served 1,000+ clients')
+                                ->helperText('Short facts shown as badges on the profile (4 works best).'),
+                            Textarea::make('praise')
+                                ->label('What people say (intro)')
+                                ->rows(3),
+                            Repeater::make('quotes')
+                                ->label('Guest quotes')
+                                ->simple(Textarea::make('quote')->rows(3)->required())
+                                ->defaultItems(0)
+                                ->addActionLabel('Add quote'),
                         ]),
                     Section::make('Credentials')
                         ->columns(2)

@@ -40,6 +40,10 @@
         </div>
     </section>
 
+    @if (! empty($c['closing']))
+        <section class="container-narrow pb-20 text-center"><p class="font-display text-display-sm leading-snug text-juniper-800" data-reveal>{{ $c['closing'] }}</p></section>
+    @endif
+
     <section class="bg-juniper-800 py-20 text-stone-100">
         <div class="container-page grid items-center gap-10 lg:grid-cols-12">
             <div class="flex justify-center lg:col-span-2"><img src="{{ asset('images/brand/aff-keep.webp') }}" alt="Kathmandu Environmental Education Project (KEEP)" class="h-28 w-28 rounded-3xl bg-white object-contain p-3" loading="lazy"></div>

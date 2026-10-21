@@ -18,6 +18,8 @@ class TeamMember extends Model implements HasMedia
     {
         return [
             'languages' => 'array',
+            'highlights' => 'array',
+            'quotes' => 'array',
             'certifications' => 'array',
             'social' => 'array',
             'is_guide' => 'boolean',

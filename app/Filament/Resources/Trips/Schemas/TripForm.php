@@ -88,7 +88,23 @@ class TripForm
                         Toggle::make('is_popular')->label('Popular'),
                         Toggle::make('is_top_selling')->label('Top selling'),
                         Toggle::make('is_trip_of_month')->label('Trip of the month'),
-                        Toggle::make('is_fixed_departure')->label('Fixed departures'),
+                        Toggle::make('is_fixed_departure')->label('Fixed departures (group trip)')->live(),
+                    ]),
+                Section::make('Departures')
+                    ->columnSpanFull()
+                    ->columns(['default' => 1, 'md' => 3])
+                    ->schema([
+                        Select::make('departure_mode')
+                            ->label('How it departs')
+                            ->options(['daily' => 'Every day (travellers pick a start date)', 'scheduled' => 'Scheduled dates only (Departures tab)'])
+                            ->default('daily')
+                            ->required(),
+                        TextInput::make('departure_cutoff_days')
+                            ->label('Bookings close (days before)')
+                            ->numeric()->integer()->minValue(0)->default(10)->required(),
+                        TextInput::make('departure_capacity')
+                            ->label('Max group size per departure')
+                            ->numeric()->integer()->minValue(1)->placeholder('e.g. 10'),
                     ]),
             ]);
     }
@@ -282,7 +298,21 @@ class TripForm
                             ->label('Sale price (pp)')
                             ->numeric()
                             ->minValue(0)
-                            ->columnSpan(['default' => 1, 'md' => 3]),
+                            ->columnSpan(['default' => 1, 'md' => 2]),
+                        TextInput::make('child_price')
+                            ->label('Child price (pp)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->columnSpan(['default' => 1, 'md' => 2]),
+                        Toggle::make('is_primary')
+                            ->label('Main package')
+                            ->helperText('Shown first')
+                            ->inline(false)
+                            ->columnSpan(['default' => 1, 'md' => 2]),
+                        RichEditor::make('description')
+                            ->label('What this package includes')
+                            ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList', 'link'])
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

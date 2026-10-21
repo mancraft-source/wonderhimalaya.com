@@ -57,7 +57,7 @@ class TripEnquiry extends Component
     public function mount(Trip $trip, ?int $departure = null): void
     {
         $this->trip_id = $trip->id;
-        $this->mode = $trip->upcomingDepartures()->exists() ? 'group' : 'private';
+        $this->mode = ($trip->is_fixed_departure && ($trip->departsDaily() || $trip->upcomingDepartures()->exists())) ? 'group' : 'private';
         $this->trip_departure_id = $departure;
         if ($departure) {
             $this->mode = 'group';
@@ -100,6 +100,16 @@ class TripEnquiry extends Component
         $this->dispatch('scroll-to-enquiry');
     }
 
+    /** Daily-departure group trips: join on a chosen start date. */
+    #[On('pick-date')]
+    public function pickDate(string $date): void
+    {
+        $this->mode = 'group';
+        $this->trip_departure_id = null;
+        $this->start_date = $date;
+        $this->dispatch('scroll-to-enquiry');
+    }
+
     #[On('pick-departure')]
     public function selectDeparture(int $id): void
     {
@@ -113,7 +123,11 @@ class TripEnquiry extends Component
         $rules = $this->enquiryRules(['first_name', 'last_name', 'email', 'phone', 'country', 'tier_id', 'start_date', 'adults', 'children', 'message', 'privacy_accepted', 'marketing_consent']);
         $rules['adults'] = ['required', 'integer', 'min:1', 'max:40'];
 
-        if ($this->mode === 'group') {
+        $joinsDaily = $this->mode === 'group' && $this->trip->departsDaily() && $this->departures->isEmpty();
+
+        if ($joinsDaily) {
+            $rules['start_date'] = ['required', 'date', 'after_or_equal:'.$this->trip->earliestStartDate()->toDateString()];
+        } elseif ($this->mode === 'group') {
             $rules['trip_departure_id'] = ['required', 'integer', 'exists:trip_departures,id'];
         } else {
             $rules['start_date'] = ['nullable', 'date', 'after_or_equal:today'];
@@ -121,10 +135,12 @@ class TripEnquiry extends Component
 
         $data = $this->validate($rules, [
             'trip_departure_id.required' => 'Please choose a departure date.',
+            'start_date.required' => 'Please choose the date you would like to start.',
+            'start_date.after_or_equal' => 'Bookings close '.$this->trip->departure_cutoff_days.' days before departure — please choose a later date.',
             'privacy_accepted.accepted' => 'Please accept the privacy policy so we can reply to you.',
         ]);
 
-        if ($this->mode === 'group' && TripDeparture::find($this->trip_departure_id)?->trip_id !== $this->trip_id) {
+        if ($this->mode === 'group' && ! $joinsDaily && TripDeparture::find($this->trip_departure_id)?->trip_id !== $this->trip_id) {
             $this->addError('trip_departure_id', 'Please choose a departure date.');
 
             return;
@@ -137,7 +153,7 @@ class TripEnquiry extends Component
         $lead = $this->sendEnquiry($data + [
             'type' => ($this->mode === 'group' ? LeadType::Departure : LeadType::PrivateTrip)->value,
             'trip_id' => $this->trip_id,
-            'trip_departure_id' => $this->mode === 'group' ? $this->trip_departure_id : null,
+            'trip_departure_id' => $this->mode === 'group' && ! $joinsDaily ? $this->trip_departure_id : null,
         ]);
 
         $this->reference = $lead->reference;
