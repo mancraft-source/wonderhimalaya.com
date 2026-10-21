@@ -1,34 +1,43 @@
+@php
+    $headline = [['Walk', false], ['among', false], ['giants.', true]];
+    $tickerItems = array_merge(
+        collect($regions)->map(fn ($r) => str_replace(' Region', '', $r->name))->all(),
+        $countries->where('slug', '!=', 'nepal')->where('trips_count', '>', 0)->pluck('name')->all(),
+    );
+    $collage = $signature->take(3)->values();
+@endphp
 <x-layouts.site :seo="$seo" transparent>
+
     {{-- ============================== HERO ============================== --}}
-    <section class="relative isolate flex h-[100svh] min-h-[40rem] max-h-[64rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white"
-             x-data="{ i: 0, n: {{ max(1, $heroTrips->count()) }} }"
-             x-init="n > 1 && setInterval(() => i = (i + 1) % n, 7000)">
-        <div class="absolute inset-0 -z-10" data-parallax>
-            @forelse ($heroTrips as $k => $trip)
-                <div class="absolute inset-0 transition-opacity duration-[2s]" x-bind:class="i === {{ $k }} ? 'opacity-100' : 'opacity-0'" @if ($k > 0) x-cloak @endif>
-                    <x-site.picture :model="$trip" collection="hero" sizes="100vw" :eager="$k === 0" class="h-full w-full animate-slow-zoom" />
+    <section data-hero data-interval="7000" class="relative isolate flex h-[100svh] min-h-[42rem] max-h-[68rem] flex-col overflow-hidden bg-juniper-950 text-white">
+        <div class="absolute inset-0 -z-10">
+            @forelse ($heroSlides as $k => $slide)
+                <div @class(['hero-slide absolute inset-0', 'is-active' => $k === 0])>
+                    <x-site.picture :media="$slide['media']" :alt="$slide['title']" sizes="100vw" :eager="$k === 0" class="h-full w-full" />
                 </div>
             @empty
                 <x-site.picture class="h-full w-full" alt="The Himalaya" />
             @endforelse
         </div>
+        <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(15,29,25,0.15)_0%,rgba(15,29,25,0.55)_75%)]"></div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
 
-        <div class="container-page pt-40 pb-14 lg:pb-20">
-            <div class="max-w-4xl">
-                <p class="eyebrow eyebrow-light animate-reveal">Nepal · Tibet · Bhutan</p>
-                <h1 class="mt-6 font-display text-display-xl text-white animate-reveal [animation-delay:120ms]">
-                    Walk among <em class="font-light text-saffron-300">giants.</em>
-                </h1>
-                <p class="mt-6 max-w-xl text-lg text-white/85 animate-reveal [animation-delay:240ms]">
-                    Treks, climbs and quiet journeys through the high Himalaya — designed and guided by a small Kathmandu team who call these mountains home.
-                </p>
-            </div>
+        <div class="container-page flex flex-1 flex-col items-center justify-center pt-28 text-center">
+            <p class="eyebrow eyebrow-light animate-reveal justify-center">Nepal · Tibet · Bhutan</p>
+            <h1 class="split mt-6 font-display text-[clamp(3.5rem,2rem+8vw,10rem)] leading-[0.92] font-light tracking-[-0.03em] text-white">
+                @foreach ($headline as $i => [$word, $em])
+                    <span class="w"><span style="--i: {{ $i }}" @class(['italic text-saffron-300' => $em])>{{ $word }}</span></span>
+                @endforeach
+            </h1>
+            <p class="mt-7 max-w-xl text-lg text-white/85 animate-reveal [animation-delay:600ms] sm:text-xl">
+                Treks, climbs and quiet journeys through the high Himalaya — designed and guided by a small Kathmandu team who call these mountains home.
+            </p>
 
-            <form action="{{ route('trips.index') }}" method="get" class="mt-12 grid max-w-4xl gap-2 rounded-[2rem] bg-white/95 p-2 text-ink shadow-2xl backdrop-blur md:grid-cols-[1fr_1fr_auto] animate-reveal [animation-delay:360ms]" role="search">
-                <label class="flex flex-col rounded-[1.6rem] px-5 py-3 transition hover:bg-stone-100">
-                    <span class="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-stone-500">Where</span>
-                    <select name="destination" class="-ml-1 mt-0.5 border-0 bg-transparent p-0 pr-8 font-display text-lg text-juniper-800 focus:ring-0">
+            <form action="{{ route('trips.index') }}" method="get" role="search"
+                  class="mt-12 grid w-full max-w-3xl grid-cols-1 gap-1 rounded-[2rem] border border-white/20 bg-white/10 p-1.5 text-left shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] backdrop-blur-xl animate-reveal [animation-delay:800ms] sm:grid-cols-[1fr_1fr_auto] sm:rounded-full">
+                <label class="group flex flex-col rounded-[1.6rem] px-6 py-3 transition hover:bg-white/10 sm:rounded-full">
+                    <span class="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-white/60">Where to</span>
+                    <select name="destination" class="-ml-1 border-0 bg-transparent p-0 pr-8 font-display text-lg text-white focus:ring-0 [&>option]:text-ink">
                         <option value="">Anywhere in the Himalaya</option>
                         @foreach ($nav['destinations'] as $country)
                             <option value="{{ basename($country['url']) }}">{{ $country['name'] }}</option>
@@ -36,120 +45,211 @@
                         @endforeach
                     </select>
                 </label>
-                <label class="flex flex-col rounded-[1.6rem] px-5 py-3 transition hover:bg-stone-100 md:border-l md:border-stone-200">
-                    <span class="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-stone-500">How</span>
-                    <select name="activity" class="-ml-1 mt-0.5 border-0 bg-transparent p-0 pr-8 font-display text-lg text-juniper-800 focus:ring-0">
-                        <option value="">Any style of journey</option>
+                <label class="group flex flex-col rounded-[1.6rem] px-6 py-3 transition hover:bg-white/10 sm:rounded-full sm:border-l sm:border-white/15">
+                    <span class="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-white/60">Travel style</span>
+                    <select name="activity" class="-ml-1 border-0 bg-transparent p-0 pr-8 font-display text-lg text-white focus:ring-0 [&>option]:text-ink">
+                        <option value="">Any kind of journey</option>
                         @foreach ($nav['activities'] as $activity)<option value="{{ basename($activity['url']) }}">{{ $activity['name'] }}</option>@endforeach
                     </select>
                 </label>
-                <button type="submit" class="btn-primary !rounded-[1.6rem] !px-8"><x-heroicon-m-magnifying-glass class="size-5" /> Find journeys</button>
+                <button type="submit" class="btn-primary !rounded-full !px-8 !py-4"><x-heroicon-m-magnifying-glass class="size-5" /> Explore</button>
             </form>
+        </div>
 
-            <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-white/80">
-                <span class="flex items-center gap-2"><x-heroicon-s-trophy class="size-5 text-saffron-300" /> Tripadvisor {{ $reviews['tripadvisor_award'] ?? "Travellers' Choice" }}</span>
-                <span class="flex items-center gap-2"><x-heroicon-s-star class="size-5 text-saffron-300" /> {{ $reviews['google_label'] ?? 'Excellent' }} · {{ $reviews['google_count'] ?? 78 }} Google reviews</span>
-                <span class="flex items-center gap-2"><x-heroicon-s-check-badge class="size-5 text-saffron-300" /> Locally owned in Kathmandu</span>
+        {{-- Slide captions + progress --}}
+        <div class="container-page relative flex items-end justify-between gap-8 pb-8 lg:pb-10">
+            <div class="min-w-0">
+                @foreach ($heroSlides as $k => $slide)
+                    <a href="{{ $slide['url'] }}" data-hero-caption @if ($k > 0) hidden @endif class="group block text-left">
+                        <span class="block text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-saffron-300">{{ $slide['eyebrow'] }}</span>
+                        <span class="mt-1 flex items-center gap-2 font-display text-xl text-white">{{ $slide['title'] }} <x-heroicon-m-arrow-up-right class="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
+                    </a>
+                @endforeach
             </div>
+            <a href="#intro" class="scroll-cue absolute left-1/2 hidden h-12 w-px -translate-x-1/2 overflow-hidden bg-white/20 md:block" aria-label="Scroll down"><span class="block h-1/2 w-px bg-white"></span></a>
+            @if (count($heroSlides) > 1)
+                <div class="flex shrink-0 gap-2" role="tablist" aria-label="Slides">
+                    @foreach ($heroSlides as $k => $slide)
+                        <button type="button" @class(['hero-progress h-[3px] w-10 overflow-hidden rounded-full bg-white/25 sm:w-16', 'is-active' => $k === 0]) aria-label="Show {{ $slide['title'] }}">
+                            <span class="block h-full w-full rounded-full bg-white"></span>
+                        </button>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
 
-    {{-- ============================== WELCOME ============================== --}}
-    <section class="grain relative overflow-hidden py-24 lg:py-36">
-        <div class="topo pointer-events-none absolute -top-40 -right-40 size-[60rem] opacity-70" aria-hidden="true"></div>
-        <div class="container-page relative grid gap-16 lg:grid-cols-12">
-            <div class="lg:col-span-7" data-reveal>
-                <p class="eyebrow">Welcome to Wonder Himalaya</p>
-                <p class="mt-8 font-display text-display-md leading-[1.12] text-juniper-800">
-                    We're a small team in Thamel, Kathmandu, and we've spent years doing one thing — taking people into the mountains and bringing them back with <em class="text-terracotta-500">stories they'll tell for the rest of their lives.</em>
-                </p>
+    {{-- ============================== TICKER ============================== --}}
+    <div class="border-y border-white/5 bg-juniper-900 py-5 text-stone-200">
+        <div class="marquee" style="--speed: 55s; --gap: 2.5rem">
+            @for ($copy = 0; $copy < 2; $copy++)
+                <div class="marquee__track items-center" @if ($copy) aria-hidden="true" @endif>
+                    <span class="flex items-center gap-3 font-display text-2xl whitespace-nowrap text-white"><x-heroicon-s-trophy class="size-5 text-saffron-300" /> Tripadvisor {{ $reviews['tripadvisor_award'] ?? "Travellers' Choice" }}</span>
+                    <span class="text-saffron-500">✦</span>
+                    @foreach ($tickerItems as $item)
+                        <span class="font-display text-2xl whitespace-nowrap italic">{{ $item }}</span>
+                        <span class="text-saffron-500">✦</span>
+                    @endforeach
+                    <span class="flex items-center gap-3 font-display text-2xl whitespace-nowrap text-white"><x-heroicon-s-star class="size-5 text-saffron-300" /> {{ $reviews['google_label'] ?? 'Excellent' }} on Google · {{ $reviews['google_count'] ?? 78 }} reviews</span>
+                    <span class="text-saffron-500">✦</span>
+                    <span class="font-display text-2xl whitespace-nowrap">Locally owned in Thamel, Kathmandu</span>
+                    <span class="text-saffron-500">✦</span>
+                </div>
+            @endfor
+        </div>
+    </div>
+
+    {{-- ============================== INTRO + STATS ============================== --}}
+    <section id="intro" class="grain relative scroll-mt-20 overflow-hidden py-24 lg:py-36">
+        <div class="topo pointer-events-none absolute -top-40 -right-40 size-[60rem] opacity-60" aria-hidden="true"></div>
+        <div class="container-page relative grid items-center gap-16 lg:grid-cols-12 lg:gap-10">
+            {{-- Collage --}}
+            <div class="relative mx-auto h-[30rem] w-full max-w-xl sm:h-[36rem] lg:col-span-6 lg:max-w-none">
+                @if ($collage->count() >= 1)
+                    <div class="absolute top-0 left-0 h-[78%] w-[62%] overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-30px_rgba(15,29,25,0.5)]" data-clip>
+                        <x-site.picture :model="$collage[0]" collection="hero" sizes="(min-width: 1024px) 30vw, 60vw" class="h-full w-full" />
+                    </div>
+                @endif
+                @if ($collage->count() >= 2)
+                    <div class="absolute right-0 bottom-0 h-[62%] w-[52%] overflow-hidden rounded-[2rem] border-[6px] border-stone-100 shadow-[0_40px_80px_-30px_rgba(15,29,25,0.55)]" data-parallax="-0.06">
+                        <x-site.picture :model="$collage[1]" collection="hero" sizes="(min-width: 1024px) 25vw, 50vw" class="h-full w-full" />
+                    </div>
+                @endif
+                {{-- Rotating badge --}}
+                <div class="absolute top-[58%] left-[52%] flex size-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-terracotta-500 text-white shadow-xl sm:size-36">
+                    <svg viewBox="0 0 120 120" class="spin-slow absolute inset-0 h-full w-full" aria-hidden="true">
+                        <defs><path id="badge-circle" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0" /></defs>
+                        <text font-size="10.5" letter-spacing="3.2" fill="currentColor" font-family="var(--font-inter)" font-weight="600"><textPath href="#badge-circle">WANDER ALWAYS · WONDER OFTEN · </textPath></text>
+                    </svg>
+                    <img src="{{ asset('images/brand/logo-badge-64.webp') }}" alt="" class="size-14 rounded-full bg-white p-0.5 sm:size-16">
+                </div>
             </div>
-            <div class="flex flex-col justify-end lg:col-span-4 lg:col-start-9" data-reveal>
-                <p class="text-lg text-ink-soft">From the teahouses of the Everest region to the monastery corridors of Lhasa, from the rhododendron forests of the Annapurna Circuit to the fortress towns of Bhutan — this part of the world is what we know, and sharing it is what we do.</p>
-                <a href="{{ url('/about-us') }}" class="link-arrow mt-8">Our story <x-heroicon-m-arrow-right class="size-4" /></a>
+
+            {{-- Copy --}}
+            <div class="lg:col-span-5 lg:col-start-8" data-stagger>
+                <p class="eyebrow">Welcome to Wonder Himalaya</p>
+                <h2 class="mt-6 font-display text-display-md">A small Thamel team, a lifetime on these trails.</h2>
+                <p class="mt-6 text-lg text-ink-soft">For years we have done one thing — taking people into the mountains and bringing them back with stories they'll tell for the rest of their lives.</p>
+                <p class="mt-4 text-ink-soft">From the teahouses of the Everest region to the monastery corridors of Lhasa, from the rhododendron forests of the Annapurna Circuit to the fortress towns of Bhutan — this part of the world is what we know, and sharing it is what we do.</p>
+                <div class="mt-10 flex flex-wrap items-center gap-6">
+                    <a href="{{ url('/about-us') }}" class="btn-dark">Our story <x-heroicon-m-arrow-right class="size-4" /></a>
+                    <a href="{{ route('team.index') }}" class="link-arrow">Meet the team</a>
+                </div>
             </div>
         </div>
 
         @if ($stats)
-            <div class="container-page relative mt-20"><dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4" data-reveal>
+            <dl class="container-page relative mt-24 grid grid-cols-2 gap-y-12 border-t border-stone-300/70 pt-14 lg:grid-cols-4" data-stagger>
                 @foreach ($stats as $stat)
-                    <div class="bg-stone-100 p-8 lg:p-10">
-                        <dt class="text-sm text-ink-soft">{{ $stat['label'] }}</dt>
-                        <dd class="mt-3 font-display text-5xl text-juniper-800 lg:text-6xl">{{ $stat['value'] }}</dd>
+                    <div class="px-2 lg:border-l lg:border-stone-300/70 lg:px-8 lg:first:border-l-0 lg:first:pl-0">
+                        <dd class="font-display text-[clamp(3rem,2rem+3vw,5rem)] leading-none text-juniper-800" data-count="{{ $stat['value'] }}">{{ $stat['value'] }}</dd>
+                        <dt class="mt-3 text-sm font-medium uppercase tracking-[0.16em] text-stone-500">{{ $stat['label'] }}</dt>
                     </div>
                 @endforeach
-            </dl></div>
+            </dl>
         @endif
     </section>
 
-    {{-- ============================== MOODS ============================== --}}
-    @php
-        $moods = [
-            ['guided-trek', 'Classic trails', 'Tea-house treks to the great base camps', 'from-juniper-700 to-juniper-950'],
-            ['peak-climbing', 'Summits', 'Island, Mera, Lobuche & trekking peaks', 'from-glacier-500 to-juniper-900'],
-            ['heli-tour', 'Above it all', 'Helicopter journeys to the high valleys', 'from-terracotta-500 to-juniper-900'],
-            ['city-tour', 'Living culture', 'Temples, durbar squares & festivals', 'from-saffron-500 to-terracotta-600'],
-            ['jungle-safari', 'Into the wild', 'Rhinos & tigers in Chitwan and Bardiya', 'from-juniper-500 to-juniper-950'],
-            ['paragliding', 'Pure adrenaline', 'Soar over Phewa Lake & Pokhara', 'from-glacier-300 to-glacier-500'],
-        ];
-        $activityUrls = collect($nav['activities'])->keyBy(fn ($a) => basename($a['url']));
-    @endphp
-    <section class="pb-24 lg:pb-32">
-        <div class="container-page flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <x-site.section-heading eyebrow="Travel by feeling" title="How do you want the mountains to <em>feel</em>?" />
-            <a href="{{ route('trips.index') }}" class="link-arrow shrink-0" data-reveal>Every journey <x-heroicon-m-arrow-right class="size-4" /></a>
-        </div>
-        <div class="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 sm:px-8 lg:px-[max(3rem,calc((100vw_-_90rem)/2_+_3rem))]">
-            @foreach ($moods as [$slug, $title, $line, $gradient])
-                @continue(! $activityUrls->has($slug))
-                <a href="{{ $activityUrls[$slug]['url'] }}" class="group relative flex aspect-[3/4] w-[78vw] shrink-0 snap-start flex-col justify-end overflow-hidden rounded-[2rem] bg-gradient-to-br {{ $gradient }} p-7 text-white sm:w-[22rem]" data-reveal>
-                    <div class="topo absolute inset-0 opacity-30 invert transition duration-1000 group-hover:scale-110"></div>
-                    <span class="absolute top-6 right-6 data rounded-full bg-white/15 px-3 py-1 backdrop-blur">{{ $activityUrls[$slug]['count'] }} {{ str('trip')->plural($activityUrls[$slug]['count']) }}</span>
-                    <h3 class="relative font-display text-4xl text-white">{{ $title }}</h3>
-                    <p class="relative mt-2 text-white/80">{{ $line }}</p>
-                    <span class="relative mt-6 inline-flex items-center gap-2 text-sm font-semibold">Explore <x-heroicon-m-arrow-right class="size-4 transition group-hover:translate-x-1" /></span>
-                </a>
-            @endforeach
-        </div>
-    </section>
-
-    {{-- ============================== SIGNATURE JOURNEYS ============================== --}}
-    @if ($signature->isNotEmpty())
-        <section class="bg-stone-200/50 py-24 lg:py-32">
-            <div class="container-page">
-                <x-site.section-heading eyebrow="Signature journeys" title="The trails our travellers love most" intro="Annapurna Base Camp, the Annapurna Circuit, Mardi Himal and Everest Base Camp — four classics we have walked hundreds of times, and still can't get enough of." />
-                <div class="mt-16 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-12">
-                    @foreach ($signature->values() as $k => $trip)
-                        <x-site.trip-card :trip="$trip" :size="in_array($k, [0, 3]) ? 'lg' : 'md'" class="{{ in_array($k, [0, 3]) ? 'lg:col-span-7' : 'lg:col-span-5 lg:pt-24' }}" data-reveal />
+    {{-- ============================== TRAVEL BY FEELING ============================== --}}
+    @if ($moods)
+        <section class="pb-24 lg:pb-36">
+            <div class="container-page flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                <x-site.section-heading eyebrow="Travel by feeling" title="How do you want the mountains to <em class='text-terracotta-500'>feel</em>?" />
+                <a href="{{ route('trips.index') }}" class="link-arrow shrink-0" data-reveal>Every journey <x-heroicon-m-arrow-right class="size-4" /></a>
+            </div>
+            <div class="container-page mt-14">
+                <div class="panels no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:-mx-8 sm:px-8 lg:mx-0 lg:overflow-visible lg:px-0 lg:pb-0" data-reveal>
+                    @foreach ($moods as $k => $mood)
+                        <a href="{{ $mood['url'] }}" class="group relative flex aspect-[3/4] w-[76vw] shrink-0 snap-start flex-col justify-end overflow-hidden rounded-[2rem] bg-juniper-900 text-white sm:w-[22rem] lg:aspect-auto lg:w-auto lg:shrink">
+                            <x-site.picture :media="$mood['media']" :alt="$mood['title']" sizes="(min-width: 1024px) 40vw, 76vw" class="absolute inset-0 h-full w-full transition duration-[1.6s] ease-(--ease-mountain) group-hover:scale-105" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-juniper-950/90 via-juniper-950/25 to-juniper-950/10"></div>
+                            <span class="data absolute top-5 right-5 rounded-full bg-white/15 px-3 py-1 backdrop-blur-md">{{ $mood['count'] }} {{ str('trip')->plural($mood['count']) }}</span>
+                            {{-- Collapsed (desktop): vertical title --}}
+                            <span class="panel-title-v absolute bottom-8 left-7 hidden rotate-180 font-display text-2xl whitespace-nowrap [writing-mode:vertical-rl] lg:block">{{ $mood['title'] }}</span>
+                            <div class="panel-copy relative p-7 lg:p-9">
+                                <span class="data text-saffron-300">0{{ $k + 1 }}</span>
+                                <h3 class="mt-2 font-display text-4xl text-white lg:text-5xl">{{ $mood['title'] }}</h3>
+                                <p class="mt-2 max-w-xs text-white/80">{{ $mood['line'] }}</p>
+                                <span class="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-juniper-900">Explore <x-heroicon-m-arrow-right class="size-4 transition group-hover:translate-x-1" /></span>
+                            </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
         </section>
     @endif
 
-    {{-- ============================== TRIP OF THE MONTH ============================== --}}
-    @php $featuredStory = $tripOfMonth ?? $topSeller; @endphp
-    @if ($featuredStory)
-        <section class="relative isolate overflow-hidden bg-juniper-900 text-stone-100">
-            <div class="grid lg:grid-cols-2">
-                <div class="relative min-h-[28rem] lg:min-h-[44rem]">
-                    <x-site.picture :model="$featuredStory" collection="hero" sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full" />
+    {{-- ============================== SIGNATURE JOURNEYS (carousel) ============================== --}}
+    @if ($signature->isNotEmpty())
+        <section class="overflow-hidden bg-stone-200/50 py-24 lg:py-32" data-carousel>
+            <div class="container-page flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+                <x-site.section-heading eyebrow="Signature journeys" title="The trails our travellers love most" intro="Classics we've walked hundreds of times — and still can't get enough of." />
+                <div class="flex shrink-0 items-center gap-3" data-reveal>
+                    <button type="button" data-prev class="flex size-14 items-center justify-center rounded-full border border-juniper-800/20 text-juniper-800 transition hover:bg-juniper-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-juniper-800" aria-label="Previous journeys"><x-heroicon-m-arrow-left class="size-5" /></button>
+                    <button type="button" data-next class="flex size-14 items-center justify-center rounded-full border border-juniper-800/20 text-juniper-800 transition hover:bg-juniper-800 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-juniper-800" aria-label="Next journeys"><x-heroicon-m-arrow-right class="size-5" /></button>
                 </div>
-                <div class="relative flex flex-col justify-center px-6 py-20 sm:px-12 lg:px-20">
-                    <div class="topo pointer-events-none absolute inset-0 opacity-30 invert"></div>
-                    <div class="relative max-w-xl" data-reveal>
-                        <p class="eyebrow eyebrow-light">{{ $tripOfMonth ? 'Trip of the month' : 'Our top-selling trek' }}</p>
-                        <h2 class="mt-6 font-display text-display-md text-stone-100">{{ $featuredStory->title }}</h2>
-                        <p class="mt-6 text-lg text-stone-300">{{ $featuredStory->excerpt }}</p>
-                        <dl class="mt-10 grid grid-cols-3 gap-6 border-y border-white/10 py-6">
-                            <div><dt class="text-xs uppercase tracking-[0.18em] text-stone-400">Duration</dt><dd class="mt-1 font-display text-2xl">{{ $featuredStory->duration_days ?? '—' }} days</dd></div>
-                            <div><dt class="text-xs uppercase tracking-[0.18em] text-stone-400">Max altitude</dt><dd class="mt-1 font-display text-2xl">{{ $featuredStory->max_altitude_m ? number_format($featuredStory->max_altitude_m).' m' : '—' }}</dd></div>
-                            <div><dt class="text-xs uppercase tracking-[0.18em] text-stone-400">Grade</dt><dd class="mt-1 font-display text-2xl">{{ $featuredStory->difficulty?->name ?? '—' }}</dd></div>
-                        </dl>
-                        <div class="mt-10 flex flex-wrap gap-3">
-                            <a href="{{ url($featuredStory->publicPath()) }}" class="btn-primary">Discover the journey <x-heroicon-m-arrow-right class="size-4" /></a>
-                            @if ($featuredStory->displayPrice())<span class="self-center text-stone-300">from <span class="font-display text-2xl text-white">US${{ number_format($featuredStory->displayPrice()) }}</span> pp</span>@endif
+            </div>
+
+            <div data-track class="rail no-scrollbar mt-14 flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 select-none active:cursor-grabbing" data-stagger>
+                @foreach ($signature as $trip)
+                    @php $price = $trip->displayPrice(); @endphp
+                    <a href="{{ url($trip->publicPath()) }}" class="group relative flex aspect-[3/4] w-[80vw] shrink-0 snap-start flex-col justify-end overflow-hidden rounded-[2rem] bg-juniper-900 text-white sm:w-[24rem] lg:w-[26rem]" draggable="false">
+                        <x-site.picture :model="$trip" collection="hero" sizes="(min-width: 1024px) 26rem, 80vw" class="pointer-events-none absolute inset-0 h-full w-full transition duration-[1.6s] ease-(--ease-mountain) group-hover:scale-[1.06]" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-juniper-950/95 via-juniper-950/30 to-transparent"></div>
+                        <div class="absolute inset-x-0 top-0 flex items-start justify-between p-5">
+                            <div class="flex flex-wrap gap-2">
+                                @if ($trip->is_fixed_departure)<span class="chip-light">Group departure</span>@endif
+                                @if ($trip->difficulty)<span class="chip-light">{{ $trip->difficulty->name }}</span>@endif
+                            </div>
+                            <span class="flex size-11 items-center justify-center rounded-full bg-white/15 backdrop-blur-md transition group-hover:bg-terracotta-500"><x-heroicon-m-arrow-up-right class="size-5" /></span>
                         </div>
+                        <div class="relative p-7">
+                            <p class="flex flex-wrap items-center gap-x-3 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/70">
+                                @if ($trip->destination)<span>{{ str_replace(' Region', '', $trip->destination->name) }}</span>@endif
+                                @if ($trip->duration_days)<span class="size-1 rounded-full bg-saffron-300"></span><span>{{ $trip->durationLabel() }}</span>@endif
+                                @if ($trip->max_altitude_m)<span class="size-1 rounded-full bg-saffron-300"></span><span>{{ number_format($trip->max_altitude_m) }} m</span>@endif
+                            </p>
+                            <h3 class="mt-3 font-display text-3xl leading-[1.1] text-white">{{ $trip->title }}</h3>
+                            <div class="mt-5 flex items-end justify-between border-t border-white/15 pt-4">
+                                <span class="text-sm text-white/70">{{ $price ? 'From' : 'Price' }}</span>
+                                <span class="font-display text-2xl">{{ $price ? 'US$'.number_format($price) : 'On request' }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+                <a href="{{ route('trips.index') }}" class="flex aspect-[3/4] w-[80vw] shrink-0 snap-start flex-col items-center justify-center gap-5 rounded-[2rem] border-2 border-dashed border-juniper-800/25 text-center text-juniper-800 transition hover:border-terracotta-500 hover:text-terracotta-500 sm:w-[24rem] lg:w-[26rem]">
+                    <span class="flex size-20 items-center justify-center rounded-full bg-juniper-800 text-white"><x-heroicon-m-arrow-right class="size-7" /></span>
+                    <span class="font-display text-3xl">All journeys</span>
+                    <span class="text-sm text-ink-soft">{{ $nav['activities'] ? collect($nav['activities'])->sum('count') : '' }} ways into the mountains</span>
+                </a>
+            </div>
+
+            <div class="container-page mt-10">
+                <div class="h-px w-full overflow-hidden bg-juniper-800/15"><div data-progress class="h-full origin-left bg-juniper-800 transition-transform duration-300" style="transform: scaleX(0.1)"></div></div>
+            </div>
+        </section>
+    @endif
+
+    {{-- ============================== FEATURE TRIP (immersive) ============================== --}}
+    @if ($featureTrip)
+        <section class="relative isolate flex min-h-[44rem] items-end overflow-hidden bg-juniper-950 py-16 text-white lg:min-h-[52rem] lg:items-center lg:py-24">
+            <div class="absolute inset-0 -z-10" data-parallax="0.12">
+                <x-site.picture :model="$featureTrip" collection="hero" sizes="100vw" class="h-full w-full" />
+            </div>
+            <div class="absolute inset-0 -z-10 bg-gradient-to-r from-juniper-950/85 via-juniper-950/40 to-transparent"></div>
+            <div class="container-page">
+                <div class="max-w-xl rounded-[2rem] border border-white/15 bg-juniper-950/40 p-8 backdrop-blur-xl sm:p-12" data-stagger>
+                    <p class="eyebrow eyebrow-light">{{ $isTripOfMonth ? 'Trip of the month' : 'Our top-selling trek' }}</p>
+                    <h2 class="mt-6 font-display text-display-md text-white">{{ $featureTrip->title }}</h2>
+                    <p class="mt-5 text-white/80">{{ str($featureTrip->excerpt)->limit(220) }}</p>
+                    <dl class="mt-8 grid grid-cols-3 gap-4 border-y border-white/15 py-6">
+                        <div><dt class="text-[0.65rem] uppercase tracking-[0.2em] text-white/55">Days</dt><dd class="mt-1 font-display text-3xl">{{ $featureTrip->duration_days ?? '—' }}</dd></div>
+                        <div><dt class="text-[0.65rem] uppercase tracking-[0.2em] text-white/55">High point</dt><dd class="mt-1 font-display text-3xl">{{ $featureTrip->max_altitude_m ? number_format($featureTrip->max_altitude_m) : '—' }}<span class="text-base"> m</span></dd></div>
+                        <div><dt class="text-[0.65rem] uppercase tracking-[0.2em] text-white/55">Grade</dt><dd class="mt-1 font-display text-3xl">{{ $featureTrip->difficulty?->name ?? '—' }}</dd></div>
+                    </dl>
+                    <div class="mt-8 flex flex-wrap items-center gap-5">
+                        <a href="{{ url($featureTrip->publicPath()) }}" class="btn-primary">Discover the journey <x-heroicon-m-arrow-right class="size-4" /></a>
+                        @if ($featureTrip->displayPrice())<span class="text-white/75">from <span class="font-display text-2xl text-white">US${{ number_format($featureTrip->displayPrice()) }}</span></span>@endif
                     </div>
                 </div>
             </div>
@@ -159,61 +259,65 @@
     {{-- ============================== REGIONS ============================== --}}
     @if ($regions->isNotEmpty())
         <section class="py-24 lg:py-36" x-data="{ r: 0 }">
-            <div class="container-page grid gap-14 lg:grid-cols-12">
+            <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-10">
                 <div class="lg:col-span-5">
-                    <x-site.section-heading eyebrow="Choose your mountains" title="Nepal, region by region" intro="Each valley has its own character — Sherpa villages and glaciers, rhododendron forests, Tibetan-Buddhist hidden valleys. Hover a region to explore." />
-                    <ul class="mt-12 divide-y divide-stone-300/70 border-y border-stone-300/70">
+                    <x-site.section-heading eyebrow="Choose your mountains" title="Nepal, valley by valley" intro="Sherpa villages and glaciers, rhododendron forests, Tibetan-Buddhist hidden valleys — each region has its own soul." />
+                    <ol class="mt-12 border-t border-stone-300/70">
                         @foreach ($regions as $k => $region)
-                            <li>
-                                <a href="{{ url($region->publicPath()) }}" class="group flex items-center justify-between gap-6 py-5"
-                                   x-on:mouseenter="r = {{ $k }}" x-on:focus="r = {{ $k }}">
-                                    <span class="flex items-baseline gap-4">
-                                        <span class="data text-stone-400" x-bind:class="r === {{ $k }} && '!text-terracotta-500'">{{ str_pad($k + 1, 2, '0', STR_PAD_LEFT) }}</span>
-                                        <span class="font-display text-3xl text-juniper-800 transition group-hover:translate-x-1 lg:text-4xl">{{ str_replace(' Region', '', $region->name) }}</span>
+                            <li class="border-b border-stone-300/70">
+                                <a href="{{ url($region->publicPath()) }}" class="group flex items-center gap-6 py-5" x-on:mouseenter="r = {{ $k }}" x-on:focus="r = {{ $k }}">
+                                    <span class="data w-8 text-stone-400 transition" x-bind:class="r === {{ $k }} && '!text-terracotta-500'">{{ str_pad($k + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                                    <span class="flex-1">
+                                        <span class="block font-display text-3xl text-juniper-800 transition-transform duration-500 ease-(--ease-mountain) lg:text-[2.6rem]" x-bind:class="r === {{ $k }} && 'translate-x-2 italic'">{{ str_replace(' Region', '', $region->name) }}</span>
+                                        <span class="grid transition-[grid-template-rows] duration-500 ease-(--ease-mountain)" x-bind:class="r === {{ $k }} ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+                                            <span class="overflow-hidden"><span class="block pt-1 text-sm text-ink-soft">{{ $region->tagline }}</span></span>
+                                        </span>
                                     </span>
-                                    <span class="flex items-center gap-3 text-sm text-ink-soft">{{ $region->trips_count }} {{ str('journey')->plural($region->trips_count) }}
-                                        <x-heroicon-m-arrow-up-right class="size-4 text-stone-400 transition group-hover:text-terracotta-500" /></span>
+                                    <span class="text-sm text-ink-soft">{{ $region->trips_count }}</span>
+                                    <span class="flex size-10 items-center justify-center rounded-full border border-stone-300 transition group-hover:border-terracotta-500 group-hover:bg-terracotta-500 group-hover:text-white"><x-heroicon-m-arrow-up-right class="size-4" /></span>
                                 </a>
                             </li>
                         @endforeach
-                    </ul>
+                    </ol>
                 </div>
-                <div class="relative lg:col-span-7">
-                    @foreach ($regions as $k => $region)
-                        @php $media = $region->getFirstMedia('hero') ?? $region->trips->first(fn ($t) => $t->hasMedia('hero'))?->getFirstMedia('hero'); @endphp
-                        <div class="lg:sticky lg:top-32" x-show="r === {{ $k }}" @if ($k > 0) x-cloak @endif
-                             x-transition:enter="transition duration-700 ease-out" x-transition:enter-start="opacity-0 scale-[0.98]" x-transition:enter-end="opacity-100 scale-100">
-                            <div class="relative aspect-[4/5] overflow-hidden img-organic sm:aspect-[5/4] lg:aspect-[4/5]">
-                                <x-site.picture :media="$media" :alt="$region->name" sizes="(min-width: 1024px) 55vw, 100vw" class="h-full w-full" />
+                <div class="relative hidden lg:col-span-6 lg:col-start-7 lg:block">
+                    <div class="sticky top-32 aspect-[4/5] overflow-hidden img-organic bg-juniper-900">
+                        @foreach ($regions as $k => $region)
+                            @php $media = $regionMedia[$region->id] ?? null; @endphp
+                            <div class="absolute inset-0 transition-[opacity,clip-path] duration-[1.1s] ease-(--ease-mountain)"
+                                 x-bind:style="r === {{ $k }} ? 'opacity:1; clip-path: inset(0 0 0 0)' : 'opacity:0; clip-path: inset(0 0 100% 0)'" @if ($k > 0) style="opacity:0" @endif>
+                                <x-site.picture :media="$media" :alt="$region->name" sizes="45vw" class="h-full w-full" />
                                 <div class="scrim-bottom absolute inset-0"></div>
-                                <div class="absolute inset-x-0 bottom-0 p-8 text-white sm:p-10">
-                                    @if ($region->tagline)<p class="eyebrow eyebrow-light">{{ $region->tagline }}</p>@endif
-                                    <p class="mt-4 max-w-lg text-white/90">{{ str($region->intro ?? strip_tags((string) $region->description))->limit(220) }}</p>
+                                <div class="absolute inset-x-0 bottom-0 p-10 text-white">
+                                    <p class="max-w-md text-white/90">{{ str($region->intro ?? strip_tags((string) $region->description))->limit(180) }}</p>
                                     @if ($region->highlights)
-                                        <ul class="mt-5 flex flex-wrap gap-2">
-                                            @foreach ($region->highlights as $h)<li class="chip-light">{{ $h }}</li>@endforeach
-                                        </ul>
+                                        <ul class="mt-5 flex flex-wrap gap-2">@foreach ($region->highlights as $h)<li class="chip-light">{{ $h }}</li>@endforeach</ul>
                                     @endif
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
-            @php $abroad = $countries->where('slug', '!=', 'nepal')->where('trips_count', '>', 0); @endphp
+            @php $abroad = $countries->where('slug', '!=', 'nepal')->where('trips_count', '>', 0)->values(); @endphp
             @if ($abroad->isNotEmpty())
-                <div @class(['container-page mt-20 grid gap-5', 'md:grid-cols-2' => $abroad->count() === 2, 'md:grid-cols-3' => $abroad->count() >= 3])>
-                    @foreach ($abroad as $country)
-                        <a href="{{ url($country->publicPath()) }}" class="group flex items-center justify-between rounded-[1.75rem] bg-stone-200/60 p-7 transition hover:bg-juniper-800 hover:text-stone-100" data-reveal>
-                            <span>
-                                <span class="block text-xs font-semibold uppercase tracking-[0.18em] text-stone-500 group-hover:text-saffron-300">Beyond Nepal</span>
-                                <span class="mt-2 block font-display text-3xl text-juniper-800 group-hover:text-stone-100">{{ $country->name }}</span>
-                                <span class="mt-1 block text-sm text-ink-soft group-hover:text-stone-300">{{ $country->tagline ?? $country->trips_count.' journeys' }}</span>
-                            </span>
-                            <x-heroicon-m-arrow-up-right class="size-6 shrink-0 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
-                        </a>
-                    @endforeach
+                <div class="container-page mt-20">
+                    <p class="eyebrow">Beyond Nepal</p>
+                    <div @class(['mt-6 grid gap-4', 'md:grid-cols-2' => $abroad->count() === 2, 'md:grid-cols-3' => $abroad->count() >= 3]) data-stagger>
+                        @foreach ($abroad as $country)
+                            @php $cm = $country->getFirstMedia('hero') ?? $country->trips()->published()->whereHas('media')->with('media')->first()?->getFirstMedia('hero'); @endphp
+                            <a href="{{ url($country->publicPath()) }}" class="group relative flex h-56 items-end overflow-hidden rounded-[1.75rem] bg-juniper-900 p-7 text-white">
+                                <x-site.picture :media="$cm" :alt="$country->name" sizes="33vw" class="absolute inset-0 h-full w-full transition duration-[1.4s] group-hover:scale-105" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-juniper-950/85 to-juniper-950/10"></div>
+                                <span class="relative">
+                                    <span class="block font-display text-4xl">{{ $country->name }}</span>
+                                    <span class="mt-1 block text-sm text-white/75">{{ $country->tagline ?? $country->trips_count.' journeys' }}</span>
+                                </span>
+                                <x-heroicon-m-arrow-up-right class="relative ml-auto size-6 shrink-0 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             @endif
         </section>
@@ -221,100 +325,105 @@
 
     {{-- ============================== GROUP DEPARTURES ============================== --}}
     @if ($departures->isNotEmpty() || $fixedTrips->isNotEmpty())
-        <section class="bg-stone-200/50 py-24 lg:py-32">
-            <div class="container-page">
-                <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                    <x-site.section-heading eyebrow="Fixed group departures" title="Travel solo, trek together" intro="Join a small, guaranteed group on set dates — shared costs, instant camaraderie and the same expert guiding as our private trips." />
-                    <a href="{{ route('departures') }}" class="btn-dark shrink-0" data-reveal>All departure dates</a>
+        <section class="relative overflow-hidden bg-juniper-800 py-24 text-stone-100 lg:py-32">
+            <div class="topo pointer-events-none absolute inset-0 opacity-20 invert"></div>
+            <div class="container-page relative">
+                <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+                    <x-site.section-heading light eyebrow="Fixed group departures" title="Travel solo, <em class='text-saffron-300'>trek together</em>" intro="Small, guaranteed groups on set dates — shared costs and the same expert guiding as our private journeys." />
+                    <a href="{{ route('departures') }}" class="btn-ghost-light shrink-0" data-reveal>All departure dates</a>
                 </div>
 
-                @if ($departures->isNotEmpty())
-                    <div class="mt-14 divide-y divide-stone-300/70 overflow-hidden rounded-[2rem] bg-stone-50 ring-1 ring-stone-300/60" data-reveal>
+                <div class="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3" data-stagger>
+                    @if ($departures->isNotEmpty())
                         @foreach ($departures as $d)
-                            <a href="{{ url($d->trip->publicPath()) }}#departures" class="group grid items-center gap-4 p-5 transition hover:bg-white sm:grid-cols-[7rem_1fr_auto_auto] sm:gap-8 sm:p-6">
-                                <div class="flex items-baseline gap-2 sm:block">
-                                    <p class="font-display text-4xl leading-none text-juniper-800">{{ $d->start_date->format('d') }}</p>
-                                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{{ $d->start_date->format('M Y') }}</p>
+                            <a href="{{ url($d->trip->publicPath()) }}?departure={{ $d->id }}#enquire" class="group relative flex overflow-hidden rounded-[1.75rem] bg-stone-100 text-ink transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-25px_rgba(0,0,0,0.6)]">
+                                <div class="flex w-28 shrink-0 flex-col items-center justify-center border-r-2 border-dashed border-stone-300 bg-saffron-300/30 px-3 py-6 text-center">
+                                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-terracotta-600">{{ $d->start_date->format('M') }}</span>
+                                    <span class="font-display text-5xl leading-none text-juniper-800">{{ $d->start_date->format('d') }}</span>
+                                    <span class="mt-1 text-xs text-stone-500">{{ $d->start_date->format('Y') }}</span>
                                 </div>
-                                <div>
-                                    <p class="font-display text-xl text-juniper-800 group-hover:underline">{{ $d->trip->title }}</p>
-                                    <p class="text-sm text-ink-soft">{{ $d->trip->destination?->name }} · {{ $d->trip->durationLabel() }}</p>
+                                <div class="flex min-w-0 flex-1 flex-col p-6">
+                                    <p class="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-stone-500">{{ $d->trip->destination?->name }} · {{ $d->trip->durationLabel() }}</p>
+                                    <h3 class="mt-2 font-display text-xl leading-snug text-juniper-800 group-hover:underline">{{ $d->trip->title }}</h3>
+                                    <div class="mt-auto flex items-end justify-between pt-5">
+                                        <span @class(['rounded-full px-2.5 py-1 text-xs font-semibold', 'bg-saffron-300/60 text-ink' => $d->seatsLeft() <= 3, 'bg-juniper-100 text-juniper-800' => $d->seatsLeft() > 3])>{{ $d->seatsLeft() }} seats left</span>
+                                        <span class="font-display text-2xl text-juniper-800">{{ $d->effectivePrice() ? 'US$'.number_format($d->effectivePrice()) : 'On request' }}</span>
+                                    </div>
                                 </div>
-                                <span class="chip w-max">{{ $d->seatsLeft() }} seats left</span>
-                                <span class="font-display text-2xl text-juniper-800">{{ $d->effectivePrice() ? 'US$'.number_format($d->effectivePrice()) : 'On request' }}</span>
                             </a>
                         @endforeach
-                    </div>
-                @else
-                    <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-                        @foreach ($fixedTrips->take(3) as $trip)
-                            <x-site.trip-card :trip="$trip" data-reveal />
-                        @endforeach
-                    </div>
-                @endif
+                    @else
+                        @foreach ($fixedTrips as $trip)<x-site.trip-card :trip="$trip" class="[&_h3]:!text-white [&_p]:!text-stone-300" />@endforeach
+                    @endif
+                </div>
             </div>
         </section>
     @endif
 
-    {{-- ============================== WHY US ============================== --}}
-    <section class="relative overflow-hidden py-24 lg:py-36">
-        <div class="container-page grid gap-16 lg:grid-cols-12">
-            <div class="lg:col-span-5">
-                <x-site.section-heading eyebrow="Why Wonder Himalaya" title="We are the trusted partner in the Himalaya" />
-                <div class="mt-10 flex items-center gap-5 rounded-[1.75rem] bg-stone-200/60 p-6" data-reveal>
-                    <div class="flex size-16 shrink-0 items-center justify-center rounded-full bg-[#34E0A1]/90">
-                        <svg viewBox="0 0 24 24" class="size-9" aria-hidden="true"><circle cx="7" cy="13" r="3.2" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="17" cy="13" r="3.2" fill="none" stroke="#000" stroke-width="1.6"/><circle cx="7" cy="13" r="1" /><circle cx="17" cy="13" r="1" /><path d="M3 9.5h3.2C8 8 10 7.3 12 7.3S16 8 17.8 9.5H21l-1.4 1.6" fill="none" stroke="#000" stroke-width="1.6"/></svg>
+    {{-- ============================== WHY US (bento) ============================== --}}
+    <section class="py-24 lg:py-36">
+        <div class="container-page">
+            <x-site.section-heading eyebrow="Why Wonder Himalaya" title="The trusted partner in the Himalaya" align="center" />
+            <div class="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-12 lg:grid-rows-2" data-stagger>
+                <div class="relative flex min-h-[24rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-juniper-900 p-8 text-white md:col-span-2 lg:col-span-6 lg:row-span-2 lg:p-12">
+                    @if ($collage->count() >= 3)
+                        <x-site.picture :model="$collage[2]" collection="hero" sizes="50vw" class="absolute inset-0 h-full w-full opacity-70" />
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-juniper-950 via-juniper-950/40 to-transparent"></div>
+                    <div class="relative">
+                        <span class="inline-flex items-center gap-2 rounded-full bg-[#34E0A1] px-3 py-1.5 text-xs font-bold text-ink"><x-heroicon-s-trophy class="size-4" /> Tripadvisor</span>
+                        <p class="mt-5 font-display text-4xl leading-tight lg:text-5xl">{{ $reviews['tripadvisor_award'] ?? "Travellers' Choice" }}</p>
+                        <p class="mt-3 max-w-md text-white/80">Officially recognised by travellers — a true reflection of the confidence people place in us, journey after journey.</p>
                     </div>
-                    <p class="text-ink-soft"><span class="block font-display text-xl text-juniper-800">Tripadvisor Travellers' Choice</span>Recognised by travellers, journey after journey.</p>
                 </div>
-                <a href="{{ url('/why-wonder-himalaya') }}" class="link-arrow mt-10" data-reveal>Why travel with us <x-heroicon-m-arrow-right class="size-4" /></a>
-            </div>
-            <div class="grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:col-span-7">
                 @foreach ([
-                    ['Guided by experts', 'Licensed, first-aid trained local guides who grew up on these trails — and who know exactly where the hidden gems are.', 'M4 34 16 14l8 12 6-8 14 16Z'],
-                    ['Sustainable travel', 'Fair wages and insurance for porters, local lodges and suppliers, and a firm leave-no-trace ethic on every trek.', 'M24 40c-8-4-14-11-14-20 7 0 12 3 14 9 2-6 7-9 14-9 0 9-6 16-14 20Z'],
-                    ['Tailored to you', 'Every itinerary can be adjusted — extra acclimatisation days, a lodge upgrade, a helicopter return or a festival detour.', 'M8 24h32M24 8v32M13 13l22 22M35 13 13 35'],
-                    ['Unrivalled hospitality', 'From airport pick-up to farewell dinner in Thamel, our team looks after you as family — 24/7 while you travel.', 'M10 22c0-8 6-12 14-12s14 4 14 12-6 16-14 18c-8-2-14-10-14-18Z'],
-                ] as [$title, $text, $path])
-                    <div data-reveal>
-                        <svg viewBox="0 0 48 48" class="size-14 text-terracotta-500" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="{{ $path }}" /></svg>
-                        <h3 class="mt-6 font-display text-2xl">{{ $title }}</h3>
-                        <p class="mt-3 text-ink-soft">{{ $text }}</p>
+                    ['Guided by experts', 'Licensed, first-aid trained local guides who grew up on these trails.', 'user-group', 'bg-stone-200/70'],
+                    ['Sustainable travel', 'Local guides and lodges, fair treatment of porters, and leave-no-trace on every trek.', 'globe-asia-australia', 'bg-saffron-300/35'],
+                    ['Tailored to you', 'Extra acclimatisation, lodge upgrades, a heli return — every itinerary bends to you.', 'adjustments-horizontal', 'bg-glacier-100'],
+                    ['24/7 hospitality', 'From airport pick-up to the farewell dinner, our Thamel office is always on call.', 'heart', 'bg-terracotta-500 text-white'],
+                ] as [$title, $text, $icon, $tone])
+                    <div class="flex min-h-[15rem] flex-col rounded-[2rem] p-8 lg:col-span-3 {{ $tone }}">
+                        <x-dynamic-component :component="'heroicon-o-'.$icon" class="size-9 {{ str_contains($tone, 'text-white') ? 'text-white' : 'text-terracotta-500' }}" />
+                        <h3 class="mt-auto pt-10 font-display text-2xl {{ str_contains($tone, 'text-white') ? '!text-white' : '' }}">{{ $title }}</h3>
+                        <p class="mt-2 {{ str_contains($tone, 'text-white') ? 'text-white/85' : 'text-ink-soft' }}">{{ $text }}</p>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
 
-    {{-- ============================== REVIEWS ============================== --}}
+    {{-- ============================== REVIEWS (double marquee) ============================== --}}
     @if ($testimonials->isNotEmpty())
-        <section class="overflow-hidden bg-juniper-800 py-24 text-stone-100 lg:py-32" x-data="{ s: 0, n: {{ $testimonials->count() }} }">
-            <div class="container-page">
-                <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-                    <x-site.section-heading light eyebrow="In their words" title="‘Memorable’, ‘exciting’, ‘unforgettable’" />
-                    <div class="flex items-center gap-3" data-reveal>
-                        <p class="mr-4 text-sm text-stone-300"><span class="font-display text-3xl text-white">{{ $reviews['google_label'] ?? 'Excellent' }}</span><br>{{ $reviews['google_count'] ?? 78 }} reviews on Google</p>
-                        <button type="button" class="flex size-12 items-center justify-center rounded-full border border-white/25 hover:bg-white hover:text-juniper-900" x-on:click="s = (s - 1 + n) % n" aria-label="Previous review"><x-heroicon-m-arrow-left class="size-5" /></button>
-                        <button type="button" class="flex size-12 items-center justify-center rounded-full border border-white/25 hover:bg-white hover:text-juniper-900" x-on:click="s = (s + 1) % n" aria-label="Next review"><x-heroicon-m-arrow-right class="size-5" /></button>
+        @php $rows = $testimonials->count() >= 6 ? $testimonials->split(2) : collect([$testimonials]); @endphp
+        <section class="overflow-hidden bg-stone-200/50 py-24 lg:py-32">
+            <div class="container-page flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+                <x-site.section-heading eyebrow="In their words" title="‘Memorable’, ‘exciting’, <em class='text-terracotta-500'>‘unforgettable’</em>" />
+                <a href="{{ route('reviews') }}" class="flex items-center gap-4 rounded-full bg-stone-50 py-2 pr-6 pl-2 ring-1 ring-stone-300/60 transition hover:ring-juniper-500" data-reveal>
+                    <span class="flex size-11 items-center justify-center rounded-full bg-white shadow-sm">
+                        <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.2-2.1 3.5-5.1 3.5-8.7z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 7.9-2.9l-3.9-3c-1.1.7-2.4 1.2-4 1.2-3.1 0-5.7-2.1-6.6-4.9H1.4v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.4 14.4a7.2 7.2 0 0 1 0-4.7V6.6h-4a12 12 0 0 0 0 10.8z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.4 6.6l4 3.1C6.3 6.9 8.9 4.8 12 4.8z"/></svg>
+                    </span>
+                    <span><span class="block font-display text-xl leading-none text-juniper-800">{{ $reviews['google_label'] ?? 'Excellent' }}</span><span class="text-xs text-ink-soft">{{ $reviews['google_count'] ?? 78 }} Google reviews · read all</span></span>
+                </a>
+            </div>
+            <div class="mt-14 space-y-5">
+                @foreach ($rows as $r => $row)
+                    <div @class(['marquee', 'marquee--reverse' => $r === 1]) style="--speed: {{ 70 + $r * 15 }}s; --gap: 1.25rem">
+                        @for ($copy = 0; $copy < 2; $copy++)
+                            <div class="marquee__track" @if ($copy) aria-hidden="true" @endif>
+                                @foreach ($row as $t)
+                                    <figure class="flex w-[22rem] shrink-0 flex-col rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60 sm:w-[26rem]">
+                                        <div class="flex gap-0.5 text-saffron-500">@for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-4" />@endfor</div>
+                                        <blockquote class="mt-4 line-clamp-5 text-ink-soft">“{{ $t->body }}”</blockquote>
+                                        <figcaption class="mt-auto flex items-center gap-3 pt-6">
+                                            <span class="flex size-10 items-center justify-center rounded-full bg-juniper-800 font-display text-stone-100">{{ str($t->author_name)->substr(0, 1)->upper() }}</span>
+                                            <span><span class="block text-sm font-semibold text-juniper-800">{{ $t->author_name }}</span><span class="block text-xs text-stone-500">{{ $t->author_country ?? ucfirst($t->source).' review' }}</span></span>
+                                        </figcaption>
+                                    </figure>
+                                @endforeach
+                            </div>
+                        @endfor
                     </div>
-                </div>
-                <div class="relative mt-16 min-h-[22rem] sm:min-h-[18rem]">
-                    @foreach ($testimonials as $k => $t)
-                        <figure class="absolute inset-0 grid gap-10 lg:grid-cols-12" x-show="s === {{ $k }}" @if ($k > 0) x-cloak @endif
-                                x-transition:enter="transition duration-700 ease-out" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
-                            <blockquote class="font-display text-2xl leading-snug text-white sm:text-3xl lg:col-span-9 lg:text-[2.4rem]">
-                                <span class="text-saffron-300">“</span>{{ str($t->body)->limit(420) }}<span class="text-saffron-300">”</span>
-                            </blockquote>
-                            <figcaption class="lg:col-span-3 lg:border-l lg:border-white/15 lg:pl-8">
-                                <div class="flex gap-0.5 text-saffron-300" aria-label="{{ $t->rating }} out of 5 stars">
-                                    @for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-5" />@endfor
-                                </div>
-                                <p class="mt-4 font-semibold text-white">{{ $t->author_name }}</p>
-                                <p class="text-sm text-stone-300">{{ $t->author_country ?? ucfirst($t->source).' review' }}</p>
-                            </figcaption>
-                        </figure>
-                    @endforeach
-                </div>
+                @endforeach
             </div>
         </section>
     @endif
@@ -327,10 +436,22 @@
                     <x-site.section-heading eyebrow="The Journal" title="Notes from the trail" />
                     <a href="{{ route('blog.index') }}" class="link-arrow shrink-0" data-reveal>All stories <x-heroicon-m-arrow-right class="size-4" /></a>
                 </div>
-                <div class="mt-14 grid gap-10 md:grid-cols-3">
-                    @foreach ($posts as $post)
-                        <x-site.post-card :post="$post" data-reveal />
-                    @endforeach
+                <div class="mt-14 grid gap-10 lg:grid-cols-12">
+                    <x-site.post-card :post="$posts[0]" large class="lg:col-span-7" data-reveal />
+                    <div class="grid gap-10 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1" data-stagger>
+                        @foreach ($posts->slice(1) as $post)
+                            <article class="group grid grid-cols-[8rem_1fr] items-center gap-5 sm:grid-cols-1 lg:grid-cols-[11rem_1fr]">
+                                <a href="{{ url($post->publicPath()) }}" class="block aspect-square overflow-hidden rounded-[1.5rem] sm:aspect-[4/3] lg:aspect-square">
+                                    <x-site.picture :model="$post" collection="hero" sizes="12rem" class="h-full w-full transition duration-[1.4s] group-hover:scale-105" />
+                                </a>
+                                <div>
+                                    @if ($post->category)<p class="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-terracotta-500">{{ $post->category->name }}</p>@endif
+                                    <h3 class="mt-2 font-display text-xl leading-snug text-juniper-800"><a href="{{ url($post->publicPath()) }}" class="group-hover:underline">{{ $post->title }}</a></h3>
+                                    @if ($post->reading_minutes)<p class="mt-2 text-sm text-stone-500">{{ $post->reading_minutes }} min read</p>@endif
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </section>

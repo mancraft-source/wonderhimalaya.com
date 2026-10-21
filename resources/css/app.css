@@ -146,3 +146,79 @@
 .js [data-reveal] { opacity: 0; transform: translateY(1.5rem); transition: opacity 0.9s var(--ease-mountain), transform 0.9s var(--ease-mountain); }
 .js [data-reveal].is-visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .js [data-reveal] { opacity: 1; transform: none; } }
+
+/* ------------------------------------------------------------------
+ | Motion system (homepage & editorial sections). Vanilla CSS + app.js.
+ * ------------------------------------------------------------------ */
+
+/* Staggered reveal: set --d (index) on children of [data-stagger]. */
+.js [data-stagger] > * { opacity: 0; transform: translateY(1.75rem); transition: opacity 1s var(--ease-mountain), transform 1s var(--ease-mountain); transition-delay: calc(var(--d, 0) * 90ms); }
+.js [data-stagger].is-visible > * { opacity: 1; transform: none; }
+
+/* Word-by-word headline reveal (words wrapped server-side in .w > span). */
+.split .w { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.split .w > span { display: inline-block; transform: translateY(105%); animation: word-up 1.1s var(--ease-mountain) forwards; animation-delay: calc(var(--i, 0) * 70ms + 200ms); }
+@keyframes word-up { to { transform: translateY(0); } }
+
+/* Image clip reveal when scrolled into view. */
+.js [data-clip] { clip-path: inset(12% 12% 12% 12% round 2rem); transition: clip-path 1.4s var(--ease-mountain); }
+.js [data-clip].is-visible { clip-path: inset(0 0 0 0 round 2rem); }
+.js [data-clip] img { transform: scale(1.18); transition: transform 1.8s var(--ease-mountain); }
+.js [data-clip].is-visible img { transform: scale(1); }
+
+/* Hero slideshow: slow zoom on the active slide + progress bars. */
+.hero-slide { opacity: 0; transition: opacity 1.6s ease; }
+.hero-slide.is-active { opacity: 1; }
+.hero-slide img { transform: scale(1.12); }
+.hero-slide.is-active img { animation: hero-zoom 9s linear forwards; }
+@keyframes hero-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+.hero-progress > span { transform-origin: left; transform: scaleX(0); }
+.hero-progress.is-active > span { animation: hero-bar var(--slide-ms, 7000ms) linear forwards; }
+.hero-progress.is-done > span { transform: scaleX(1); }
+@keyframes hero-bar { to { transform: scaleX(1); } }
+
+/* Infinite marquee (duplicate the track content once). */
+.marquee { display: flex; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee__track { display: flex; flex-shrink: 0; min-width: 100%; gap: var(--gap, 3rem); padding-right: var(--gap, 3rem); animation: marquee var(--speed, 40s) linear infinite; }
+.marquee--reverse .marquee__track { animation-direction: reverse; }
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-100%); } }
+
+/* Expanding mood panels (desktop). */
+@media (min-width: 1024px) {
+    .panels { display: flex; gap: 0.75rem; height: 34rem; }
+    .panels > a { flex: 1 1 0; min-width: 0; transition: flex-grow 0.9s var(--ease-mountain); }
+    .panels:hover > a { flex-grow: 0.8; }
+    .panels > a:hover, .panels > a:focus-visible { flex-grow: 3.2; }
+    .panels > a .panel-copy { opacity: 0; transform: translateY(1rem); transition: opacity 0.5s ease 0.15s, transform 0.6s var(--ease-mountain) 0.15s; }
+    .panels > a:hover .panel-copy, .panels > a:focus-visible .panel-copy, .panels:not(:hover) > a:first-child .panel-copy { opacity: 1; transform: none; }
+    .panels:not(:hover) > a:first-child { flex-grow: 3.2; }
+    .panels > a .panel-title-v { transition: opacity 0.4s ease; }
+    .panels > a:hover .panel-title-v, .panels:not(:hover) > a:first-child .panel-title-v { opacity: 0; }
+}
+
+/* Scroll cue. */
+@keyframes cue { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(220%); } }
+.scroll-cue > span { animation: cue 2.2s var(--ease-mountain) infinite; }
+
+/* Slowly rotating badge text. */
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.spin-slow { animation: spin-slow 28s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+    .js [data-stagger] > * { opacity: 1; transform: none; }
+    .split .w > span { transform: none; animation: none; }
+    .js [data-clip] { clip-path: none; }
+    .js [data-clip] img { transform: none; }
+    .hero-slide.is-active img { animation: none; transform: none; }
+    .marquee__track { animation: none; }
+    .spin-slow, .scroll-cue > span { animation: none; }
+}
+
+/* Parallax layers bleed beyond their frame so no edge shows while moving. */
+[data-parallax].absolute.inset-0 { top: -10%; bottom: -10%; }
+
+/* Edge-aligned horizontal rails: first card lines up with the page container. */
+.rail { --edge: 1.25rem; padding-inline: var(--edge); scroll-padding-inline: var(--edge); }
+@media (min-width: 640px) { .rail { --edge: 2rem; } }
+@media (min-width: 1024px) { .rail { --edge: max(3rem, calc((100vw - 90rem) / 2 + 3rem)); } }
