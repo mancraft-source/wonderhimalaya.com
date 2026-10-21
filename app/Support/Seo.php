@@ -60,6 +60,11 @@ final class Seo
             return $brand.' — Treks, Tours & Expeditions in the Himalaya';
         }
 
-        return str_contains($this->title, $brand) ? $this->title : $this->title.' | '.$brand;
+        if (str_contains($this->title, $brand)) {
+            return $this->title;
+        }
+
+        // Keep titles within ~65 characters for search results: drop the brand suffix on long titles.
+        return mb_strlen($this->title.' | '.$brand) <= 65 ? $this->title.' | '.$brand : str($this->title)->limit(65, '…')->toString();
     }
 }

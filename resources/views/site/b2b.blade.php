@@ -98,7 +98,7 @@
                     <div class="flex gap-3"><x-heroicon-o-envelope class="size-5 text-saffron-300" /><dd>{{ \App\Models\Setting::get('company.email') }}</dd></div>
                 </dl>
             </div>
-            <div class="lg:col-span-8"><livewire:partner-form /></div>
+            <div class="min-w-0 lg:col-span-8"><livewire:partner-form /></div>
         </div>
     </section>
 </x-layouts.site>

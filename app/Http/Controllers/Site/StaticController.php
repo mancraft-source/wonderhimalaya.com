@@ -53,7 +53,7 @@ class StaticController extends Controller
         $q = $request->string('q')->trim()->limit(80, '')->toString();
         $like = '%'.$q.'%';
 
-        $seo = Seo::make($q !== '' ? 'Search: '.$q : 'Search');
+        $seo = Seo::make($q !== '' ? 'Search: '.$q : 'Search', 'Search Wonder Himalaya treks, tours, destinations and travel guides across Nepal, Tibet and Bhutan.');
         $seo->noindex = true;
 
         return view('site.search', [

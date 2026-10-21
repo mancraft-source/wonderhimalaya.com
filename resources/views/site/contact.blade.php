@@ -16,7 +16,7 @@
             @endforeach
             @if (! empty($c['hours']))<p class="px-2 text-sm text-ink-soft">Office hours: {{ $c['hours'] }}</p>@endif
         </div>
-        <div class="lg:col-span-8"><livewire:contact-form /></div>
+        <div class="min-w-0 lg:col-span-8"><livewire:contact-form /></div>
     </section>
     <section class="container-page pb-10">
         <div class="overflow-hidden rounded-[2rem] ring-1 ring-stone-300/60">

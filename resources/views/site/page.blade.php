@@ -19,7 +19,17 @@
     @if (in_array($template, ['guide', 'legal'], true) && $siblings->isNotEmpty())
         <div class="container-page grid gap-14 py-16 lg:grid-cols-12 lg:py-20">
             <aside class="lg:col-span-3">
-                <nav class="lg:sticky lg:top-32" aria-label="{{ $page->parent?->title ?? $page->title }}">
+                <details class="group rounded-2xl bg-stone-50 ring-1 ring-stone-300/60 lg:hidden">
+                    <summary class="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-sm font-semibold text-juniper-800 [&::-webkit-details-marker]:hidden">
+                        In this section: {{ $page->title }} <x-heroicon-m-chevron-down class="size-4 transition group-open:rotate-180" />
+                    </summary>
+                    <ul class="space-y-1 px-5 pb-4">
+                        @foreach ($siblings as $s)
+                            <li><a href="{{ url($s->publicPath()) }}" @class(['block py-1.5 text-[0.95rem]', 'font-semibold text-terracotta-500' => $s->id === $page->id, 'text-ink-soft' => $s->id !== $page->id])>{{ $s->title }}</a></li>
+                        @endforeach
+                    </ul>
+                </details>
+                <nav class="hidden lg:sticky lg:top-32 lg:block" aria-label="{{ $page->parent?->title ?? $page->title }}">
                     <p class="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{{ $page->parent?->title ?? 'In this section' }}</p>
                     <ul class="mt-4 space-y-1 border-l border-stone-300/70">
                         @foreach ($siblings as $s)

@@ -11,7 +11,7 @@
             @if ($crumbs)<x-site.breadcrumbs :items="$crumbs" light />@endif
             @if ($eyebrow)<p class="eyebrow eyebrow-light mt-6">{{ $eyebrow }}</p>@endif
             <h1 class="mt-5 max-w-5xl font-display text-display-lg text-white">{!! $title !!}</h1>
-            @if ($intro)<p class="mt-6 max-w-2xl text-lg text-white/85">{{ $intro }}</p>@endif
+            @if ($intro)<p class="mt-6 line-clamp-4 max-w-2xl text-lg text-white/85 sm:line-clamp-none">{{ $intro }}</p>@endif
             {{ $slot }}
         </div>
     </section>
