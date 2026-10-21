@@ -222,3 +222,8 @@
 .rail { --edge: 1.25rem; padding-inline: var(--edge); scroll-padding-inline: var(--edge); }
 @media (min-width: 640px) { .rail { --edge: 2rem; } }
 @media (min-width: 1024px) { .rail { --edge: max(3rem, calc((100vw - 90rem) / 2 + 3rem)); } }
+
+/* Footer panorama: birds drift slowly across the sky. */
+@keyframes birds-drift { 0% { transform: translate3d(-6%, 0, 0); } 50% { transform: translate3d(4%, -3%, 0); } 100% { transform: translate3d(14%, 0, 0); } }
+.mountain-birds { animation: birds-drift 38s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) { .mountain-birds { animation: none; } }

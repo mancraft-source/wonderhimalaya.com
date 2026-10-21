@@ -3,7 +3,8 @@
     $email = $company['email'] ?? 'info@wonderhimalaya.com';
     $socialIcons = ['facebook' => 'Facebook', 'instagram' => 'Instagram', 'tripadvisor' => 'Tripadvisor', 'tiktok' => 'TikTok', 'youtube' => 'YouTube', 'twitter' => 'X'];
 @endphp
-<footer class="relative mt-24 overflow-hidden bg-juniper-900 text-stone-200">
+<x-site.mountain-divider class="mt-16 -mb-px lg:mt-24" />
+<footer class="relative overflow-hidden bg-juniper-900 text-stone-200">
     <div class="topo pointer-events-none absolute inset-0 opacity-[0.35] invert" aria-hidden="true"></div>
 
     {{-- Closing call to action (hidden on transactional pages) --}}
