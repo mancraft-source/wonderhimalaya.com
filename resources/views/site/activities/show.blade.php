@@ -11,7 +11,7 @@
     @if ($activity->description && strlen(strip_tags($activity->description)) > 240)
         <section class="container-page grid gap-12 py-20 lg:grid-cols-12">
             <div class="lg:col-span-4"><p class="eyebrow">About {{ strtolower($activity->name) }}</p></div>
-            <div class="prose prose-lg prose-wh lg:col-span-8">{!! $activity->description !!}</div>
+            <div class="prose prose-lg prose-wh lg:col-span-8">{!! \App\Support\RichText::normalize($activity->description) !!}</div>
         </section>
     @endif
 

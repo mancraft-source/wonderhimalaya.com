@@ -286,3 +286,19 @@
     .js [data-draw] .draw-fade, .js [data-draw] .summit-flag { opacity: 1; transform: none; }
     .summit-flag__cloth, .gear-float { animation: none; }
 }
+
+/* ------------------------------------------------------------------
+ | Long-form guide pages (normalised by App\Support\RichText).
+ * ------------------------------------------------------------------ */
+.prose-guide :is(h2, h3)[id] { scroll-margin-top: 8rem; }
+.prose-guide .prose h2 { margin-top: 2.4em; padding-top: 1.6em; border-top: 1px solid rgb(31 58 51 / 0.12); }
+.prose-guide section:first-child .prose > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.prose-guide .prose h3 { display: flex; align-items: center; gap: 0.75rem; }
+.prose-guide .prose h3::before { content: ''; flex: none; width: 0.5rem; height: 0.5rem; rotate: 45deg; background: var(--color-terracotta-500); }
+.prose-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin-block: 2.25rem; }
+.prose-gallery img { width: 100%; height: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 1.5rem; margin: 0; }
+.prose-gallery img:nth-child(3n + 3):last-child { grid-column: span 2; aspect-ratio: 16 / 9; }
+.prose blockquote.callout { position: relative; margin-block: 2.5rem; padding: 2rem 2rem 2rem 2.25rem; border: 0; border-radius: 1.75rem; background: var(--color-juniper-900); color: var(--color-stone-100); font-family: var(--font-display); font-style: normal; font-size: 1.35rem; line-height: 1.5; quotes: none; }
+.prose blockquote.callout::before { content: ''; position: absolute; inset-block: 2rem; left: 0; width: 3px; border-radius: 3px; background: var(--color-saffron-300); }
+.prose blockquote.callout p { margin: 0; color: inherit; }
+.prose blockquote.callout p::before, .prose blockquote.callout p::after { content: none; }

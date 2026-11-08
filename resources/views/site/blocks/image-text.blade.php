@@ -5,7 +5,7 @@
         <div>
             @if (! empty($data['eyebrow']))<p class="eyebrow">{{ $data['eyebrow'] }}</p>@endif
             @if (! empty($data['heading']))<h2 class="mt-5 font-display text-display-sm">{{ $data['heading'] }}</h2>@endif
-            @if (! empty($data['content']))<div class="prose prose-lg prose-wh mt-6">{!! $data['content'] !!}</div>@endif
+            @if (! empty($data['content']))<div class="prose prose-lg prose-wh mt-6">{!! \App\Support\RichText::normalize($data['content']) !!}</div>@endif
             @if (! empty($data['cta_label']) && ! empty($data['cta_url']))<a href="{{ $data['cta_url'] }}" class="link-arrow mt-8">{{ $data['cta_label'] }} <x-heroicon-m-arrow-right class="size-4" /></a>@endif
         </div>
     </div>

@@ -21,7 +21,7 @@
                     @endforeach
                 </ul>
             @endif
-            @if ($member->bio)<div class="prose prose-lg prose-wh mt-10">{!! $member->bio !!}</div>@endif
+            @if ($member->bio)<div class="prose prose-lg prose-wh mt-10">{!! \App\Support\RichText::normalize($member->bio) !!}</div>@endif
             @if ($member->praise || $member->quotes)
                 <section class="mt-14">
                     <p class="eyebrow">Guest stories</p>

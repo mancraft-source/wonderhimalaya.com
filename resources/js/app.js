@@ -225,6 +225,23 @@ function initAltimeter() {
     render();
 }
 
+/* ------------------------------------------------------------------
+ | "On this page" index: highlight the section being read.
+ * ------------------------------------------------------------------ */
+function initToc(nav) {
+    const links = [...nav.querySelectorAll('[data-toc-link]')];
+    const targets = links.map((a) => document.getElementById(a.hash.slice(1))).filter(Boolean);
+    if (!targets.length) return;
+    const update = () => {
+        const line = window.innerHeight * 0.3;
+        let current = targets[0];
+        targets.forEach((t) => { if (t.getBoundingClientRect().top <= line) current = t; });
+        links.forEach((a) => a.toggleAttribute('data-active', a.hash === `#${current.id}`));
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+}
+
 function boot() {
     observeReveals();
     document.querySelectorAll('[data-count]').forEach((el) => countObserver.observe(el));
@@ -233,6 +250,7 @@ function boot() {
     initParallax();
     initHeader();
     initAltimeter();
+    document.querySelectorAll('[data-toc]').forEach(initToc);
 }
 
 if (document.readyState === 'loading') {

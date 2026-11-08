@@ -16,7 +16,7 @@
             </figure>
         @endif
         <div class="container-page mt-14 grid gap-14 lg:grid-cols-12">
-            <div class="prose prose-lg prose-wh lg:col-span-8 lg:col-start-2">{!! $post->body !!}</div>
+            <div class="prose prose-lg prose-wh lg:col-span-8 lg:col-start-2">{!! \App\Support\RichText::normalize($post->body) !!}</div>
             <aside class="lg:col-span-3">
                 <div class="space-y-8 lg:sticky lg:top-32">
                     @if ($post->tags->isNotEmpty())

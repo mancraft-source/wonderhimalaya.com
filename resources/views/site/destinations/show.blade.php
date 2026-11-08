@@ -17,7 +17,7 @@
     @if ($destination->description && strlen(strip_tags($destination->description)) > 260)
         <section class="container-page grid gap-12 py-20 lg:grid-cols-12">
             <div class="lg:col-span-4"><p class="eyebrow">About {{ str_replace(' Region', '', $destination->name) }}</p></div>
-            <div class="prose prose-lg prose-wh lg:col-span-8">{!! $destination->description !!}</div>
+            <div class="prose prose-lg prose-wh lg:col-span-8">{!! \App\Support\RichText::normalize($destination->description) !!}</div>
         </section>
     @endif
 
