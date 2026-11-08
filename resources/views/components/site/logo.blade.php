@@ -6,7 +6,7 @@
          alt="Wonder Himalaya — Trekking, Tour, Expedition, Heli" width="160" height="160"
          @class([
              'w-auto transition-[height] duration-500 ease-(--ease-mountain)',
-             'h-16 lg:h-[4.6rem] group-data-[scrolled]/header:lg:h-16' => $size === 'md',
+             'h-[4.5rem] lg:h-[5.75rem] group-data-[scrolled]/header:h-16 group-data-[scrolled]/header:lg:h-[4.25rem]' => $size === 'md',
              'h-24 lg:h-28' => $size === 'lg',
              'drop-shadow-[0_6px_18px_rgba(0,0,0,0.35)]' => $light,
          ])>
