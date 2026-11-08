@@ -36,4 +36,10 @@ class TeamMember extends Model implements HasMedia
     {
         return '/our-team/'.$this->slug;
     }
+
+    /** @return array<string, string|int|float|null> */
+    protected function seoExtraVariables(): array
+    {
+        return ['role' => $this->role];
+    }
 }

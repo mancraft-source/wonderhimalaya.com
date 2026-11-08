@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Activities\Tables;
 
+use App\Filament\Support\SeoFields;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -25,7 +26,9 @@ class ActivitiesTable
                 TextColumn::make('slug')->searchable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('trips_count')->label('Trips')->sortable(),
                 IconColumn::make('is_featured')->label('Featured')->boolean(),
+                SeoFields::scoreColumn(),
             ])
+            ->filters([SeoFields::scoreFilter()])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }

@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Destinations\Schemas;
 
 use App\Filament\Support\FormHelpers;
+use App\Filament\Support\SeoFields;
+use App\Models\Destination;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -40,7 +42,7 @@ class DestinationForm
                             ->defaultItems(0)
                             ->columnSpanFull(),
                     ]),
-                    FormHelpers::seoSection(),
+                    SeoFields::section(Destination::class),
                 ]),
                 Group::make()->schema([
                     Section::make()->schema([

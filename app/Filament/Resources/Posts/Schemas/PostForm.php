@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Posts\Schemas;
 
 use App\Enums\PublishStatus;
 use App\Filament\Support\ContentFields;
+use App\Filament\Support\SeoFields;
+use App\Models\Post;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -37,7 +39,7 @@ class PostForm
                                 ->fileAttachmentsDirectory('posts')
                                 ->fileAttachmentsVisibility('public'),
                         ]),
-                    ContentFields::seoSection(),
+                    SeoFields::section(Post::class),
                 ])->columnSpan(['lg' => 2]),
 
                 Group::make([

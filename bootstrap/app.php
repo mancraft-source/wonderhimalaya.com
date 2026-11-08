@@ -5,6 +5,7 @@ use App\Http\Middleware\CaptureAttribution;
 use App\Http\Middleware\ContentSecurityPolicy;
 use App\Http\Middleware\EnsureApiUserIsActive;
 use App\Http\Middleware\SecurityHeaders;
+use App\Models\NotFoundLog;
 use App\Support\RedirectResolver;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -42,10 +43,18 @@ return Application::configure(basePath: dirname(__DIR__))
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
 
-        // Managed 301s (migrated WordPress URLs, renamed slugs) before showing a 404.
+        // Managed 301s (migrated WordPress URLs, renamed slugs) before showing a 404; real 404s go to SEO → 404 monitor.
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if (! $request->is('api/*', 'admin*', 'livewire*')) {
-                return RedirectResolver::for($request);
+            if ($request->is('api/*', 'admin*', 'livewire*')) {
+                return null;
             }
+
+            $redirect = RedirectResolver::for($request);
+
+            if (! $redirect) {
+                NotFoundLog::record($request);
+            }
+
+            return $redirect;
         });
     })->create();

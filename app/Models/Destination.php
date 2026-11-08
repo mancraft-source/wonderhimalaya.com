@@ -46,4 +46,10 @@ class Destination extends Model implements HasMedia
     {
         return '/destination/'.$this->slug;
     }
+
+    /** @return array<string, string|int|float|null> */
+    protected function seoExtraVariables(): array
+    {
+        return ['parent' => $this->parent_id ? $this->seoRelated('parent') : null];
+    }
 }

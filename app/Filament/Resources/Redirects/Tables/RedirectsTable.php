@@ -3,15 +3,19 @@
 namespace App\Filament\Resources\Redirects\Tables;
 
 use App\Filament\Resources\Redirects\Schemas\RedirectForm;
+use App\Models\Redirect;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class RedirectsTable
 {
@@ -60,6 +64,16 @@ class RedirectsTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('activate')
+                        ->label('Activate selected')
+                        ->icon(Heroicon::OutlinedCheckCircle)
+                        ->action(fn (Collection $records) => Redirect::whereKey($records->modelKeys())->update(['is_active' => true]))
+                        ->deselectRecordsAfterCompletion(),
+                    BulkAction::make('deactivate')
+                        ->label('Pause selected')
+                        ->icon(Heroicon::OutlinedPauseCircle)
+                        ->action(fn (Collection $records) => Redirect::whereKey($records->modelKeys())->update(['is_active' => false]))
+                        ->deselectRecordsAfterCompletion(),
                     DeleteBulkAction::make(),
                 ]),
             ]);

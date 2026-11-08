@@ -244,4 +244,19 @@ class Trip extends Model implements HasMedia
     {
         return url($this->publicPath());
     }
+
+    /** @return array<string, string|int|float|null> */
+    protected function seoExtraVariables(): array
+    {
+        $price = $this->sale_price ?: $this->price_from;
+
+        return [
+            'duration' => $this->duration_days ? $this->duration_days.' Days' : null,
+            'price' => $price ? ($this->currency === 'USD' || ! $this->currency ? 'US$' : $this->currency.' ').number_format((float) $price) : null,
+            'destination' => str_replace(' Region', '', (string) $this->seoRelated('destination')) ?: null,
+            'difficulty' => $this->seoRelated('difficulty'),
+            'max_altitude' => $this->max_altitude_m ? number_format($this->max_altitude_m).' m' : null,
+            'trip_code' => $this->trip_code,
+        ];
+    }
 }

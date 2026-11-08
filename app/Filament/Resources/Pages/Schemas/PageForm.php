@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Pages\Schemas;
 use App\Enums\PublishStatus;
 use App\Filament\Support\ContentEditorFields;
 use App\Filament\Support\ContentFields;
+use App\Filament\Support\SeoFields;
 use App\Models\Activity;
 use App\Models\Destination;
 use App\Models\Page;
@@ -90,7 +91,7 @@ class PageForm
                     Section::make('Content blocks')
                         ->hidden(fn (Get $get): bool => self::isDesigned($get('template')))
                         ->schema([self::blocks()]),
-                    ContentFields::seoSection(),
+                    SeoFields::section(Page::class),
                 ])->columnSpan(['lg' => 2]),
 
                 Group::make([

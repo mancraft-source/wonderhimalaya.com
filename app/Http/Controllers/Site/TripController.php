@@ -22,9 +22,15 @@ class TripController extends Controller
 
     public function index(Request $request): View
     {
-        return view('site.trips.index', [
-            'seo' => Seo::make('All treks, tours & expeditions', 'Browse every Wonder Himalaya journey — guided treks, peak climbs, heli tours, safaris and cultural tours across Nepal, Tibet and Bhutan. Filter by region, style, duration and difficulty.'),
-        ]);
+        $seo = Seo::make('All treks, tours & expeditions', 'Browse every Wonder Himalaya journey — guided treks, peak climbs, heli tours, safaris and cultural tours across Nepal, Tibet and Bhutan. Filter by region, style, duration and difficulty.');
+
+        // Filtered/sorted variants would be near-duplicates of the listing: canonicalise them and keep them out of the index.
+        if ($request->query->count() > 0) {
+            $seo->canonical = route('trips.index');
+            $seo->noindexFollow();
+        }
+
+        return view('site.trips.index', ['seo' => $seo]);
     }
 
     public function show(string $slug): View

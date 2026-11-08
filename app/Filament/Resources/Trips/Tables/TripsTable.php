@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Trips\Tables;
 
 use App\Enums\PublishStatus;
 use App\Filament\Resources\Trips\TripResource;
+use App\Filament\Support\SeoFields;
 use App\Models\Trip;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -71,8 +72,10 @@ class TripsTable
                 IconColumn::make('is_fixed_departure')->label('Fixed dep.')->boolean()->trueIcon(Heroicon::CalendarDays)->falseIcon(false)->toggleable(),
                 TextColumn::make('difficulty.name')->label('Difficulty')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')->since()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                SeoFields::scoreColumn(),
             ])
             ->filters([
+                SeoFields::scoreFilter(),
                 SelectFilter::make('status')->options(PublishStatus::class),
                 SelectFilter::make('destination')
                     ->relationship('destinations', 'name')

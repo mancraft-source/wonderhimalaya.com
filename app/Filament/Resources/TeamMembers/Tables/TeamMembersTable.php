@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TeamMembers\Tables;
 
+use App\Filament\Support\SeoFields;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -45,8 +46,10 @@ class TeamMembersTable
                     ->suffix(' yrs')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                SeoFields::scoreColumn(),
             ])
             ->filters([
+                SeoFields::scoreFilter(),
                 TernaryFilter::make('is_guide')->label('Guide'),
                 TernaryFilter::make('is_published')->label('Published'),
             ])

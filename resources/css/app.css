@@ -109,6 +109,9 @@
 
     .field-label { @apply mb-1.5 block text-sm font-medium text-juniper-800; }
     .field { @apply block w-full rounded-xl border-0 bg-white px-4 py-3 text-ink shadow-xs ring-1 ring-stone-300 transition placeholder:text-stone-400 focus:ring-2 focus:ring-juniper-500 focus:outline-none; }
+    /* Native select arrows sit flush against the edge and ignore padding: draw our own chevron, inset from the rounded edge. */
+    select.field { @apply cursor-pointer appearance-none bg-no-repeat pr-11; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%231f3a33'%3E%3Cpath fill-rule='evenodd' d='M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd'/%3E%3C/svg%3E"); background-position: right 1rem center; background-size: 1.1rem; }
+    select.field:hover { @apply ring-juniper-800/40; }
     .field-error { @apply mt-1.5 text-sm text-terracotta-600; }
 
     .data { @apply font-mono text-[0.8rem] tracking-tight; }
@@ -304,7 +307,73 @@
 .prose blockquote.callout p::before, .prose blockquote.callout p::after { content: none; }
 .prose-guide > .prose > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
 
+/* ------------------------------------------------------------------
+ | Process pages: step tracker (x-site.process-stepper) + step headings in the text (RichText::markSteps).
+ | initStepper sets data-state (done | current | upcoming) on each [data-step-item] and --fill / --progress on the nav.
+ * ------------------------------------------------------------------ */
+.stepper-rail { position: absolute; left: 1.25rem; top: 1.25rem; width: 2px; translate: -50% 0; border-radius: 2px; background: repeating-linear-gradient(to bottom, var(--color-stone-300) 0 6px, transparent 6px 11px); }
+.stepper-rail__fill { position: absolute; inset: 0 0 auto; height: var(--fill, 0px); border-radius: inherit; background: linear-gradient(to bottom, var(--color-saffron-500), var(--color-terracotta-500)); transition: height 0.5s var(--ease-mountain); }
+.stepper-link { position: relative; display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: 1.1rem; }
+.stepper-node { position: relative; z-index: 1; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: var(--color-stone-100); color: var(--color-stone-500); font-family: var(--font-display); font-size: 1.1rem; box-shadow: inset 0 0 0 1.5px var(--color-stone-300); transition: background 0.4s, color 0.4s, box-shadow 0.4s, scale 0.4s var(--ease-mountain); }
+.stepper-node > * { grid-area: 1 / 1; transition: opacity 0.3s, scale 0.4s var(--ease-mountain); }
+.stepper-check { opacity: 0; scale: 0.4; }
+.stepper-title { display: block; margin-top: 0.15rem; font-family: var(--font-display); font-size: 1.3rem; line-height: 1.25; color: var(--color-juniper-800); transition: color 0.3s; }
+.stepper-link:hover .stepper-node { box-shadow: inset 0 0 0 1.5px var(--color-juniper-500); color: var(--color-juniper-800); }
+.stepper-link:hover .stepper-title { color: var(--color-terracotta-500); }
+.stepper-link:focus-visible { outline: 2px solid var(--color-terracotta-500); outline-offset: 4px; border-radius: 0.75rem; }
+[data-state='done'] .stepper-node { background: var(--color-juniper-800); color: var(--color-saffron-300); box-shadow: none; }
+[data-state='done'] :is(.stepper-node, .stepper-chip__node) .stepper-num { opacity: 0; scale: 0.4; }
+[data-state='done'] :is(.stepper-node, .stepper-chip__node) .stepper-check { opacity: 1; scale: 1; }
+[data-state='current'] .stepper-node { background: var(--color-terracotta-500); color: #fff; box-shadow: 0 0 0 6px rgb(181 83 46 / 0.14), 0 12px 24px -10px rgb(181 83 46 / 0.8); scale: 1.08; }
+[data-state='current'] .stepper-node::after { content: ''; position: absolute; inset: -6px; border-radius: inherit; border: 1.5px solid rgb(181 83 46 / 0.45); animation: stepper-pulse 2.4s var(--ease-mountain) infinite; }
+[data-state='upcoming'] .stepper-title { color: var(--color-ink-soft); }
+@keyframes stepper-pulse { from { opacity: 1; scale: 1; } to { opacity: 0; scale: 1.5; } }
+
+.stepper-chips { background: rgb(244 239 230 / 0.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgb(31 58 51 / 0.1); }
+.stepper-chips__bar { position: absolute; left: 0; bottom: -1px; height: 2px; width: calc(var(--progress, 0) * 100%); background: var(--color-terracotta-500); transition: width 0.4s var(--ease-mountain); }
+.stepper-chip { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.4rem 0.9rem 0.4rem 0.4rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: var(--color-ink-soft); background: var(--color-stone-50); box-shadow: inset 0 0 0 1px rgb(216 204 184 / 0.8); transition: background 0.3s, color 0.3s; }
+.stepper-chip__node { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 9999px; background: var(--color-stone-200); color: var(--color-juniper-800); font-family: var(--font-display); font-size: 0.85rem; transition: background 0.3s, color 0.3s; }
+.stepper-chip__node > * { grid-area: 1 / 1; transition: opacity 0.3s, scale 0.3s; }
+[data-state='done'] .stepper-chip__node { background: var(--color-juniper-800); color: var(--color-saffron-300); }
+[data-state='current'] .stepper-chip { background: var(--color-juniper-900); color: #fff; box-shadow: none; }
+[data-state='current'] .stepper-chip__node { background: var(--color-terracotta-500); color: #fff; }
+
+.prose-process .prose h2.process-step { display: flex; align-items: center; gap: 1.1rem; margin-top: 2.6em; padding-top: 1.6em; scroll-margin-top: 8rem; }
+.prose-process .prose > h2:first-child + h2.process-step { margin-top: 1.25em; padding-top: 0; border-top: 0; }
+.process-step__num { flex: none; display: grid; place-items: center; width: 3.25rem; height: 3.25rem; border-radius: 9999px; background: var(--color-juniper-900); color: var(--color-saffron-300); font-family: var(--font-display); font-size: 1.5rem; line-height: 1; box-shadow: 0 0 0 5px var(--color-stone-100), 0 0 0 6px rgb(31 58 51 / 0.15); }
+.process-step__num--light { background: var(--color-terracotta-500); color: #fff; box-shadow: 0 0 0 5px rgb(255 255 255 / 0.08); }
+.process-step__text { display: flex; flex-direction: column; gap: 0.2rem; }
+.process-step__of { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-terracotta-500); }
+.process-finale { scroll-margin-top: 8rem; }
+@media (max-width: 1023px) { .prose-process .prose h2.process-step, .process-finale { scroll-margin-top: 9rem; } }
+
+.detail-card { position: relative; display: grid; gap: 0; margin-block: 1.75rem 2rem; padding: 0.5rem 1.5rem; border-radius: 1.5rem; background: var(--color-stone-50); box-shadow: inset 0 0 0 1px rgb(216 204 184 / 0.7); }
+.detail-card::before { content: ''; position: absolute; left: 0; inset-block: 1.25rem; width: 3px; border-radius: 3px; background: var(--color-terracotta-500); }
+.detail-card dl { margin: 0; }
+.detail-card dl > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1.5rem; padding-block: 0.85rem; border-bottom: 1px dashed rgb(31 58 51 / 0.14); }
+.detail-card dl > div:last-child { border-bottom: 0; }
+.detail-card dt { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-stone-500); }
+.detail-card dd { margin: 0; font-family: var(--font-mono); font-size: 0.95rem; color: var(--color-juniper-800); text-align: right; overflow-wrap: anywhere; }
+.detail-card__note { margin: 0 -1.5rem -0.5rem; padding: 0.85rem 1.5rem; border-radius: 0 0 1.5rem 1.5rem; background: rgb(236 199 126 / 0.22); font-size: 0.875rem; color: var(--color-ink-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+    .stepper-rail__fill, .stepper-chips__bar { transition: none; }
+    [data-state='current'] .stepper-node::after { animation: none; }
+}
+
 /* Mega menu: items rise in, staggered by --i, every time a panel opens (display:none → block restarts the animation). */
 @keyframes mega-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .mega-panel .mega-item { animation: mega-in 0.6s var(--ease-mountain) both; animation-delay: calc(var(--i, 0) * 45ms + 60ms); }
 @media (prefers-reduced-motion: reduce) { .mega-panel .mega-item { animation: none; } }
+
+/* 404: a compass needle hunting for north. */
+@keyframes compass-lost {
+    0%, 100% { transform: rotate(-38deg); }
+    18% { transform: rotate(52deg); }
+    34% { transform: rotate(-14deg); }
+    52% { transform: rotate(118deg); }
+    70% { transform: rotate(84deg); }
+    86% { transform: rotate(-60deg); }
+}
+.compass-lost { animation: compass-lost 9s var(--ease-mountain) infinite; }
+@media (prefers-reduced-motion: reduce) { .compass-lost { animation: none; transform: rotate(-20deg); } }

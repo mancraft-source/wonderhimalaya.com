@@ -242,6 +242,59 @@ function initToc(nav) {
     update();
 }
 
+/* ------------------------------------------------------------------
+ | Process step tracker (x-site.process-stepper): the step being read is "current", earlier ones "done";
+ | the rail fills to the reader's position between nodes and the chip strip keeps the current chip in view.
+ * ------------------------------------------------------------------ */
+function initStepper(nav) {
+    const items = [...nav.querySelectorAll('[data-step-item]')];
+    const links = items.map((item) => item.querySelector('[data-step-link]'));
+    const targets = links.map((a) => document.getElementById(a.hash.slice(1)));
+    if (!items.length || targets.some((t) => !t)) return;
+    const fill = nav.querySelector('[data-stepper-fill]');
+    const track = nav.querySelector('[data-stepper-track]');
+    const nodeCentre = (item) => item.offsetTop + (item.querySelector('.stepper-node')?.offsetHeight ?? 0) / 2;
+    let previous = -1;
+
+    const update = () => {
+        const line = window.innerHeight * 0.35;
+        const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+        const tops = targets.map((t) => t.getBoundingClientRect().top);
+        let current = atEnd ? targets.length - 1 : -1;
+        if (!atEnd) tops.forEach((top, i) => { if (top <= line) current = i; });
+        const next = tops[current + 1];
+        const partial = current >= 0 && next !== undefined && !atEnd ? Math.min(1, Math.max(0, (line - tops[current]) / (next - tops[current]))) : 0;
+
+        items.forEach((item, i) => {
+            item.dataset.state = i < current ? 'done' : i === current ? 'current' : 'upcoming';
+            if (i === current) links[i].setAttribute('aria-current', 'step');
+            else links[i].removeAttribute('aria-current');
+        });
+        nav.style.setProperty('--progress', String(Math.max(0, current + partial + (current >= 0 ? 1 : 0)) / items.length));
+
+        if (fill) fill.parentElement.style.height = `${nodeCentre(items[items.length - 1]) - nodeCentre(items[0])}px`;
+        if (fill && current >= 0) {
+            const from = nodeCentre(items[0]);
+            const to = nodeCentre(items[current]) + partial * ((items[current + 1] ? nodeCentre(items[current + 1]) : nodeCentre(items[current])) - nodeCentre(items[current]));
+            fill.style.setProperty('--fill', `${to - from}px`);
+        } else if (fill) {
+            fill.style.setProperty('--fill', '0px');
+        }
+
+        if (track && current !== previous && current >= 0) {
+            const chip = items[current];
+            track.scrollTo({ left: chip.offsetLeft - (track.clientWidth - chip.offsetWidth) / 2, behavior: reducedMotion ? 'auto' : 'smooth' });
+        }
+        previous = current;
+    };
+
+    let frame = 0;
+    const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    update();
+}
+
 /**
  * Smooth open/close for native <details data-accordion> (FAQs). The element stays a real <details>, so it works
  * without JS and with "Expand all"; this only animates the height and fades the answer up.
@@ -287,6 +340,7 @@ function boot() {
     initHeader();
     initAltimeter();
     document.querySelectorAll('[data-toc]').forEach(initToc);
+    document.querySelectorAll('[data-stepper]').forEach(initStepper);
     document.querySelectorAll('details[data-accordion]').forEach(initAccordion);
 }
 

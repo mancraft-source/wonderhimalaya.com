@@ -7,6 +7,35 @@
         ['label' => $page->title],
     ]));
     $heroMedia = $page->getFirstMedia('hero');
+
+    /*
+     | Process pages show their steps as a tracker in the left column. Steps come from the content's own numbered
+     | headings ("Step 1: …") when it has them; prose-only pages are mapped here instead, each step anchored to the
+     | paragraph it starts at ("before") or, without one, closing the article as a final card.
+     */
+    $definedProcesses = [
+        'how-to-book-a-trip-with-wonder-himalaya' => [
+            'eyebrow' => 'How booking works',
+            'heading' => 'Book your trek in four steps',
+            'steps' => [
+                ['title' => 'Choose your trip', 'summary' => 'Check the itinerary and read our Terms and Conditions. Questions? Email, call or WhatsApp us.', 'before' => 'As you are here at the booking page'],
+                ['title' => 'Pay the 30% deposit', 'summary' => '30% of the total trip fee books your trip. It is non-refundable.', 'before' => 'Regarding Deposite'],
+                ['title' => 'Choose how to pay', 'summary' => 'Bank transfer, credit card (3.5% fee) or cash if you are already in Nepal.', 'before' => 'Swift/ Wired Transfer'],
+                ['title' => 'Pay the rest & set off', 'summary' => 'Pay the balance after arriving in Kathmandu or before the trip starts.', 'finale' => 'You can pay the rest of the payment after arriving at Kathmandu or before we start the trip.'],
+            ],
+        ],
+    ];
+    $process = null;
+    if (in_array($template, ['guide', 'legal'], true)) {
+        $definedProcess = $definedProcesses[$page->path] ?? null;
+        if ($definedProcess) {
+            $process = $definedProcess;
+            $process['steps'] = collect($definedProcess['steps'])->map(fn ($step, $i) => $step + ['id' => 'step-'.($i + 1), 'number' => $i + 1])->all();
+        } else {
+            $detectedSteps = \App\Support\RichText::stepsFromOutline(\App\Support\RichText::outline($blocks->map(fn ($b) => \App\Support\RichText::normalize($b['data']['content'] ?? ''))->implode('')));
+            $process = $detectedSteps ? ['eyebrow' => 'Step by step', 'heading' => null, 'steps' => $detectedSteps] : null;
+        }
+    }
 @endphp
 <x-layouts.site :seo="$seo" :transparent="$leadHero || ($heroMedia && $template !== 'legal')">
     @if ($leadHero)
@@ -16,7 +45,71 @@
         <x-site.page-hero :media="$template === 'legal' ? null : $heroMedia" :eyebrow="$page->parent?->title" :title="e($page->title)" :intro="$page->excerpt" :crumbs="$crumbs" />
     @endif
 
-    @if (in_array($template, ['guide', 'legal'], true) && $siblings->isNotEmpty())
+    @if ($process)
+        @php
+            $steps = $process['steps'];
+            $total = count($steps);
+            $inline = collect($steps)->reject(fn ($step) => isset($step['finale']))->all();
+            $finales = collect($steps)->filter(fn ($step) => isset($step['finale']));
+        @endphp
+        <div class="container-page grid gap-10 pt-10 pb-10 lg:grid-cols-12 lg:gap-10 lg:pt-20">
+            <aside class="hidden lg:col-span-4 lg:block xl:col-span-3">
+                <x-site.process-stepper :steps="$steps" :eyebrow="$process['eyebrow']" :heading="$process['heading']" class="sticky top-32" />
+            </aside>
+
+            <article class="min-w-0 lg:col-span-8 xl:col-span-6">
+                <x-site.process-stepper :steps="$steps" :eyebrow="$process['eyebrow']" variant="chips" class="sticky top-20 z-30 -mx-4 mb-6 lg:hidden" />
+
+                <div class="prose-guide prose-process">
+                    @foreach ($blocks as $block)
+                        @if (($block['type'] ?? 'rich_text') === 'rich_text')
+                            @php $html = \App\Support\RichText::detailCards(\App\Support\RichText::markSteps(\App\Support\RichText::normalize($block['data']['content'] ?? ''), $inline, $total)); @endphp
+                            @if ($html !== '')
+                                <section class="py-6"><div class="prose prose-lg prose-wh">{!! $html !!}</div></section>
+                            @endif
+                        @else
+                            @includeFirst(['site.blocks.'.str_replace('_', '-', $block['type'] ?? 'rich-text'), 'site.blocks.rich-text'], ['data' => $block['data'] ?? [], 'narrow' => true])
+                        @endif
+                    @endforeach
+                </div>
+
+                @foreach ($finales as $step)
+                    <section id="{{ $step['id'] }}" class="process-finale relative mt-10 overflow-hidden rounded-[1.75rem] bg-juniper-900 p-7 text-stone-100 sm:p-10" data-reveal>
+                        <div class="topo pointer-events-none absolute inset-0 opacity-15 invert"></div>
+                        <x-site.gear icon="compass" class="absolute -right-6 -bottom-6 w-36 -rotate-12 text-saffron-300/20" />
+                        <div class="relative flex items-start gap-5">
+                            <span class="process-step__num process-step__num--light" aria-hidden="true">{{ $step['number'] }}</span>
+                            <div class="min-w-0">
+                                <p class="data text-[0.7rem] tracking-[0.16em] text-saffron-300 uppercase">Final step · {{ $step['number'] }} of {{ $total }}</p>
+                                <h2 class="mt-1 font-display text-3xl leading-tight text-white sm:text-4xl">{{ $step['title'] }}</h2>
+                                <p class="mt-3 max-w-xl text-stone-300">{{ $step['finale'] }}</p>
+                            </div>
+                        </div>
+                        <div class="relative mt-8 flex flex-wrap gap-3 sm:pl-[4.25rem]">
+                            <a href="{{ route('trips.index') }}" class="btn-primary !px-5 !py-3 text-sm">Start your adventure <x-heroicon-m-arrow-right class="size-4" /></a>
+                            <a href="{{ route('contact') }}" class="btn-ghost-light !px-5 !py-3 text-sm">Ask us a question</a>
+                        </div>
+                    </section>
+                @endforeach
+            </article>
+
+            <aside class="hidden xl:col-span-3 xl:block">
+                <div class="sticky top-32 rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60">
+                    <p class="font-display text-2xl leading-snug text-juniper-800">Need a hand booking?</p>
+                    <p class="mt-2 text-sm text-ink-soft">Our Kathmandu team will help with dates, payments and anything in between.</p>
+                    <ul class="mt-5 space-y-3 text-sm">
+                        @if (! empty($company['email']))
+                            <li><a href="mailto:{{ $company['email'] }}" class="flex items-center gap-3 text-juniper-800 hover:text-terracotta-500"><x-heroicon-o-envelope class="size-5 shrink-0 text-terracotta-500" /><span class="truncate">{{ $company['email'] }}</span></a></li>
+                        @endif
+                        @if (! empty($company['whatsapp']))
+                            <li><a href="https://wa.me/{{ preg_replace('/\D/', '', $company['whatsapp']) }}" target="_blank" rel="noopener" class="flex items-center gap-3 text-juniper-800 hover:text-terracotta-500"><x-heroicon-o-chat-bubble-left-right class="size-5 shrink-0 text-terracotta-500" /><span>WhatsApp {{ $company['whatsapp'] }}</span></a></li>
+                        @endif
+                    </ul>
+                    <a href="{{ route('contact') }}" class="btn-dark mt-6 !px-5 !py-3 text-sm">Contact us <x-heroicon-m-arrow-right class="size-4" /></a>
+                </div>
+            </aside>
+        </div>
+    @elseif (in_array($template, ['guide', 'legal'], true) && $siblings->isNotEmpty())
         @php
             $bodyHtml = $blocks->map(fn ($b) => \App\Support\RichText::normalize($b['data']['content'] ?? ''))->implode('');
             $outline = collect(\App\Support\RichText::outline($bodyHtml));

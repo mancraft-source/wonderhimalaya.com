@@ -2,10 +2,7 @@
 
 namespace App\Filament\Support;
 
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Str;
@@ -35,31 +32,5 @@ final class FormHelpers
             ->alphaDash()
             ->unique(ignoreRecord: true)
             ->helperText('Changing the slug of a published item creates a 301 redirect automatically.');
-    }
-
-    public static function seoSection(): Section
-    {
-        return Section::make('SEO')
-            ->description('Overrides for search engines and social sharing. Leave blank to use defaults.')
-            ->schema([
-                TextInput::make('seo.title')
-                    ->label('Meta title')
-                    ->maxLength(70)
-                    ->live(debounce: 500)
-                    ->hint(fn (?string $state): string => mb_strlen((string) $state).' / 60'),
-                Textarea::make('seo.description')
-                    ->label('Meta description')
-                    ->rows(3)
-                    ->maxLength(320)
-                    ->live(debounce: 500)
-                    ->hint(fn (?string $state): string => mb_strlen((string) $state).' / 160'),
-                TextInput::make('seo.canonical')
-                    ->label('Canonical URL')
-                    ->url()
-                    ->maxLength(500),
-                Toggle::make('seo.noindex')
-                    ->label('Hide from search engines (noindex)'),
-            ])
-            ->columns(1);
     }
 }

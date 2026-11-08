@@ -2,6 +2,20 @@
 
 namespace App\Providers;
 
+use App\Models\Activity;
+use App\Models\Booking;
+use App\Models\Company;
+use App\Models\Contact;
+use App\Models\CrmTask;
+use App\Models\Destination;
+use App\Models\Lead;
+use App\Models\Note;
+use App\Models\Page;
+use App\Models\Payment;
+use App\Models\Post;
+use App\Models\Quote;
+use App\Models\TeamMember;
+use App\Models\Trip;
 use App\Models\User;
 use App\View\Composers\SiteComposer;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -29,20 +43,20 @@ class AppServiceProvider extends ServiceProvider
 
         Relation::enforceMorphMap([
             'user' => User::class,
-            'trip' => \App\Models\Trip::class,
-            'destination' => \App\Models\Destination::class,
-            'activity' => \App\Models\Activity::class,
-            'page' => \App\Models\Page::class,
-            'post' => \App\Models\Post::class,
-            'team_member' => \App\Models\TeamMember::class,
-            'contact' => \App\Models\Contact::class,
-            'company' => \App\Models\Company::class,
-            'lead' => \App\Models\Lead::class,
-            'quote' => \App\Models\Quote::class,
-            'booking' => \App\Models\Booking::class,
-            'payment' => \App\Models\Payment::class,
-            'crm_task' => \App\Models\CrmTask::class,
-            'note' => \App\Models\Note::class,
+            'trip' => Trip::class,
+            'destination' => Destination::class,
+            'activity' => Activity::class,
+            'page' => Page::class,
+            'post' => Post::class,
+            'team_member' => TeamMember::class,
+            'contact' => Contact::class,
+            'company' => Company::class,
+            'lead' => Lead::class,
+            'quote' => Quote::class,
+            'booking' => Booking::class,
+            'payment' => Payment::class,
+            'crm_task' => CrmTask::class,
+            'note' => Note::class,
         ]);
 
         Gate::before(fn (User $user) => $user->hasRole('admin') ? true : null);
@@ -57,7 +71,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureRateLimiting();
 
-        View::composer(['components.layouts.site', 'site.*'], SiteComposer::class);
+        View::composer(['components.layouts.site', 'site.*', 'errors.*', 'errors::*'], SiteComposer::class);
     }
 
     private function configureRateLimiting(): void

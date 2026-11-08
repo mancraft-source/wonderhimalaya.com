@@ -65,3 +65,40 @@ it('splits back-to-back sentences into paragraphs but keeps line breaks after sh
 
     expect($html)->toBe("<p>Please note<br>{$long}</p><p>We take care of your health and safety.</p>");
 });
+
+it('repairs double-encoded ampersands and drops stray &nbsp; spacers between blocks', function () {
+    expect(RichText::normalize("<p>Call +977-1 &amp;amp; +977-2</p>\n&nbsp;<p>Next</p>"))
+        ->toBe('<p>Call +977-1 &amp; +977-2</p><p>Next</p>');
+});
+
+it('reads numbered headings as process steps only when they run 1, 2, 3 in order', function () {
+    $outline = fn (array $texts) => array_map(fn ($text, $i) => ['id' => 'h'.$i, 'text' => $text, 'level' => 2], $texts, array_keys($texts));
+
+    expect(RichText::stepsFromOutline($outline(['Intro', 'Step 1: Choose a trip', 'Step 2 – Pay the deposit', '3. Fly to Kathmandu'])))
+        ->toBe([
+            ['id' => 'h1', 'number' => 1, 'title' => 'Choose a trip'],
+            ['id' => 'h2', 'number' => 2, 'title' => 'Pay the deposit'],
+            ['id' => 'h3', 'number' => 3, 'title' => 'Fly to Kathmandu'],
+        ])
+        ->and(RichText::stepsFromOutline($outline(['Step 1: A', 'Step 2: B'])))->toBe([])
+        ->and(RichText::stepsFromOutline($outline(['Step 1: A', 'Step 3: B', 'Step 4: C'])))->toBe([])
+        ->and(RichText::stepsFromOutline($outline(['8,849 m above sea level', 'Autumn', 'Spring'])))->toBe([]);
+});
+
+it('inserts a step heading before the paragraph a step starts at and skips steps it cannot place', function () {
+    $html = RichText::markSteps('<h2 id="intro">Intro</h2><p>Regarding deposit: pay 30%.</p>', [
+        ['id' => 'step-1', 'number' => 1, 'title' => 'Pay the 30% deposit', 'before' => 'Regarding deposit'],
+        ['id' => 'step-2', 'number' => 2, 'title' => 'Missing', 'before' => 'Nowhere in the text'],
+    ], 2);
+
+    expect($html)->toBe('<h2 id="intro">Intro</h2><h2 id="step-1" class="process-step"><span class="process-step__num" aria-hidden="true">1</span>'
+        .'<span class="process-step__text"><span class="process-step__of">Step 1 of 2</span>Pay the 30% deposit</span></h2><p>Regarding deposit: pay 30%.</p>');
+});
+
+it('turns label: value lists into a detail card with the note as its footnote', function () {
+    $html = RichText::detailCards('<ul><li>Pay To: Wonder Himalaya</li><li>Branch: Thamel</li><li>Swift Code: HIMANPKA</li><li>Note: Bank charges are up to the client.</li></ul><ul><li>Clear weather</li><li>Mild: yes</li><li>Stable trails</li></ul>');
+
+    expect($html)->toContain('<div class="detail-card not-prose"><dl><div><dt>Pay To</dt><dd>Wonder Himalaya</dd></div>')
+        ->toContain('<p class="detail-card__note">Bank charges are up to the client.</p></div>')
+        ->toContain('<li>Clear weather</li>');
+});

@@ -57,4 +57,14 @@ class Post extends Model implements HasMedia
     {
         return '/blog/'.$this->slug;
     }
+
+    /** @return array<string, string|int|float|null> */
+    protected function seoExtraVariables(): array
+    {
+        return [
+            'category' => $this->post_category_id ? $this->seoRelated('category') : null,
+            'author' => $this->team_member_id ? $this->seoRelated('author') : null,
+            'date' => $this->published_at?->format('j F Y'),
+        ];
+    }
 }

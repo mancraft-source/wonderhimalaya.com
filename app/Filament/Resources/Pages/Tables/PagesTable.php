@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Pages\Tables;
 
 use App\Enums\PublishStatus;
 use App\Filament\Resources\Pages\Schemas\PageForm;
+use App\Filament\Support\SeoFields;
 use App\Models\Page;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -59,8 +60,10 @@ class PagesTable
                 TextColumn::make('updated_at')
                     ->since()
                     ->sortable(),
+                SeoFields::scoreColumn(),
             ])
             ->filters([
+                SeoFields::scoreFilter(),
                 SelectFilter::make('status')->options(PublishStatus::class),
                 SelectFilter::make('template')->options(PageForm::TEMPLATES),
                 TrashedFilter::make(),

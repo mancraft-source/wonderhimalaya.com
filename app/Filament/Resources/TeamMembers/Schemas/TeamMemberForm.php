@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\TeamMembers\Schemas;
 
 use App\Filament\Support\ContentFields;
+use App\Filament\Support\SeoFields;
+use App\Models\TeamMember;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
@@ -71,7 +73,7 @@ class TeamMemberForm
                                 ->addActionLabel('Add link')
                                 ->columnSpanFull(),
                         ]),
-                    ContentFields::seoSection(),
+                    SeoFields::section(TeamMember::class),
                 ])->columnSpan(['lg' => 2]),
 
                 Group::make([

@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Activities\Schemas;
 
 use App\Filament\Support\FormHelpers;
+use App\Filament\Support\SeoFields;
+use App\Models\Activity;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
@@ -26,7 +28,7 @@ class ActivityForm
                         TextInput::make('icon')->maxLength(255)->helperText('Icon name used on the public site (e.g. heroicon or SVG name).'),
                         RichEditor::make('description')->columnSpanFull(),
                     ]),
-                    FormHelpers::seoSection(),
+                    SeoFields::section(Activity::class),
                 ]),
                 Section::make()->schema([
                     SpatieMediaLibraryFileUpload::make('hero')->label('Hero image')->collection('hero')->image()->imageEditor()->maxSize(8192),

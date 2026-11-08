@@ -16,7 +16,12 @@ class Setting extends Model
 
     protected static function booted(): void
     {
-        static::saved(fn () => Cache::forget('settings'));
+        static::saved(function (self $setting): void {
+            Cache::forget('settings');
+            if ($setting->key === 'seo') {
+                Cache::forget('sitemap.xml');
+            }
+        });
         static::deleted(fn () => Cache::forget('settings'));
     }
 

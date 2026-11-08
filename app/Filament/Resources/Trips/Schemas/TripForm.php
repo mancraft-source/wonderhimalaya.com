@@ -5,8 +5,10 @@ namespace App\Filament\Resources\Trips\Schemas;
 use App\Enums\PublishStatus;
 use App\Filament\Support\ContentEditorFields;
 use App\Filament\Support\FormHelpers;
+use App\Filament\Support\SeoFields;
 use App\Models\Tag;
 use App\Models\Tier;
+use App\Models\Trip;
 use App\Support\Content;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
@@ -51,7 +53,7 @@ class TripForm
                         self::mediaTab(),
                         Tab::make('SEO')
                             ->icon(Heroicon::OutlinedMagnifyingGlass)
-                            ->schema([FormHelpers::seoSection()]),
+                            ->schema([SeoFields::section(Trip::class)]),
                     ]),
             ]);
     }

@@ -12,6 +12,7 @@ use App\Models\Trip;
 use App\Models\TripDeparture;
 use App\Support\Content;
 use App\Support\Seo;
+use App\Support\Seo\SeoSettings;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -80,10 +81,7 @@ class HomeController extends Controller
             ->get();
 
         return view('site.home', [
-            'seo' => Seo::make(
-                'Wonder Himalaya — Treks, Tours & Expeditions in Nepal, Tibet & Bhutan',
-                'Locally owned Kathmandu operator crafting guided treks, peak climbs and cultural journeys across Nepal, Tibet and Bhutan. Everest, Annapurna, Manaslu, Langtang and beyond.',
-            ),
+            'seo' => tap(Seo::make(SeoSettings::get('home_title'), SeoSettings::get('home_description')), fn (Seo $seo) => $seo->titleIsFinal = true),
             'home' => $home,
             'heroSlides' => $this->heroSlides($trips, $home['hero_slides']),
             'moods' => $this->moods($home['moods']),

@@ -74,4 +74,24 @@ class Page extends Model implements HasMedia
     {
         return $this->path === 'home' ? '/' : '/'.$this->path;
     }
+
+    /** @return array<string, string|int|float|null> */
+    protected function seoExtraVariables(): array
+    {
+        return ['parent' => $this->parent_id ? $this->seoRelated('parent', 'title') : null];
+    }
+
+    /** Page copy lives in blocks: gather their text fields for the excerpt and content checks. */
+    public function seoContentHtml(): string
+    {
+        $html = '';
+        $data = [$this->blocks ?? [], $this->content ?? []];
+        array_walk_recursive($data, function (mixed $value, string|int $key) use (&$html): void {
+            if (is_string($value) && ! in_array($key, ['type', 'image', 'url', 'link', 'icon', 'style', 'variant'], true) && ! str_starts_with($value, 'http')) {
+                $html .= str_contains($value, '<') ? $value : '<p>'.e($value).'</p>';
+            }
+        });
+
+        return $html;
+    }
 }

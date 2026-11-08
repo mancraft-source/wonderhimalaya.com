@@ -23,7 +23,7 @@ class RichText
 
     public static function normalize(?string $html): string
     {
-        $html = trim((string) $html);
+        $html = str_replace('&amp;amp;', '&amp;', trim((string) $html));
 
         if ($html === '') {
             return '';
@@ -32,6 +32,7 @@ class RichText
         $dom = self::load($html);
         $body = $dom->getElementsByTagName('body')->item(0);
 
+        self::dropBlankTextNodes($body);
         self::splitLineLists($dom, $body);
         self::calloutLongHeadings($dom, $body);
         self::groupImages($dom, $body);
@@ -56,9 +57,128 @@ class RichText
         ], $matches);
     }
 
+    /**
+     * Steps written as numbered headings ("Step 1: Choose a trip", "2. Pay the deposit"), when the outline numbers
+     * at least three of them 1, 2, 3… in order. Anything else is not a process and yields no steps.
+     *
+     * @param  array<int, array{id: string, text: string, level: int}>  $outline
+     * @return array<int, array{id: string, number: int, title: string}>
+     */
+    public static function stepsFromOutline(array $outline): array
+    {
+        $steps = [];
+
+        foreach ($outline as $heading) {
+            if (preg_match('/^(?:step\s*(\d{1,2})\s*[:.)\-–—]?|(\d{1,2})\s*[:.)\-–—])\s*(\S.*)$/iu', $heading['text'], $m)) {
+                $steps[] = ['id' => $heading['id'], 'number' => (int) ($m[1] !== '' ? $m[1] : $m[2]), 'title' => $m[3]];
+            }
+        }
+
+        $isSequence = $steps !== [] && array_column($steps, 'number') === range(1, count($steps));
+
+        return count($steps) >= 3 && $isSequence ? $steps : [];
+    }
+
+    /**
+     * Marks a process in normalized HTML: a step with a `before` phrase gets a new step heading in front of the first
+     * top-level element whose text starts with that phrase; a step without one decorates the existing heading with its id.
+     * Steps whose target is not found are left out, so the caller can render them elsewhere.
+     *
+     * @param  array<int, array{id: string, number: int, title: string, before?: string|null}>  $steps
+     */
+    public static function markSteps(string $normalizedHtml, array $steps, int $total): string
+    {
+        if ($normalizedHtml === '' || $steps === []) {
+            return $normalizedHtml;
+        }
+
+        $dom = self::load($normalizedHtml);
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $xpath = new DOMXPath($dom);
+
+        foreach ($steps as $step) {
+            $label = '<span class="process-step__num" aria-hidden="true">'.$step['number'].'</span>'
+                .'<span class="process-step__text"><span class="process-step__of">Step '.$step['number'].' of '.$total.'</span>'.e($step['title']).'</span>';
+
+            if (! empty($step['before'])) {
+                $target = collect(iterator_to_array($body->childNodes))->first(fn ($node) => $node instanceof DOMElement
+                    && str_starts_with(self::plainText($node->textContent), self::plainText($step['before'])));
+
+                if ($target !== null) {
+                    $heading = self::load('<h2 id="'.e($step['id']).'" class="process-step">'.$label.'</h2>')->getElementsByTagName('h2')->item(0);
+                    $body->insertBefore($dom->importNode($heading, true), $target);
+                }
+
+                continue;
+            }
+
+            $heading = $xpath->query('.//*[@id="'.str_replace('"', '', $step['id']).'"]', $body)->item(0);
+
+            if ($heading instanceof DOMElement) {
+                $heading->setAttribute('class', trim($heading->getAttribute('class').' process-step'));
+                while ($heading->firstChild) {
+                    $heading->removeChild($heading->firstChild);
+                }
+                foreach (iterator_to_array(self::load($label)->getElementsByTagName('body')->item(0)->childNodes) as $child) {
+                    $heading->appendChild($dom->importNode($child, true));
+                }
+            }
+        }
+
+        return self::save($body);
+    }
+
+    /**
+     * "Label: value" bullet lists (bank details, trip facts) as a definition card; a trailing "Note: …" item becomes its footnote.
+     */
+    public static function detailCards(string $normalizedHtml): string
+    {
+        if ($normalizedHtml === '') {
+            return '';
+        }
+
+        $dom = self::load($normalizedHtml);
+        $body = $dom->getElementsByTagName('body')->item(0);
+
+        foreach (self::children($body, 'ul') as $list) {
+            if ($list->getElementsByTagName('a')->length > 0) {
+                continue;
+            }
+
+            $rows = array_map(fn (DOMElement $li) => preg_match('/^([^:]{2,30}):\s*(\S.*)$/su', trim($li->textContent), $m) ? [trim($m[1]), trim($m[2])] : null, self::children($list, 'li'));
+
+            if (count($rows) < 3 || in_array(null, $rows, true)) {
+                continue;
+            }
+
+            $note = strcasecmp(end($rows)[0], 'note') === 0 ? array_pop($rows)[1] : null;
+            $html = '<div class="detail-card not-prose"><dl>'
+                .implode('', array_map(fn (array $row) => '<div><dt>'.e($row[0]).'</dt><dd>'.e($row[1]).'</dd></div>', $rows))
+                .'</dl>'.($note !== null ? '<p class="detail-card__note">'.e($note).'</p>' : '').'</div>';
+            self::replaceWithHtml($dom, $list, $html);
+        }
+
+        return self::save($body);
+    }
+
     public static function readingMinutes(string $html): int
     {
         return max(1, (int) round(str_word_count(strip_tags($html)) / 220));
+    }
+
+    /** Stray "&nbsp;" between blocks, which the old editor left behind as vertical spacing. */
+    private static function dropBlankTextNodes(DOMElement $body): void
+    {
+        foreach (iterator_to_array($body->childNodes) as $node) {
+            if ($node->nodeType === XML_TEXT_NODE && str_contains($node->textContent, "\u{00A0}") && self::plainText($node->textContent) === '') {
+                $body->removeChild($node);
+            }
+        }
+    }
+
+    private static function plainText(string $text): string
+    {
+        return mb_strtolower(trim(preg_replace('/[\s\x{00A0}]+/u', ' ', html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8'))));
     }
 
     private static function splitLineLists(DOMDocument $dom, DOMElement $body): void

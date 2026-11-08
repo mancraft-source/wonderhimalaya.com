@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Posts\Tables;
 
 use App\Enums\PublishStatus;
+use App\Filament\Support\SeoFields;
 use App\Models\Post;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -65,8 +66,10 @@ class PostsTable
                     ->suffix(' min')
                     ->sortable()
                     ->toggleable(),
+                SeoFields::scoreColumn(),
             ])
             ->filters([
+                SeoFields::scoreFilter(),
                 SelectFilter::make('status')->options(PublishStatus::class),
                 SelectFilter::make('post_category_id')
                     ->label('Category')
