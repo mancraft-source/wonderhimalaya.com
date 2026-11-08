@@ -68,7 +68,7 @@ class RichText
                 continue;
             }
 
-            $lines = array_values(array_filter(array_map('trim', explode("\n", self::innerHtml($p))), fn ($l) => strip_tags($l) !== ''));
+            $lines = array_values(array_filter(array_map('trim', explode("\n", self::innerHtml($p))), fn ($l) => ! self::isBlankOrRule($l)));
 
             if (count($lines) < 2) {
                 continue;
@@ -78,7 +78,9 @@ class RichText
             $isList = count($lines) >= 2 && collect($lines)->every(fn ($l) => mb_strlen(strip_tags($l)) <= self::MAX_ITEM_LENGTH);
 
             if (! $isList) {
-                self::replaceWithHtml($dom, $p, '<p>'.implode('<br>', array_merge([$lead], $lines)).'</p>');
+                $next = $p->nextElementSibling;
+                $after = $next?->tagName === 'p' ? strtok(trim($next->textContent), "\n") : '';
+                self::replaceWithHtml($dom, $p, self::proseWithHeadings(array_merge([$lead], $lines), (string) $after));
 
                 continue;
             }
@@ -95,6 +97,73 @@ class RichText
             $items = implode('', array_map(fn ($l) => '<li>'.rtrim($l, '.').'</li>', $lines));
             self::replaceWithHtml($dom, $p, ($lead !== null ? '<p>'.$lead.'</p>' : '').'<ul>'.$items.'</ul>');
         }
+    }
+
+    /**
+     * Prose lines from one paragraph: headings fused in by the old editor ("Discover Unique Features")
+     * become h2s, back-to-back full sentences become separate paragraphs, and short lines keep their line breaks.
+     *
+     * @param  array<int, string>  $lines
+     * @param  string  $after  First line of the following paragraph, so a trailing heading line can be recognised.
+     */
+    private static function proseWithHeadings(array $lines, string $after = ''): string
+    {
+        $isHeading = array_map(fn (string $line, int $i) => self::looksLikeHeading($line) && self::isSentence($lines[$i + 1] ?? $after), $lines, array_keys($lines));
+
+        $html = '';
+        $buffer = [];
+        $flush = function () use (&$html, &$buffer): void {
+            if ($buffer !== []) {
+                $html .= '<p>'.implode('<br>', $buffer).'</p>';
+                $buffer = [];
+            }
+        };
+
+        foreach ($lines as $i => $line) {
+            if ($isHeading[$i]) {
+                $flush();
+                $html .= '<h2>'.trim(strip_tags($line, '<em><strong><b><i>')).'</h2>';
+            } else {
+                if ($buffer !== [] && self::isSentence($line) && self::isSentence(end($buffer))) {
+                    $flush();
+                }
+                $buffer[] = $line;
+            }
+        }
+        $flush();
+
+        return $html;
+    }
+
+    /** A short title-case line with no closing punctuation, e.g. "Trekking Packages & Services". */
+    private static function looksLikeHeading(string $line): bool
+    {
+        $text = trim(html_entity_decode(strip_tags($line), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $words = preg_split('/\s+/u', $text, -1, PREG_SPLIT_NO_EMPTY);
+
+        if (mb_strlen($text) > 70 || count($words) < 2 || count($words) > 10 || str_contains($text, ':') || ! preg_match('/^\p{Lu}.*[\p{L}\d)]$/u', $text)) {
+            return false;
+        }
+
+        $significant = array_filter($words, fn (string $word) => mb_strlen($word) > 3);
+
+        return $significant === [] || count(array_filter($significant, fn (string $word) => preg_match('/^[\p{Lu}\d&]/u', $word))) / count($significant) >= 0.6;
+    }
+
+    /** A full sentence of body copy, which is what follows a real heading. */
+    private static function isSentence(string $line): bool
+    {
+        $text = trim(html_entity_decode(strip_tags($line), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+
+        return mb_strlen($text) > 60 || preg_match('/[.!?]["”’)]?$/u', $text) === 1;
+    }
+
+    /** Empty, &nbsp;-only or "-----" / "_____" separator lines the old editor used as spacing. */
+    private static function isBlankOrRule(string $line): bool
+    {
+        $text = trim(html_entity_decode(strip_tags($line), ENT_QUOTES | ENT_HTML5, 'UTF-8'), " \t\u{00A0}");
+
+        return $text === '' || preg_match('/^[-_=—–]{5,}$/u', $text) === 1;
     }
 
     private static function calloutLongHeadings(DOMDocument $dom, DOMElement $body): void

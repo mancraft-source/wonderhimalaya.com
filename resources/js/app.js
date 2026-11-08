@@ -242,6 +242,42 @@ function initToc(nav) {
     update();
 }
 
+/**
+ * Smooth open/close for native <details data-accordion> (FAQs). The element stays a real <details>, so it works
+ * without JS and with "Expand all"; this only animates the height and fades the answer up.
+ */
+function initAccordion(details) {
+    const summary = details.querySelector('summary');
+    const body = details.querySelector('[data-accordion-body]');
+    if (!summary || !body || reducedMotion) return;
+    let animation = null;
+
+    summary.addEventListener('click', (event) => {
+        event.preventDefault();
+        const closing = details.open && !details.dataset.closing;
+        const from = details.getBoundingClientRect().height;
+        animation?.cancel();
+        details.style.overflow = 'hidden';
+
+        if (closing) {
+            details.dataset.closing = '1';
+        } else {
+            delete details.dataset.closing;
+            details.open = true;
+            body.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'none' }], { duration: 450, delay: 80, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'backwards' });
+        }
+
+        const to = closing ? summary.offsetHeight : details.scrollHeight;
+        animation = details.animate({ height: [`${from}px`, `${to}px`] }, { duration: closing ? 320 : 480, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+        animation.onfinish = () => {
+            if (details.dataset.closing) details.open = false;
+            delete details.dataset.closing;
+            details.style.overflow = '';
+            animation = null;
+        };
+    });
+}
+
 function boot() {
     observeReveals();
     document.querySelectorAll('[data-count]').forEach((el) => countObserver.observe(el));
@@ -251,6 +287,7 @@ function boot() {
     initHeader();
     initAltimeter();
     document.querySelectorAll('[data-toc]').forEach(initToc);
+    document.querySelectorAll('details[data-accordion]').forEach(initAccordion);
 }
 
 if (document.readyState === 'loading') {

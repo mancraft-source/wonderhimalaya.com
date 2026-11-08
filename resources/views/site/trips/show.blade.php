@@ -474,18 +474,24 @@
                         </div>
                         <a href="{{ url('/travel-guide/equipment-checklist') }}" class="link-arrow">Full equipment guide <x-heroicon-m-arrow-right class="size-4" /></a>
                     </div>
+                    {{-- Two independent stacks (odd/even), so opening a card never leaves a gap beside it. --}}
                     <div class="mt-8 grid items-start gap-3 md:grid-cols-2">
-                        @foreach ($packing as ['group' => $group, 'items' => $items])
-                            <div class="rounded-[1.5rem] bg-stone-50 ring-1 ring-stone-300/60">
-                                <button type="button" class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" x-on:click="open = open === {{ $loop->index }} ? -1 : {{ $loop->index }}" x-bind:aria-expanded="open === {{ $loop->index }}">
-                                    <span class="font-display text-xl text-juniper-800">{{ $group }}</span>
-                                    <span class="flex items-center gap-3"><span class="data text-stone-400">{{ count($items) }}</span><x-heroicon-m-chevron-down class="size-5 text-stone-400 transition" x-bind:class="open === {{ $loop->index }} && 'rotate-180'" /></span>
-                                </button>
-                                <ul x-show="open === {{ $loop->index }}" x-collapse @unless ($loop->first) x-cloak @endunless class="space-y-2 px-6 pb-6">
-                                    @foreach ($items as $item)
-                                        <li class="flex gap-3 text-[0.95rem] text-ink-soft"><span class="mt-2 size-1.5 shrink-0 rounded-full bg-terracotta-500"></span>{{ $item }}</li>
-                                    @endforeach
-                                </ul>
+                        @foreach (collect($packing)->keys()->partition(fn ($i) => $i % 2 === 0) as $column)
+                            <div class="grid gap-3">
+                                @foreach ($column as $i)
+                                    @php ['group' => $group, 'items' => $items] = $packing[$i]; @endphp
+                                    <div class="rounded-[1.5rem] bg-stone-50 ring-1 ring-stone-300/60 transition hover:ring-juniper-800/25" x-bind:class="open === {{ $i }} && '!ring-terracotta-500/40 shadow-[0_18px_40px_-28px_rgba(15,29,25,0.5)]'">
+                                        <button type="button" class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" x-on:click="open = open === {{ $i }} ? -1 : {{ $i }}" x-bind:aria-expanded="open === {{ $i }}">
+                                            <span class="font-display text-xl text-juniper-800">{{ $group }}</span>
+                                            <span class="flex items-center gap-3"><span class="data text-stone-400">{{ count($items) }}</span><x-heroicon-m-chevron-down class="size-5 text-stone-400 transition duration-500" x-bind:class="open === {{ $i }} && 'rotate-180'" /></span>
+                                        </button>
+                                        <ul x-show="open === {{ $i }}" x-collapse @unless ($i === 0) x-cloak @endunless class="space-y-2 px-6 pb-6">
+                                            @foreach ($items as $item)
+                                                <li class="flex gap-3 text-[0.95rem] text-ink-soft"><span class="mt-2 size-1.5 shrink-0 rounded-full bg-terracotta-500"></span>{{ $item }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endforeach
                             </div>
                         @endforeach
                     </div>
@@ -525,13 +531,7 @@
                     </div>
                     <div class="mt-8 divide-y divide-stone-300/70 border-y border-stone-300/70">
                         @foreach ($trip->faqs as $faq)
-                            <details class="group py-2" @if ($loop->first) open @endif>
-                                <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-4 font-display text-xl text-juniper-800 [&::-webkit-details-marker]:hidden">
-                                    {{ $faq->question }}
-                                    <x-heroicon-m-plus class="size-5 shrink-0 text-terracotta-500 transition group-open:rotate-45" />
-                                </summary>
-                                <div class="prose prose-wh pb-6">{!! $faq->answer !!}</div>
-                            </details>
+                            <x-site.faq-item :question="$faq->question" :number="$loop->iteration" :open="$loop->first" data-reveal>{!! $faq->answer !!}</x-site.faq-item>
                         @endforeach
                     </div>
                 </section>

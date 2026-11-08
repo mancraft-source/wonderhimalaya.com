@@ -43,3 +43,25 @@ it('preserves UTF-8 text', function () {
     expect(RichText::normalize('<p>It doesn’t matter — Lush greenery &amp; nature</p>'))
         ->toBe('<p>It doesn’t matter — Lush greenery &amp; nature</p>');
 });
+
+it('promotes title lines fused into prose paragraphs to headings', function () {
+    $sentence = 'You walk along the Kali Gandaki Gorge, the deepest gorge in the world, past Thakali villages.';
+    $html = RichText::normalize("<p>The region is popular with trekkers of every level.\nExperience the Culture and Landscape</p><p>{$sentence}\nDiscover Unique Features\n{$sentence}</p>");
+
+    expect($html)->toBe('<p>The region is popular with trekkers of every level.</p><h2 id="experience-the-culture-and-landscape">Experience the Culture and Landscape</h2>'
+        ."<p>{$sentence}</p><h2 id=\"discover-unique-features\">Discover Unique Features</h2><p>{$sentence}</p>");
+});
+
+it('does not promote key-value lines or short items without a following sentence', function () {
+    $sentence = str_repeat('A long line of descriptive prose about the trip. ', 3);
+    $html = RichText::normalize("<p>{$sentence}\nBest Seasons: Spring and Autumn\n__________\nShivpuri National Park\nChitwan National Park</p>");
+
+    expect($html)->not->toContain('<h2')->not->toContain('____');
+});
+
+it('splits back-to-back sentences into paragraphs but keeps line breaks after short labels', function () {
+    $long = 'You are with a genuine trekking company with professional and experienced guides and porters.';
+    $html = RichText::normalize("<p>Please note\n{$long}\nWe take care of your health and safety.</p>");
+
+    expect($html)->toBe("<p>Please note<br>{$long}</p><p>We take care of your health and safety.</p>");
+});

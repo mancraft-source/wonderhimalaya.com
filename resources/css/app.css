@@ -302,3 +302,9 @@
 .prose blockquote.callout::before { content: ''; position: absolute; inset-block: 2rem; left: 0; width: 3px; border-radius: 3px; background: var(--color-saffron-300); }
 .prose blockquote.callout p { margin: 0; color: inherit; }
 .prose blockquote.callout p::before, .prose blockquote.callout p::after { content: none; }
+.prose-guide > .prose > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* Mega menu: items rise in, staggered by --i, every time a panel opens (display:none → block restarts the animation). */
+@keyframes mega-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.mega-panel .mega-item { animation: mega-in 0.6s var(--ease-mountain) both; animation-delay: calc(var(--i, 0) * 45ms + 60ms); }
+@media (prefers-reduced-motion: reduce) { .mega-panel .mega-item { animation: none; } }

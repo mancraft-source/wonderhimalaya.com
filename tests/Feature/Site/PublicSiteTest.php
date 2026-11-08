@@ -175,3 +175,15 @@ it('rejects submissions that fill the honeypot', function () {
 
     expect(Lead::count())->toBe(0);
 });
+
+it('lists every nepal region in the destinations menu, including ones without journeys', function () {
+    siteTrip();
+    $nepal = Destination::where('slug', 'nepal')->first();
+    Destination::create(['name' => 'Dolpo Region', 'slug' => 'dolpo-region', 'parent_id' => $nepal->id]);
+    $tibet = Destination::create(['name' => 'Tibet', 'slug' => 'tibet']);
+    siteTrip(['title' => 'Kailash Kora', 'slug' => 'kailash-kora'])->destinations()->sync([$tibet->id]);
+
+    $this->get('/')
+        ->assertOk()
+        ->assertSeeInOrder(['Our home ground', 'Nepal', '1 journey · 2 regions', 'Dolpo', 'Made to order', 'Everest', '1 journey', 'Beyond Nepal', 'Tibet']);
+});

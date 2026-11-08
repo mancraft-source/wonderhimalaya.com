@@ -128,10 +128,7 @@
         <x-site.section-heading :eyebrow="$c['faq_eyebrow']" :title="e($c['faq_title'])" align="center" />
         <div class="mt-10 divide-y divide-stone-300/70 border-y border-stone-300/70">
             @foreach ($c['faqs'] as ['question' => $q, 'answer' => $a])
-                <details class="group py-2" @if ($loop->first) open @endif>
-                    <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-4 font-display text-xl text-juniper-800 [&::-webkit-details-marker]:hidden">{{ $q }}<x-heroicon-m-plus class="size-5 shrink-0 text-terracotta-500 transition group-open:rotate-45" /></summary>
-                    <div class="prose prose-wh pb-6 text-ink-soft">{!! str_contains((string) $a, '<') ? $a : '<p>'.e($a).'</p>' !!}</div>
-                </details>
+                <x-site.faq-item :question="$q" :number="$loop->iteration" :open="$loop->first" data-reveal>{!! str_contains((string) $a, '<') ? $a : '<p>'.e($a).'</p>' !!}</x-site.faq-item>
             @endforeach
         </div>
     </section>

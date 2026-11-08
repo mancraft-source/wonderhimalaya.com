@@ -22,14 +22,14 @@
         @endphp
 
         <nav class="hidden items-center gap-7 lg:flex xl:gap-9" aria-label="Main">
-            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'destinations' ? null : 'destinations'" x-bind:aria-expanded="mega === 'destinations'">
+            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'destinations' ? null : 'destinations'" x-on:mouseenter="mega && (mega = 'destinations')" x-bind:aria-expanded="mega === 'destinations'">
                 Destinations <x-heroicon-m-chevron-down class="size-4 transition" x-bind:class="mega === 'destinations' && 'rotate-180'" />
             </button>
-            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'journeys' ? null : 'journeys'" x-bind:aria-expanded="mega === 'journeys'">
+            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'journeys' ? null : 'journeys'" x-on:mouseenter="mega && (mega = 'journeys')" x-bind:aria-expanded="mega === 'journeys'">
                 Journeys <x-heroicon-m-chevron-down class="size-4 transition" x-bind:class="mega === 'journeys' && 'rotate-180'" />
             </button>
             <a href="{{ route('departures') }}" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">Group departures</a>
-            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'about' ? null : 'about'" x-bind:aria-expanded="mega === 'about'">
+            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'about' ? null : 'about'" x-on:mouseenter="mega && (mega = 'about')" x-bind:aria-expanded="mega === 'about'">
                 Why us <x-heroicon-m-chevron-down class="size-4 transition" x-bind:class="mega === 'about' && 'rotate-180'" />
             </button>
             <a href="{{ route('blog.index') }}" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">Journal</a>
@@ -55,31 +55,89 @@
          x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
         <div class="border-t border-stone-300/60 bg-stone-100 shadow-[0_30px_60px_-30px_rgba(15,29,25,0.35)]">
             <div class="container-page py-12">
-                <div x-show="mega === 'destinations'" class="grid grid-cols-12 gap-10">
-                    <div class="col-span-3">
-                        <p class="eyebrow">Where to</p>
-                        <p class="mt-4 font-display text-3xl text-juniper-800">Four kingdoms of the high Himalaya.</p>
-                        <a href="{{ route('trips.index') }}" class="link-arrow mt-6">All journeys <x-heroicon-m-arrow-right class="size-4" /></a>
-                    </div>
-                    <div class="col-span-9 grid grid-cols-3 gap-x-10 gap-y-8">
-                        @foreach ($nav['destinations'] as $country)
-                            <div>
-                                <a href="{{ $country['url'] }}" class="font-display text-xl text-juniper-800 hover:text-terracotta-500">{{ $country['name'] }}</a>
-                                @if ($country['children'])
-                                    <ul class="mt-3 space-y-2">
-                                        @foreach ($country['children'] as $region)
-                                            <li><a href="{{ $region['url'] }}" class="group flex items-baseline justify-between gap-3 text-[0.95rem] text-ink-soft hover:text-juniper-800">
-                                                <span>{{ $region['name'] }}</span><span class="data text-stone-400 group-hover:text-terracotta-500">{{ $region['count'] }}</span>
-                                            </a></li>
-                                        @endforeach
-                                    </ul>
-                                @endif
+                @php
+                    $nepal = collect($nav['destinations'])->first(fn ($c) => $c['children'] !== []);
+                    $beyond = collect($nav['destinations'])->reject(fn ($c) => $c === $nepal)->values();
+                @endphp
+                <div x-show="mega === 'destinations'" class="mega-panel grid grid-cols-12 gap-8 xl:gap-12">
+                    @if ($nepal)
+                        <div class="col-span-8 xl:col-span-9">
+                            <div class="mega-item flex items-end justify-between gap-6 border-b border-stone-300/70 pb-5" style="--i: 0">
+                                <div>
+                                    <p class="eyebrow">Our home ground</p>
+                                    <a href="{{ $nepal['url'] }}" class="group mt-3 flex items-baseline gap-4">
+                                        <span class="font-display text-4xl text-juniper-800 transition-colors group-hover:text-terracotta-500">{{ $nepal['name'] }}</span>
+                                        <span class="data text-xs text-stone-500">{{ $nepal['count'] }} {{ str('journey')->plural($nepal['count']) }} · {{ count($nepal['children']) }} regions</span>
+                                    </a>
+                                </div>
+                                <a href="{{ route('trips.index', ['destination' => str($nepal['url'])->afterLast('/')->toString()]) }}" class="link-arrow shrink-0">All Nepal journeys <x-heroicon-m-arrow-right class="size-4" /></a>
                             </div>
-                        @endforeach
+                            <ul class="mt-6 grid grid-cols-4 gap-4">
+                                @foreach ($nepal['children'] as $region)
+                                    <li class="mega-item" style="--i: {{ $loop->iteration }}">
+                                        <a href="{{ $region['url'] }}" class="group relative block aspect-[16/11] overflow-hidden rounded-2xl bg-juniper-900 outline-offset-4 focus-visible:outline-2 focus-visible:outline-terracotta-500">
+                                            @if ($region['image'])
+                                                <img src="{{ $region['image'] }}" alt="" loading="lazy" class="absolute inset-0 size-full object-cover opacity-90 transition duration-[1200ms] ease-(--ease-mountain) group-hover:scale-110 group-hover:opacity-100">
+                                            @else
+                                                {{-- No photo yet: an illustrated range so the tile still reads as a place. --}}
+                                                <svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMax slice" aria-hidden="true" class="absolute inset-0 size-full transition duration-[1200ms] ease-(--ease-mountain) group-hover:scale-110">
+                                                    <rect width="160" height="110" fill="#1f3a33" />
+                                                    <circle cx="122" cy="26" r="9" fill="#ecc77e" opacity=".55" />
+                                                    <path d="M0 78 22 52l14 12 24-34 22 26 16-14 26 30 16-10 20 20v28H0Z" fill="#9db8c2" opacity=".35" />
+                                                    <path d="m60 30-7 11 5-2 4 3 4-4 3 3Z" fill="#fbf9f5" opacity=".7" />
+                                                    <path d="M0 92 28 70l18 12 30-26 26 22 20-10 38 24v18H0Z" fill="#162b26" />
+                                                </svg>
+                                            @endif
+                                            <span class="absolute inset-0 bg-gradient-to-t from-juniper-950/90 via-juniper-950/25 to-transparent"></span>
+                                            <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 text-white">
+                                                <span>
+                                                    <span class="block font-display text-xl leading-tight">{{ str_replace(' Region', '', $region['name']) }}</span>
+                                                    <span class="data mt-1 block text-[0.68rem] text-white/70">{{ $region['count'] ? $region['count'].' '.str('journey')->plural($region['count']) : 'Made to order' }}</span>
+                                                </span>
+                                                <span class="grid size-8 flex-none translate-x-2 place-items-center rounded-full bg-white/15 opacity-0 backdrop-blur transition duration-500 group-hover:translate-x-0 group-hover:opacity-100"><x-heroicon-m-arrow-up-right class="size-4" /></span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                                @if (count($nepal['children']) % 4 !== 0)
+                                    <li class="mega-item" style="--i: {{ count($nepal['children']) + 1 }}">
+                                        <a href="{{ route('tailor-made') }}" class="group relative flex aspect-[16/11] flex-col justify-between overflow-hidden rounded-2xl bg-terracotta-500 p-4 text-white outline-offset-4 focus-visible:outline-2 focus-visible:outline-juniper-800">
+                                            <x-site.gear icon="map" class="absolute -right-4 -bottom-4 w-28 text-white/20 transition duration-700 group-hover:-rotate-6 group-hover:scale-110" />
+                                            <span class="text-xs font-semibold tracking-[0.18em] text-white/80 uppercase">Not sure where?</span>
+                                            <span class="relative font-display text-xl leading-tight">Let us shape a route around you <x-heroicon-m-arrow-right class="inline size-4 transition group-hover:translate-x-1" /></span>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    @endif
+                    <div @class(['flex flex-col', 'col-span-4 border-l border-stone-300/70 pl-8 xl:col-span-3 xl:pl-12' => $nepal, 'col-span-12' => ! $nepal])>
+                        <div class="mega-item" style="--i: 1"><p class="eyebrow">Beyond Nepal</p></div>
+                        <ul class="mt-6 space-y-3">
+                            @foreach ($beyond as $country)
+                                <li class="mega-item" style="--i: {{ $loop->iteration + 2 }}">
+                                    <a href="{{ $country['url'] }}" class="group flex items-center gap-4 rounded-2xl p-2 -m-2 transition hover:bg-stone-200/70 focus-visible:outline-2 focus-visible:outline-terracotta-500">
+                                        <span class="relative size-20 flex-none overflow-hidden rounded-xl bg-juniper-900">
+                                            @if ($country['image'])<img src="{{ $country['image'] }}" alt="" loading="lazy" class="size-full object-cover transition duration-700 group-hover:scale-110">@endif
+                                        </span>
+                                        <span class="min-w-0 flex-1">
+                                            <span class="block font-display text-2xl text-juniper-800 transition-colors group-hover:text-terracotta-500">{{ $country['name'] }}</span>
+                                            @if ($country['tagline'])<span class="line-clamp-2 text-sm leading-snug text-ink-soft">{{ $country['tagline'] }}</span>@endif
+                                            <span class="data mt-0.5 block text-[0.68rem] text-stone-500">{{ $country['count'] }} {{ str('journey')->plural($country['count']) }}</span>
+                                        </span>
+                                        <x-heroicon-m-arrow-up-right class="size-4 flex-none text-stone-400 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-terracotta-500" />
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <div class="mega-item mt-auto space-y-3 border-t border-stone-300/70 pt-5 text-[0.95rem]" style="--i: 6">
+                            <a href="{{ route('trips.index') }}" class="link-arrow">Every journey <x-heroicon-m-arrow-right class="size-4" /></a>
+                            <a href="{{ route('departures') }}" class="flex items-center gap-2 text-ink-soft hover:text-juniper-800"><x-heroicon-o-calendar-days class="size-4" /> Fixed group departures</a>
+                        </div>
                     </div>
                 </div>
 
-                <div x-show="mega === 'journeys'" class="grid grid-cols-12 gap-10">
+                <div x-show="mega === 'journeys'" class="mega-panel grid grid-cols-12 gap-10">
                     <div class="col-span-3">
                         <p class="eyebrow">How you travel</p>
                         <p class="mt-4 font-display text-3xl text-juniper-800">From tea-house trails to summit pushes.</p>
@@ -87,7 +145,7 @@
                     </div>
                     <ul class="col-span-9 grid grid-cols-3 gap-x-10 gap-y-4">
                         @foreach ($nav['activities'] as $activity)
-                            <li><a href="{{ $activity['url'] }}" class="group flex items-center justify-between border-b border-stone-300/70 py-3 text-lg text-juniper-800 hover:border-terracotta-500">
+                            <li class="mega-item" style="--i: {{ $loop->iteration }}"><a href="{{ $activity['url'] }}" class="group flex items-center justify-between border-b border-stone-300/70 py-3 text-lg text-juniper-800 hover:border-terracotta-500">
                                 <span class="font-display">{{ $activity['name'] }}</span>
                                 <x-heroicon-m-arrow-up-right class="size-4 text-stone-400 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-terracotta-500" />
                             </a></li>
@@ -99,7 +157,7 @@
                     </ul>
                 </div>
 
-                <div x-show="mega === 'about'" class="grid grid-cols-12 gap-10">
+                <div x-show="mega === 'about'" class="mega-panel grid grid-cols-12 gap-10">
                     <div class="col-span-3">
                         <p class="eyebrow">Why Wonder Himalaya</p>
                         <p class="mt-4 font-display text-3xl text-juniper-800">A small Thamel team who know these trails by name.</p>
@@ -125,6 +183,11 @@
             </div>
         </div>
     </div>
+
+    {{-- Page dimmer under an open mega menu (absolute: the blurred header is the containing block). --}}
+    <div class="absolute inset-x-0 top-full -z-10 hidden h-screen bg-juniper-950/30 backdrop-blur-[2px] lg:block" x-show="mega" x-cloak
+         x-transition:enter="transition-opacity duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-transition:leave="transition-opacity duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
 
     {{-- Mobile drawer --}}
     <div id="mobile-menu" class="fixed inset-0 top-20 z-40 overflow-y-auto bg-stone-100 lg:hidden" x-show="open" x-cloak
