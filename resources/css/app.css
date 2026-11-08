@@ -255,3 +255,34 @@
 /* Panorama place labels: only where there is room to read them. */
 .mtn-label { display: none; }
 @media (min-width: 768px) { .mtn-label { display: inline; } }
+
+/* ------------------------------------------------------------------
+ | Mountain storytelling: elevation-profile draw, gear art, altimeter,
+ | header ridge progress. All decorative; static under reduced motion.
+ * ------------------------------------------------------------------ */
+.js [data-draw] .draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.8s var(--ease-mountain); }
+.js [data-draw].is-visible .draw { stroke-dashoffset: 0; }
+.js [data-draw] .draw-fade { opacity: 0; transition: opacity 1.4s ease 1s; }
+.js [data-draw].is-visible .draw-fade { opacity: 1; }
+.js [data-draw] .summit-flag { opacity: 0; transform: translateY(0.75rem) scale(0.8); transition: opacity 0.7s ease, transform 0.9s var(--ease-mountain); transition-delay: calc(0.5s + var(--d, 0) * 0.55s); }
+.js [data-draw].is-visible .summit-flag { opacity: 1; transform: none; }
+.summit-flag__cloth { transform-origin: left center; animation: flag-flutter 2.6s ease-in-out infinite; }
+@keyframes flag-flutter { 0%, 100% { transform: skewY(0deg) scaleX(1); } 50% { transform: skewY(-6deg) scaleX(0.92); } }
+
+.gear-float { animation: gear-bob 9s ease-in-out infinite; }
+@keyframes gear-bob { 0%, 100% { rotate: var(--r, 0deg); } 50% { rotate: calc(var(--r, 0deg) + 5deg); } }
+
+.altimeter { --p: 0; opacity: 0; transition: opacity 0.6s var(--ease-mountain); }
+.altimeter[data-active] { opacity: 1; }
+.altimeter__fill { height: calc(var(--p) * 100%); }
+.altimeter__marker { bottom: calc(var(--p) * 100%); }
+.altimeter__pill { opacity: 0; transform: translate(0.5rem, -50%); transition: opacity 0.4s ease, transform 0.5s var(--ease-mountain); }
+.altimeter[data-moving] .altimeter__pill { opacity: 1; transform: translate(0, -50%); }
+
+.header-ridge__progress { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--read, 0)); }
+
+@media (prefers-reduced-motion: reduce) {
+    .js [data-draw] .draw { stroke-dashoffset: 0; }
+    .js [data-draw] .draw-fade, .js [data-draw] .summit-flag { opacity: 1; transform: none; }
+    .summit-flag__cloth, .gear-float { animation: none; }
+}

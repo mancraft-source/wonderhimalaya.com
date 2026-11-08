@@ -21,7 +21,7 @@ function observeReveals(root = document) {
     root.querySelectorAll('[data-stagger]').forEach((group) => {
         [...group.children].forEach((child, i) => child.style.setProperty('--d', String(i)));
     });
-    root.querySelectorAll('[data-reveal]:not(.is-visible), [data-stagger]:not(.is-visible), [data-clip]:not(.is-visible)').forEach((el) =>
+    root.querySelectorAll('[data-reveal]:not(.is-visible), [data-stagger]:not(.is-visible), [data-clip]:not(.is-visible), [data-draw]:not(.is-visible)').forEach((el) =>
         revealObserver.observe(el),
     );
 }
@@ -185,6 +185,46 @@ function initHeader() {
     window.addEventListener('scroll', onScroll, { passive: true });
 }
 
+/* ------------------------------------------------------------------
+ | Altimeter + header ridge: scroll progress as a climb to 8,849 m.
+ * ------------------------------------------------------------------ */
+function initAltimeter() {
+    const meter = document.querySelector('[data-altimeter]');
+    const header = document.querySelector('[data-site-header]');
+    const base = meter ? Number(meter.dataset.base) : 0;
+    const summit = meter ? Number(meter.dataset.summit) : 0;
+    const waypoints = meter ? JSON.parse(meter.dataset.waypoints || '[]') : [];
+    const value = meter?.querySelector('[data-alt-value]');
+    const place = meter?.querySelector('[data-alt-place]');
+    let idle;
+    let ticking = false;
+
+    const render = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        header?.style.setProperty('--read', p.toFixed(4));
+        if (meter) {
+            const alt = Math.round(base + p * (summit - base));
+            meter.style.setProperty('--p', p.toFixed(4));
+            meter.toggleAttribute('data-active', window.scrollY > window.innerHeight * 0.6);
+            value.textContent = `${alt.toLocaleString('en-US')} m`;
+            place.textContent = [...waypoints].reverse().find(([, a]) => a <= alt)?.[0] ?? '';
+        }
+        ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (meter) {
+            meter.setAttribute('data-moving', '');
+            clearTimeout(idle);
+            idle = setTimeout(() => meter.removeAttribute('data-moving'), 1400);
+        }
+        if (!ticking) { ticking = true; requestAnimationFrame(render); }
+    }, { passive: true });
+    window.addEventListener('resize', render, { passive: true });
+    render();
+}
+
 function boot() {
     observeReveals();
     document.querySelectorAll('[data-count]').forEach((el) => countObserver.observe(el));
@@ -192,6 +232,7 @@ function boot() {
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
     initParallax();
     initHeader();
+    initAltimeter();
 }
 
 if (document.readyState === 'loading') {

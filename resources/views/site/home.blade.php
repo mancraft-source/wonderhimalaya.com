@@ -21,7 +21,7 @@
         </div>
         <div class="scrim-hero-center absolute inset-0 -z-10"></div>
 
-        <div class="hero-copy container-page flex flex-1 flex-col items-center justify-center pt-28 text-center">
+        <div class="hero-copy container-page relative z-20 flex flex-1 flex-col items-center justify-center pt-28 text-center">
             <p class="eyebrow eyebrow-light animate-reveal justify-center">{{ $home['hero_eyebrow'] }}</p>
             <h1 class="split mt-6 font-display text-[clamp(3.5rem,2rem+8vw,10rem)] leading-[0.92] font-light tracking-[-0.03em] text-white">
                 @foreach ($headline as $i => [$word, $em])
@@ -55,8 +55,11 @@
             </form>
         </div>
 
+        {{-- Foreground Himalaya: snow-capped silhouettes drift over the photo and become the ticker below. --}}
+        <x-site.ridge variant="peaks" overlay size="xl" to="#162b26" back="#0f1d19" />
+
         {{-- Slide captions + progress --}}
-        <div class="hero-copy container-page relative flex items-end justify-between gap-8 pb-8 lg:pb-10">
+        <div class="hero-copy container-page relative z-20 flex items-end justify-between gap-8 pb-6 lg:pb-8">
             <div class="min-w-0">
                 @foreach ($heroSlides as $k => $slide)
                     <a href="{{ $slide['url'] }}" data-hero-caption @if ($k > 0) hidden @endif class="group block text-left">
@@ -79,7 +82,7 @@
     </section>
 
     {{-- ============================== TICKER ============================== --}}
-    <div class="border-y border-white/5 bg-juniper-900 py-5 text-stone-200">
+    <div class="bg-juniper-900 pt-3 pb-5 text-stone-200">
         <div class="marquee" style="--speed: 55s; --gap: 2.5rem">
             @for ($copy = 0; $copy < 2; $copy++)
                 <div class="marquee__track items-center" @if ($copy) aria-hidden="true" @endif>
@@ -98,9 +101,13 @@
         </div>
     </div>
 
+    <x-site.ridge variant="peaks" from="#162b26" to="#f4efe6" back="#9db8c2" />
+
     {{-- ============================== INTRO + STATS ============================== --}}
-    <section id="intro" class="grain relative scroll-mt-20 overflow-hidden py-24 lg:py-36">
+    <section id="intro" class="grain relative scroll-mt-20 overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
         <div class="topo pointer-events-none absolute -top-40 -right-40 size-[60rem] opacity-60" aria-hidden="true"></div>
+        <x-site.gear icon="compass" class="gear-float absolute top-6 right-[4%] hidden w-24 text-juniper-800/20 lg:block" style="--r: -14deg" data-parallax="-0.1" />
+        <x-site.gear icon="map" class="gear-float absolute bottom-[42%] left-[2%] hidden w-20 text-terracotta-500/25 xl:block" style="--r: 8deg" data-parallax="0.08" />
         <div class="container-page relative grid items-center gap-16 lg:grid-cols-12 lg:gap-10">
             {{-- Collage --}}
             <div class="relative mx-auto h-[30rem] w-full max-w-xl sm:h-[36rem] lg:col-span-6 lg:max-w-none">
@@ -138,20 +145,59 @@
         </div>
 
         @if ($stats)
-            <dl class="container-page relative mt-24 grid grid-cols-2 gap-y-12 border-t border-stone-300/70 pt-14 lg:grid-cols-4" data-stagger>
-                @foreach ($stats as $stat)
-                    <div class="px-2 lg:border-l lg:border-stone-300/70 lg:px-8 lg:first:border-l-0 lg:first:pl-0">
-                        <dd class="font-display text-[clamp(3rem,2rem+3vw,5rem)] leading-none text-juniper-800" data-count="{{ $stat['value'] }}">{{ $stat['value'] }}</dd>
-                        <dt class="mt-3 text-sm font-medium uppercase tracking-[0.16em] text-stone-500">{{ $stat['label'] }}</dt>
-                    </div>
-                @endforeach
-            </dl>
+            @php
+                // Elevation profile: each stat is a summit, every one higher than the last.
+                $stats = array_values($stats);
+                $statCount = count($stats);
+                $summits = collect($stats)->keys()->map(fn ($i) => [($i + 0.5) / $statCount * 1200, 112 - $i * (88 / max(1, $statCount - 1))]);
+                $profile = [[0, 152], [40, 146]];
+                foreach ($summits as $i => [$x, $y]) {
+                    $half = 600 / $statCount;
+                    $profile[] = [$x - $half * 0.62, $y + 34 + ($i % 2) * 6];
+                    $profile[] = [$x - $half * 0.35, $y + 22];
+                    $profile[] = [$x - $half * 0.12, $y + 7];
+                    $profile[] = [$x, $y];
+                    $profile[] = [$x + $half * 0.18, $y + 12];
+                    $profile[] = [$x + $half * 0.42, $y + 18];
+                }
+                $profile[] = [1200, $summits->last()[1] + 30];
+                $line = 'M'.collect($profile)->map(fn ($p) => round($p[0], 1).','.round($p[1], 1))->implode(' L');
+            @endphp
+            <div class="container-page relative mt-20 lg:mt-24" data-draw style="--n: {{ $statCount }}">
+                <div class="relative hidden h-40 lg:block" aria-hidden="true">
+                    <svg viewBox="0 0 1200 160" preserveAspectRatio="none" class="absolute inset-0 h-full w-full overflow-visible">
+                        <defs>
+                            <linearGradient id="profile-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f6b5e" stop-opacity=".18" /><stop offset="1" stop-color="#3f6b5e" stop-opacity="0" /></linearGradient>
+                        </defs>
+                        <path class="draw-fade" d="{{ $line }} L1200,160 L0,160 Z" fill="url(#profile-fill)" />
+                        <path class="draw" d="{{ $line }}" pathLength="1" fill="none" stroke="#1f3a33" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+                        <path d="M0,159.5 H1200" stroke="#b9ad97" stroke-dasharray="2 6" vector-effect="non-scaling-stroke" />
+                    </svg>
+                    @foreach ($summits as $i => [$x, $y])
+                        <span class="summit-flag absolute -translate-x-1/2 -translate-y-full" style="left: {{ round($x / 12, 3) }}%; top: {{ round($y / 1.6, 3) }}%; --d: {{ $i }}">
+                            <svg viewBox="0 0 30 40" class="h-10 w-auto overflow-visible">
+                                <path d="M15 40V4" stroke="#1f3a33" stroke-width="1.5" />
+                                <path class="summit-flag__cloth" d="M15 4h13l-3.5 5L28 14H15Z" fill="{{ ['#b5532e', '#d9a441', '#3f6b5e', '#9db8c2', '#b5532e'][$i % 5] }}" />
+                                <circle cx="15" cy="40" r="3.5" fill="#f4efe6" stroke="#1f3a33" stroke-width="1.5" />
+                            </svg>
+                        </span>
+                    @endforeach
+                </div>
+                <dl class="grid grid-cols-2 gap-y-12 border-t border-stone-300/70 pt-12 lg:mt-4 lg:grid-cols-[repeat(var(--n),minmax(0,1fr))] lg:border-t-0 lg:pt-0 lg:text-center" data-stagger>
+                    @foreach ($stats as $stat)
+                        <div class="px-2">
+                            <dd class="font-display text-[clamp(3rem,2rem+3vw,4.5rem)] leading-none text-juniper-800" data-count="{{ $stat['value'] }}">{{ $stat['value'] }}</dd>
+                            <dt class="mt-3 text-sm font-medium uppercase tracking-[0.16em] text-stone-500">{{ $stat['label'] }}</dt>
+                        </div>
+                    @endforeach
+                </dl>
+            </div>
         @endif
     </section>
 
     {{-- ============================== WHAT WE OFFER ============================== --}}
     @if ($home['offers'])
-        <section class="pb-24 lg:pb-32">
+        <section class="pb-20 lg:pb-28">
             <div class="container-page">
                 <div class="grid gap-10 rounded-[2.5rem] bg-juniper-900 p-8 text-stone-100 sm:p-12 lg:grid-cols-12 lg:p-16">
                     <div class="lg:col-span-4">
@@ -176,7 +222,8 @@
 
     {{-- ============================== TRAVEL BY FEELING ============================== --}}
     @if ($moods)
-        <section class="pb-24 lg:pb-36">
+        <section class="relative pb-14 lg:pb-20">
+            <x-site.gear icon="ice-axe" class="gear-float absolute -top-4 left-[52%] hidden w-24 text-juniper-800/15 lg:block" style="--r: 24deg" data-parallax="-0.12" />
             <div class="container-page flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                 <x-site.section-heading :eyebrow="$home['moods_eyebrow']" :title="str(e($home['moods_title']))->replace('feel', '<em class=\'text-terracotta-500\'>feel</em>')" />
                 <a href="{{ route('trips.index') }}" class="link-arrow shrink-0" data-reveal>Every journey <x-heroicon-m-arrow-right class="size-4" /></a>
@@ -205,7 +252,8 @@
 
     {{-- ============================== SIGNATURE JOURNEYS (carousel) ============================== --}}
     @if ($signature->isNotEmpty())
-        <section class="overflow-hidden bg-stone-200/50 py-24 lg:py-32" data-carousel>
+        <x-site.ridge variant="hills" from="#f4efe6" to="#eee8dc" back="#e2d9c8" />
+        <section class="overflow-hidden bg-stone-200/50 pt-8 pb-20 lg:pt-12 lg:pb-28" data-carousel>
             <div class="container-page flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
                 <x-site.section-heading :eyebrow="$home['signature_eyebrow']" :title="e($home['signature_title'])" :intro="$home['signature_intro']" />
                 <div class="flex shrink-0 items-center gap-3" data-reveal>
@@ -256,12 +304,13 @@
 
     {{-- ============================== FEATURE TRIP (immersive) ============================== --}}
     @if ($featureTrip)
-        <section class="relative isolate flex min-h-[44rem] items-end overflow-hidden bg-juniper-950 py-16 text-white lg:min-h-[52rem] lg:items-center lg:py-24">
+        <section class="relative isolate flex min-h-[44rem] items-end overflow-hidden bg-juniper-950 pt-16 pb-32 text-white lg:min-h-[52rem] lg:items-center lg:py-40">
             <div class="absolute inset-0 -z-10" data-parallax="0.12">
                 <x-site.picture :model="$featureTrip" collection="hero" sizes="100vw" class="h-full w-full" />
             </div>
             <div class="absolute inset-0 -z-10 bg-gradient-to-r from-juniper-950/85 via-juniper-950/40 to-transparent"></div>
-            <div class="container-page">
+            <x-site.ridge variant="pines" overlay size="lg" to="#f4efe6" back="#0f1d19" />
+            <div class="container-page relative z-20">
                 <div class="max-w-xl rounded-[2rem] border border-white/15 bg-juniper-950/40 p-8 backdrop-blur-xl sm:p-12" data-stagger>
                     <p class="eyebrow eyebrow-light">{{ $isTripOfMonth ? 'Trip of the month' : 'Our top-selling trek' }}</p>
                     <h2 class="mt-6 font-display text-display-md text-white">{{ $featureTrip->title }}</h2>
@@ -282,7 +331,7 @@
 
     {{-- ============================== REGIONS ============================== --}}
     @if ($regions->isNotEmpty())
-        <section class="py-24 lg:py-36" x-data="{ r: 0 }">
+        <section class="pt-10 pb-14 lg:pt-14 lg:pb-20" x-data="{ r: 0 }">
             <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-10">
                 <div class="lg:col-span-5">
                     <x-site.section-heading :eyebrow="$home['regions_eyebrow']" :title="e($home['regions_title'])" :intro="$home['regions_intro']" />
@@ -326,7 +375,8 @@
 
             @php $abroad = $countries->where('slug', '!=', 'nepal')->where('trips_count', '>', 0)->values(); @endphp
             @if ($abroad->isNotEmpty())
-                <div class="container-page mt-20">
+                <div class="container-page relative mt-20">
+                    <x-site.gear icon="backpack" class="gear-float absolute -top-16 right-[8%] hidden w-24 text-juniper-800/15 lg:block" style="--r: -10deg" data-parallax="-0.1" />
                     <p class="eyebrow">Beyond Nepal</p>
                     <div @class(['mt-6 grid gap-4', 'md:grid-cols-2' => $abroad->count() === 2, 'md:grid-cols-3' => $abroad->count() >= 3]) data-stagger>
                         @foreach ($abroad as $country)
@@ -349,8 +399,10 @@
 
     {{-- ============================== GROUP DEPARTURES ============================== --}}
     @if ($departures->isNotEmpty() || $fixedTrips->isNotEmpty())
-        <section class="relative overflow-hidden bg-juniper-800 py-24 text-stone-100 lg:py-32">
+        <x-site.ridge variant="terraces" from="#f4efe6" to="#1f3a33" back="#3f6b5e" lines="#2f5248" />
+        <section class="relative overflow-hidden bg-juniper-800 pt-10 pb-14 text-stone-100 lg:pt-14 lg:pb-20">
             <div class="topo pointer-events-none absolute inset-0 opacity-20 invert"></div>
+            <x-site.gear icon="flags" class="absolute top-6 right-[5%] hidden w-40 text-saffron-300/40 lg:block" data-parallax="-0.06" />
             <div class="container-page relative">
                 <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
                     <x-site.section-heading light :eyebrow="$home['departures_eyebrow']" :title="str(e($home['departures_title']))->replace(', ', ', <em class=\'text-saffron-300\'>')->append(str_contains($home['departures_title'], ', ') ? '</em>' : '')" :intro="$home['departures_intro']" />
@@ -401,7 +453,10 @@
     @endif
 
     {{-- ============================== WHY US (bento) ============================== --}}
-    <section class="py-24 lg:py-36">
+    <x-site.ridge variant="snow" :from="$departures->isNotEmpty() || $fixedTrips->isNotEmpty() ? '#1f3a33' : '#f4efe6'" to="#f4efe6" back="#9db8c2" snow="#dde7ea" />
+    <section class="relative pt-10 pb-12 lg:pt-14 lg:pb-16">
+        <x-site.gear icon="tent" class="gear-float absolute top-2 left-[7%] hidden w-28 text-juniper-800/15 lg:block" style="--r: -6deg" data-parallax="-0.08" />
+        <x-site.gear icon="boot" class="gear-float absolute top-6 right-[7%] hidden w-24 text-terracotta-500/25 lg:block" style="--r: 10deg" data-parallax="-0.12" />
         <div class="container-page">
             <x-site.section-heading :eyebrow="$home['why_eyebrow']" :title="e($home['why_title'])" align="center" />
             <div class="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-12 lg:grid-rows-2" data-stagger>
@@ -431,7 +486,8 @@
     {{-- ============================== REVIEWS (double marquee) ============================== --}}
     @if ($testimonials->isNotEmpty())
         @php $rows = $testimonials->count() >= 6 ? $testimonials->split(2) : collect([$testimonials]); @endphp
-        <section class="overflow-hidden bg-stone-200/50 py-24 lg:py-32">
+        <x-site.ridge variant="terraces" from="#f4efe6" to="#eee8dc" back="#e2d9c8" lines="#ddd3c0" />
+        <section class="overflow-hidden bg-stone-200/50 pt-8 pb-14 lg:pt-12 lg:pb-20">
             <div class="container-page flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
                 <x-site.section-heading :eyebrow="$home['reviews_eyebrow']" :title="e($home['reviews_title'])" />
                 <a href="{{ route('reviews') }}" class="flex items-center gap-4 rounded-full bg-stone-50 py-2 pr-6 pl-2 ring-1 ring-stone-300/60 transition hover:ring-juniper-500" data-reveal>
@@ -466,30 +522,45 @@
 
     {{-- ============================== JOURNAL ============================== --}}
     @if ($posts->isNotEmpty())
-        <section class="py-24 lg:py-32">
+        @if ($testimonials->isNotEmpty())<x-site.ridge variant="peaks" from="#eee8dc" to="#f4efe6" back="#e2d9c8" />@endif
+        <section class="relative pt-10 pb-6 lg:pt-14 lg:pb-10">
+            <x-site.gear icon="poles" class="gear-float absolute top-0 left-[44%] hidden w-20 text-juniper-800/15 lg:block" style="--r: -8deg" data-parallax="-0.1" />
             <div class="container-page">
                 <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <x-site.section-heading :eyebrow="$home['journal_eyebrow']" :title="e($home['journal_title'])" />
                     <a href="{{ route('blog.index') }}" class="link-arrow shrink-0" data-reveal>All stories <x-heroicon-m-arrow-right class="size-4" /></a>
                 </div>
-                <div class="mt-14 grid gap-10 lg:grid-cols-12">
+                <div class="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-12">
                     <x-site.post-card :post="$posts[0]" large class="lg:col-span-7" data-reveal />
-                    <div class="grid gap-10 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1" data-stagger>
+                    <div class="grid content-start gap-8 sm:grid-cols-2 lg:col-span-5 lg:flex lg:flex-col" data-stagger>
                         @foreach ($posts->slice(1) as $post)
-                            <article class="group grid grid-cols-[8rem_1fr] items-center gap-5 sm:grid-cols-1 lg:grid-cols-[11rem_1fr]">
+                            <article class="group grid grid-cols-[7rem_1fr] items-center gap-5 sm:grid-cols-1 lg:grid-cols-[9.5rem_1fr] lg:border-b lg:border-stone-300/70 lg:pb-8">
                                 <a href="{{ url($post->publicPath()) }}" class="block aspect-square overflow-hidden rounded-[1.5rem] sm:aspect-[4/3] lg:aspect-square">
-                                    <x-site.picture :model="$post" collection="hero" sizes="12rem" class="h-full w-full transition duration-[1.4s] group-hover:scale-105" />
+                                    <x-site.picture :model="$post" collection="hero" sizes="(min-width: 1024px) 10rem, (min-width: 640px) 45vw, 7rem" class="h-full w-full transition duration-[1.4s] group-hover:scale-105" />
                                 </a>
-                                <div>
-                                    @if ($post->category)<p class="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-terracotta-500">{{ $post->category->name }}</p>@endif
-                                    <h3 class="mt-2 font-display text-xl leading-snug text-juniper-800"><a href="{{ url($post->publicPath()) }}" class="group-hover:underline">{{ $post->title }}</a></h3>
-                                    @if ($post->reading_minutes)<p class="mt-2 text-sm text-stone-500">{{ $post->reading_minutes }} min read</p>@endif
+                                <div class="min-w-0">
+                                    <p class="flex flex-wrap items-center gap-x-3 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-stone-500">
+                                        @if ($post->category)<span class="text-terracotta-500">{{ $post->category->name }}</span>@endif
+                                        @if ($post->reading_minutes)<span>{{ $post->reading_minutes }} min read</span>@endif
+                                    </p>
+                                    <h3 class="mt-2 font-display text-xl leading-snug text-juniper-800 lg:text-2xl"><a href="{{ url($post->publicPath()) }}" class="decoration-terracotta-500/40 decoration-1 underline-offset-4 group-hover:underline">{{ $post->title }}</a></h3>
                                 </div>
                             </article>
                         @endforeach
+
+                        {{-- Field-notes card: points planners to the travel guide. --}}
+                        <a href="{{ url('/travel-guide') }}" class="group relative flex min-h-[13rem] flex-col justify-end overflow-hidden rounded-[2rem] bg-juniper-900 p-8 text-stone-100 sm:col-span-2 lg:mt-auto">
+                            <div class="topo pointer-events-none absolute inset-0 opacity-15 invert"></div>
+                            <x-site.gear icon="map" class="absolute -top-3 -right-3 w-36 rotate-12 text-saffron-300/30 transition duration-700 group-hover:rotate-0" />
+                            <p class="eyebrow eyebrow-light relative">Field notes</p>
+                            <p class="relative mt-4 max-w-sm font-display text-2xl leading-snug text-white">Permits, seasons, kit lists and altitude: everything to know before you go.</p>
+                            <span class="relative mt-5 inline-flex items-center gap-2 text-sm font-semibold text-saffron-300">Read the travel guide <x-heroicon-m-arrow-right class="size-4 transition group-hover:translate-x-1" /></span>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
     @endif
+
+    <x-site.altitude-meter />
 </x-layouts.site>

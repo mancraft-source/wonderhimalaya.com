@@ -6,8 +6,8 @@
     x-on:keydown.escape.window="open = false; mega = null"
     @class([
         'group/header fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-(--ease-mountain)',
-        'data-[scrolled]:bg-stone-100/92 data-[scrolled]:shadow-[0_1px_0_rgba(31,58,51,0.08)] data-[scrolled]:backdrop-blur-xl' => $transparent,
-        'bg-stone-100/92 shadow-[0_1px_0_rgba(31,58,51,0.08)] backdrop-blur-xl' => ! $transparent,
+        'data-[scrolled]:bg-stone-100/92 data-[scrolled]:backdrop-blur-xl' => $transparent,
+        'bg-stone-100/92 backdrop-blur-xl' => ! $transparent,
     ])
     x-bind:class="(open || mega) && '!bg-stone-100'"
 >
@@ -163,4 +163,13 @@
             <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="btn-outline">Call {{ $phone }}</a>
         </nav>
     </div>
+    {{-- Ridge-line edge: the solid header ends in a mountain skyline; the terracotta line traces reading progress. --}}
+    <svg viewBox="0 0 1600 12" preserveAspectRatio="none" aria-hidden="true" @class([
+        'header-ridge pointer-events-none absolute inset-x-0 top-full h-3 w-full transition-opacity duration-500',
+        'opacity-0 group-data-[scrolled]/header:opacity-100' => $transparent,
+    ]) x-bind:class="(open || mega) && '!opacity-0'">
+        <path d="M0,7.3 L16,7.9 L32,8.9 L48,8.5 L64,8.0 L80,8.1 L96,8.5 L112,7.8 L128,7.5 L144,6.5 L160,7.5 L176,7.6 L192,8.1 L208,8.6 L224,9.3 L240,10.9 L256,10.4 L272,9.6 L288,8.5 L304,5.9 L320,4.6 L336,3.9 L352,3.0 L368,2.6 L384,2.4 L400,1.0 L416,2.6 L432,3.5 L448,4.0 L464,4.0 L480,5.0 L496,4.4 L512,5.8 L528,5.3 L544,4.1 L560,3.1 L576,4.1 L592,3.5 L608,4.5 L624,5.3 L640,5.9 L656,7.0 L672,8.8 L688,9.7 L704,10.0 L720,10.7 L736,11 L752,9.6 L768,8.8 L784,8.9 L800,7.2 L816,6.9 L832,6.1 L848,5.6 L864,7.0 L880,5.7 L896,6.6 L912,6.6 L928,7.6 L944,6.7 L960,6.4 L976,6.3 L992,4.3 L1008,3.6 L1024,3.1 L1040,1 L1056,1 L1072,1 L1088,1.5 L1104,2.1 L1120,2.4 L1136,3.9 L1152,4.8 L1168,6.3 L1184,6.2 L1200,7.8 L1216,8.1 L1232,7.9 L1248,7.0 L1264,7.1 L1280,5.0 L1296,5.7 L1312,7.5 L1328,7.8 L1344,8.1 L1360,10.2 L1376,10.5 L1392,11 L1408,10.7 L1424,10.3 L1440,10.1 L1456,8.4 L1472,7.5 L1488,7.3 L1504,4.7 L1520,3.1 L1536,2.5 L1552,2.5 L1568,3.9 L1584,3.5 L1600,3.9 L1600,0 L0,0 Z" fill="#f4efe6" fill-opacity=".92" />
+        <path d="M0,7.3 L16,7.9 L32,8.9 L48,8.5 L64,8.0 L80,8.1 L96,8.5 L112,7.8 L128,7.5 L144,6.5 L160,7.5 L176,7.6 L192,8.1 L208,8.6 L224,9.3 L240,10.9 L256,10.4 L272,9.6 L288,8.5 L304,5.9 L320,4.6 L336,3.9 L352,3.0 L368,2.6 L384,2.4 L400,1.0 L416,2.6 L432,3.5 L448,4.0 L464,4.0 L480,5.0 L496,4.4 L512,5.8 L528,5.3 L544,4.1 L560,3.1 L576,4.1 L592,3.5 L608,4.5 L624,5.3 L640,5.9 L656,7.0 L672,8.8 L688,9.7 L704,10.0 L720,10.7 L736,11 L752,9.6 L768,8.8 L784,8.9 L800,7.2 L816,6.9 L832,6.1 L848,5.6 L864,7.0 L880,5.7 L896,6.6 L912,6.6 L928,7.6 L944,6.7 L960,6.4 L976,6.3 L992,4.3 L1008,3.6 L1024,3.1 L1040,1 L1056,1 L1072,1 L1088,1.5 L1104,2.1 L1120,2.4 L1136,3.9 L1152,4.8 L1168,6.3 L1184,6.2 L1200,7.8 L1216,8.1 L1232,7.9 L1248,7.0 L1264,7.1 L1280,5.0 L1296,5.7 L1312,7.5 L1328,7.8 L1344,8.1 L1360,10.2 L1376,10.5 L1392,11 L1408,10.7 L1424,10.3 L1440,10.1 L1456,8.4 L1472,7.5 L1488,7.3 L1504,4.7 L1520,3.1 L1536,2.5 L1552,2.5 L1568,3.9 L1584,3.5 L1600,3.9" fill="none" stroke="#1f3a33" stroke-opacity=".12" vector-effect="non-scaling-stroke" />
+        <path class="header-ridge__progress" d="M0,7.3 L16,7.9 L32,8.9 L48,8.5 L64,8.0 L80,8.1 L96,8.5 L112,7.8 L128,7.5 L144,6.5 L160,7.5 L176,7.6 L192,8.1 L208,8.6 L224,9.3 L240,10.9 L256,10.4 L272,9.6 L288,8.5 L304,5.9 L320,4.6 L336,3.9 L352,3.0 L368,2.6 L384,2.4 L400,1.0 L416,2.6 L432,3.5 L448,4.0 L464,4.0 L480,5.0 L496,4.4 L512,5.8 L528,5.3 L544,4.1 L560,3.1 L576,4.1 L592,3.5 L608,4.5 L624,5.3 L640,5.9 L656,7.0 L672,8.8 L688,9.7 L704,10.0 L720,10.7 L736,11 L752,9.6 L768,8.8 L784,8.9 L800,7.2 L816,6.9 L832,6.1 L848,5.6 L864,7.0 L880,5.7 L896,6.6 L912,6.6 L928,7.6 L944,6.7 L960,6.4 L976,6.3 L992,4.3 L1008,3.6 L1024,3.1 L1040,1 L1056,1 L1072,1 L1088,1.5 L1104,2.1 L1120,2.4 L1136,3.9 L1152,4.8 L1168,6.3 L1184,6.2 L1200,7.8 L1216,8.1 L1232,7.9 L1248,7.0 L1264,7.1 L1280,5.0 L1296,5.7 L1312,7.5 L1328,7.8 L1344,8.1 L1360,10.2 L1376,10.5 L1392,11 L1408,10.7 L1424,10.3 L1440,10.1 L1456,8.4 L1472,7.5 L1488,7.3 L1504,4.7 L1520,3.1 L1536,2.5 L1552,2.5 L1568,3.9 L1584,3.5 L1600,3.9" pathLength="1" fill="none" stroke="#b5532e" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+    </svg>
 </header>
