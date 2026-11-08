@@ -205,3 +205,16 @@ it('requires a last name on enquiries and records the page the form was sent fro
         ->and($lead->form_page)->not->toBeEmpty()
         ->and(UserAgent::summary('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1'))->toBe('Mobile · Safari · iOS');
 });
+
+it('groups top-level policy pages into one booking & policies section', function () {
+    foreach (['risk-free-booking' => 'Risk free booking', 'terms-and-conditions' => 'Terms and Conditions'] as $path => $title) {
+        Page::create(['title' => $title, 'slug' => $path, 'path' => $path, 'template' => 'legal', 'status' => PublishStatus::Published, 'published_at' => now()->subDay(),
+            'blocks' => [['type' => 'rich_text', 'data' => ['content' => '<h2>'.$title.'</h2><p>Policy text.</p>']]]]);
+    }
+
+    $this->get('/risk-free-booking')
+        ->assertOk()
+        ->assertSeeInOrder(['Booking &amp; policies', 'Risk free booking', 'Terms and Conditions'], false)
+        ->assertSee('Questions before you book?')
+        ->assertDontSee('<h2 id="risk-free-booking">', false);
+});

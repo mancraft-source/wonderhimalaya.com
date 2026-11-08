@@ -102,3 +102,26 @@ it('turns label: value lists into a detail card with the note as its footnote', 
         ->toContain('<p class="detail-card__note">Bank charges are up to the client.</p></div>')
         ->toContain('<li>Clear weather</li>');
 });
+
+it('turns dead accordion toggle links into question headings', function () {
+    $html = RichText::normalize('<p><a href="#collapse-abc123">'."\n".'Is the Company Legally Registered?'."\n".'</a></p><p>Answer.</p>');
+
+    expect($html)->toStartWith('<h3 id="is-the-company-legally-registered">Is the Company Legally Registered?</h3>');
+});
+
+it('turns styling headings into an eyebrow and a lead, and marks notes and policy lists', function () {
+    $point = str_repeat('A policy point that is a full sentence long enough. ', 2);
+    $html = RichText::normalize('<h4>Book with Confidence</h4><h2>Peace of mind</h2><h4>Secure your plans today without the worry. Enjoy hassle-free bookings.</h4>'
+        ."<ul><li>{$point}</li><li>{$point}</li><li>Regarding Trip Cancellation In case you cancel, the deposit is kept as a fee for our costs.</li></ul><p>Note: we are registered.</p>");
+
+    expect($html)->toContain('<p class="kicker">Book with Confidence</p>')
+        ->toContain('<p class="lead">Secure your plans today')
+        ->toContain('<ul class="points">')
+        ->toContain('<li><strong>Regarding Trip Cancellation.</strong> In case you cancel')
+        ->toContain('<p class="note">Note: we are registered.</p>');
+});
+
+it('drops a first heading that only repeats the page title', function () {
+    expect(RichText::withoutTitleHeading('<h2>Alert</h2><p>Text</p>', 'Alerts'))->toBe('<p>Text</p>')
+        ->and(RichText::withoutTitleHeading('<h2>Safety first</h2><p>Text</p>', 'Alerts'))->toBe('<h2>Safety first</h2><p>Text</p>');
+});

@@ -33,8 +33,11 @@ class RichText
         $body = $dom->getElementsByTagName('body')->item(0);
 
         self::dropBlankTextNodes($body);
+        self::accordionTitlesToHeadings($dom, $body);
         self::splitLineLists($dom, $body);
+        self::kickersAndLeads($dom, $body);
         self::calloutLongHeadings($dom, $body);
+        self::markNotesAndPoints($body);
         self::groupImages($dom, $body);
         self::anchorHeadings($body);
 
@@ -284,6 +287,84 @@ class RichText
         $text = trim(html_entity_decode(strip_tags($line), ENT_QUOTES | ENT_HTML5, 'UTF-8'), " \t\u{00A0}");
 
         return $text === '' || preg_match('/^[-_=—–]{5,}$/u', $text) === 1;
+    }
+
+    /**
+     * Elementor toggles/accordions import as a paragraph holding only a dead "#collapse-…" link before the answer:
+     * the link text was the question, so it becomes an h3.
+     */
+    private static function accordionTitlesToHeadings(DOMDocument $dom, DOMElement $body): void
+    {
+        foreach (self::children($body, 'p') as $p) {
+            $links = $p->getElementsByTagName('a');
+            $href = $links->length === 1 ? (string) $links->item(0)->getAttribute('href') : '';
+
+            if (preg_match('/^#(collapse|elementor-tab|tab-title|accordion)/i', $href) && trim($p->textContent) === trim($links->item(0)->textContent)) {
+                $text = rtrim(Str::squish($links->item(0)->textContent), '.');
+                self::replaceWithHtml($dom, $p, '<h3>'.e($text).'</h3>');
+            }
+        }
+    }
+
+    /**
+     * Page-builder headings used for styling rather than structure: a short h4–h6 right above a heading becomes its
+     * eyebrow, an h4–h6 sentence right below one becomes a lead paragraph, and an h2/h3 that is really a full
+     * sentence ("Here are some safety alerts you must look after…") becomes a lead paragraph too.
+     */
+    private static function kickersAndLeads(DOMDocument $dom, DOMElement $body): void
+    {
+        $elements = array_values(array_filter(iterator_to_array($body->childNodes), fn ($n) => $n instanceof DOMElement));
+
+        foreach ($elements as $i => $el) {
+            $tag = $el->tagName;
+            $text = trim($el->textContent);
+            $next = $elements[$i + 1] ?? null;
+            $previous = $elements[$i - 1] ?? null;
+
+            if (in_array($tag, ['h4', 'h5', 'h6'], true) && mb_strlen($text) <= 60 && $next && in_array($next->tagName, ['h1', 'h2', 'h3'], true)) {
+                self::replaceWithHtml($dom, $el, '<p class="kicker">'.self::innerHtml($el).'</p>');
+            } elseif (in_array($tag, ['h4', 'h5', 'h6'], true) && mb_strlen($text) > 60 && $previous && in_array($previous->tagName, ['h1', 'h2', 'h3'], true)) {
+                self::replaceWithHtml($dom, $el, '<p class="lead">'.self::innerHtml($el).'</p>');
+            } elseif (in_array($tag, ['h2', 'h3'], true) && mb_strlen($text) > 90 && mb_strlen($text) <= self::MAX_HEADING_LENGTH && preg_match('/[.:]$/u', $text)) {
+                self::replaceWithHtml($dom, $el, '<p class="lead">'.self::innerHtml($el).'</p>');
+            }
+        }
+    }
+
+    /** "Note: …" paragraphs become notes; lists of long sentences (policies, conditions) become point lists. */
+    private static function markNotesAndPoints(DOMElement $body): void
+    {
+        foreach (self::children($body, 'p') as $p) {
+            if (preg_match('/^\s*(note|please note|important)\s*:/iu', $p->textContent)) {
+                $p->setAttribute('class', trim($p->getAttribute('class').' note'));
+            }
+        }
+
+        foreach (self::children($body, 'ul') as $ul) {
+            $items = array_filter(iterator_to_array($ul->childNodes), fn ($n) => $n instanceof DOMElement && $n->tagName === 'li');
+            if (count($items) >= 3 && collect($items)->every(fn ($li) => mb_strlen(trim($li->textContent)) >= 60)) {
+                $ul->setAttribute('class', trim($ul->getAttribute('class').' points'));
+
+                // "Regarding Trip Cancellation In case you…": the old editor fused a bold lead-in onto the sentence.
+                foreach ($items as $li) {
+                    $first = $li->firstChild;
+                    if ($first instanceof \DOMText && preg_match('/^\s*(Regarding(?: [A-Z][\w-]+){1,3}) (?=(?:In|If|When|For|As|We|You|The|Once|Please)\b)/u', $first->data, $m)) {
+                        $first->data = substr($first->data, strlen($m[0]));
+                        $strong = $li->ownerDocument->createElement('strong', $m[1].'.');
+                        $li->insertBefore($li->ownerDocument->createTextNode(' '), $first);
+                        $li->insertBefore($strong, $li->firstChild);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Removes a leading heading that only repeats the page title ("Alert" on the "Alerts" page). */
+    public static function withoutTitleHeading(string $html, string $title): string
+    {
+        $simplify = fn (string $text): string => rtrim(Str::lower(trim(html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8'))), 's');
+
+        return preg_replace_callback('/^\s*<h[1-3][^>]*>(.*?)<\/h[1-3]>\s*/is', fn (array $m) => $simplify($m[1]) === $simplify($title) ? '' : $m[0], $html, 1);
     }
 
     private static function calloutLongHeadings(DOMDocument $dom, DOMElement $body): void

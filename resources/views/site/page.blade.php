@@ -1,5 +1,10 @@
 @php
-    $blocks = collect($page->blocks ?? []);
+    $blocks = collect($page->blocks ?? [])->values();
+    // A first heading that only repeats the page title ("Alert" on "Alerts") is dropped; the hero already says it.
+    if (($blocks->first()['type'] ?? null) === 'rich_text') {
+        $blocks = $blocks->replace([0 => array_replace_recursive($blocks->first(), ['data' => ['content' => \App\Support\RichText::withoutTitleHeading((string) ($blocks->first()['data']['content'] ?? ''), $page->title)]])]);
+    }
+    $sectionLabel = $page->parent?->title ?? (($page->template ?? null) === 'legal' ? 'Booking & policies' : 'In this section');
     $leadHero = ($blocks->first()['type'] ?? null) === 'hero';
     $template = $page->template ?? 'default';
     $crumbs = array_values(array_filter([
@@ -113,6 +118,10 @@
         @php
             $bodyHtml = $blocks->map(fn ($b) => \App\Support\RichText::normalize($b['data']['content'] ?? ''))->implode('');
             $outline = collect(\App\Support\RichText::outline($bodyHtml));
+            // No h2s (e.g. a checklist of h3 questions): the h3s are the chapters.
+            if ($outline->where('level', 2)->isEmpty()) {
+                $outline = $outline->map(fn ($h) => ['level' => 2] + $h);
+            }
             $outline = ($outline->where('level', 2)->count() >= 4 ? $outline->where('level', 2) : $outline)->values();
             $chapter = 0;
             $position = $siblings->search(fn ($s) => $s->id === $page->id);
@@ -124,7 +133,7 @@
             <aside class="lg:col-span-3">
                 <details class="group rounded-2xl bg-stone-50 ring-1 ring-stone-300/60 lg:hidden">
                     <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-juniper-800 [&::-webkit-details-marker]:hidden">
-                        <span class="min-w-0"><span class="block text-[0.65rem] tracking-[0.18em] text-stone-500 uppercase">{{ $page->parent?->title ?? 'In this section' }}</span><span class="block truncate">{{ $page->title }}</span></span>
+                        <span class="min-w-0"><span class="block text-[0.65rem] tracking-[0.18em] text-stone-500 uppercase">{{ $sectionLabel }}</span><span class="block truncate">{{ $page->title }}</span></span>
                         <x-heroicon-m-chevron-down class="size-4 shrink-0 transition group-open:rotate-180" />
                     </summary>
                     <ul class="space-y-1 px-5 pb-4">
@@ -133,8 +142,8 @@
                         @endforeach
                     </ul>
                 </details>
-                <nav class="hidden lg:sticky lg:top-32 lg:block" aria-label="{{ $page->parent?->title ?? $page->title }}">
-                    <p class="text-xs font-semibold tracking-[0.18em] text-stone-500 uppercase">{{ $page->parent?->title ?? 'In this section' }}</p>
+                <nav class="hidden lg:sticky lg:top-32 lg:block" aria-label="{{ $sectionLabel }}">
+                    <p class="text-xs font-semibold tracking-[0.18em] text-stone-500 uppercase">{{ $sectionLabel }}</p>
                     <ul class="mt-4 space-y-0.5 border-l border-stone-300/70">
                         @foreach ($siblings as $s)
                             <li><a href="{{ url($s->publicPath()) }}" @class(['-ml-px block border-l-2 py-1.5 pl-4 text-[0.95rem] transition', 'border-terracotta-500 font-semibold text-juniper-800' => $s->id === $page->id, 'border-transparent text-ink-soft hover:border-stone-400 hover:text-juniper-800' => $s->id !== $page->id]) @if ($s->id === $page->id) aria-current="page" @endif>{{ $s->title }}</a></li>
@@ -193,15 +202,22 @@
                             </ol>
                         </nav>
                     @endif
-                    @if ($isGuide)
-                        <div class="relative overflow-hidden rounded-[1.75rem] bg-juniper-900 p-7 text-stone-100">
-                            <div class="topo pointer-events-none absolute inset-0 opacity-15 invert"></div>
-                            <x-site.gear icon="compass" class="absolute -top-4 -right-4 w-28 rotate-12 text-saffron-300/25" />
+                    <div class="relative overflow-hidden rounded-[1.75rem] bg-juniper-900 p-7 text-stone-100">
+                        <div class="topo pointer-events-none absolute inset-0 opacity-15 invert"></div>
+                        <x-site.gear :icon="$isGuide ? 'compass' : 'map'" class="absolute -top-4 -right-4 w-28 rotate-12 text-saffron-300/25" />
+                        @if ($isGuide)
                             <p class="relative font-display text-2xl leading-snug text-white">Questions about your trek?</p>
                             <p class="relative mt-2 text-sm text-stone-300">Talk to our Kathmandu team about seasons, permits, kit and the trek that suits you.</p>
                             <a href="{{ route('contact') }}" class="btn-primary relative mt-6 !px-5 !py-3 text-sm">Ask a trek expert <x-heroicon-m-arrow-right class="size-4" /></a>
-                        </div>
-                    @endif
+                        @else
+                            <p class="relative pr-12 font-display text-2xl leading-snug text-white">Questions before you book?</p>
+                            <p class="relative mt-2 text-sm text-stone-300">Ask our Kathmandu team about deposits, payments, dates or anything in these policies.</p>
+                            <a href="{{ route('contact') }}" class="btn-primary relative mt-6 !px-5 !py-3 text-sm">Contact us <x-heroicon-m-arrow-right class="size-4" /></a>
+                            @if (! empty($company['email']))
+                                <a href="mailto:{{ $company['email'] }}" class="relative mt-4 flex items-center gap-2 text-sm text-stone-300 hover:text-white"><x-heroicon-o-envelope class="size-4 text-saffron-300" /> {{ $company['email'] }}</a>
+                            @endif
+                        @endif
+                    </div>
                 </div>
             </aside>
         </div>
