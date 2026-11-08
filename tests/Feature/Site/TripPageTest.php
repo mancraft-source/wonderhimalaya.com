@@ -75,7 +75,7 @@ it('records how the traveller found us on trip enquiries', function () {
 
     Livewire::test(TripEnquiry::class, ['trip' => $trip])
         ->set('mode', 'private')
-        ->set('first_name', 'Mia')->set('email', 'mia@example.com')->set('privacy_accepted', true)
+        ->set('first_name', 'Mia')->set('last_name', 'Traveller')->set('email', 'mia@example.com')->set('privacy_accepted', true)
         ->set('heard_about', 'Tripadvisor')
         ->call('submit')
         ->assertHasNoErrors();

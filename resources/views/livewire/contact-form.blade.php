@@ -9,7 +9,7 @@
         <form wire:submit="submit" class="card-surface grid gap-5 p-6 sm:grid-cols-2 sm:p-10" novalidate>
             <x-honeypot livewire-model="extraFields" />
             <x-site.field label="First name" name="first_name" wire:model="first_name" autocomplete="given-name" required prefix="c" />
-            <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" optional prefix="c" />
+            <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" prefix="c" />
             <x-site.field label="Email" name="email" type="email" wire:model="email" autocomplete="email" required prefix="c" />
             <x-site.field label="Phone / WhatsApp" name="phone" type="tel" wire:model="phone" autocomplete="tel" optional prefix="c" />
             <x-site.field label="Country of residence" name="country" type="select" wire:model="country" class="sm:col-span-2" prefix="c">

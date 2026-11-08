@@ -9,6 +9,7 @@ use App\Support\Turnstile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Locked;
 use Spatie\Honeypot\Http\Livewire\Concerns\HoneypotData;
 use Spatie\Honeypot\Http\Livewire\Concerns\UsesSpamProtection;
 
@@ -25,9 +26,14 @@ trait SubmitsEnquiries
 
     public ?string $turnstileToken = null;
 
+    /** The page the form sits on, captured on first render (form posts go to /livewire/update, so the request URL can't tell). */
+    #[Locked]
+    public ?string $formPage = null;
+
     public function mountSubmitsEnquiries(): void
     {
         $this->extraFields = new HoneypotData;
+        $this->formPage = substr(request()->fullUrl(), 0, 1000);
     }
 
     /** @param  array<int, string>  $fields */
@@ -56,6 +62,7 @@ trait SubmitsEnquiries
         return app(SubmitEnquiry::class)->handle($data + [
             'utm' => $session['utm'] ?? null,
             'landing_page' => $session['landing_page'] ?? null,
+            'form_page' => $this->formPage,
             'source' => isset($session['utm']['gclid']) ? 'google_ads' : ($session['utm']['utm_source'] ?? 'website'),
         ], [
             'ip' => request()->ip(),

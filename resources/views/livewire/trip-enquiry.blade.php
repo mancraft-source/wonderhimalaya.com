@@ -70,7 +70,7 @@
                     <x-site.field label="Children (under 16)" name="children" type="number" min="0" max="20" wire:model="children" prefix="te" />
                 </div>
                 <x-site.field label="First name" name="first_name" wire:model="first_name" autocomplete="given-name" required prefix="te" />
-                <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" optional prefix="te" />
+                <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" prefix="te" />
                 <x-site.field label="Email" name="email" type="email" wire:model="email" autocomplete="email" required prefix="te" />
                 <x-site.field label="Phone / WhatsApp" name="phone" type="tel" wire:model="phone" autocomplete="tel" optional prefix="te" />
                 <x-site.field label="Country" name="country" type="select" wire:model="country" prefix="te">

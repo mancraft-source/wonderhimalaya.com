@@ -156,7 +156,7 @@
                 <h2 id="tm-5" class="mt-4 font-display text-display-sm">Finally, where should we send your itinerary?</h2>
                 <div class="mt-8 grid gap-5 sm:grid-cols-2">
                     <x-site.field label="First name" name="first_name" wire:model="first_name" autocomplete="given-name" required prefix="tm" />
-                    <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" optional prefix="tm" />
+                    <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" prefix="tm" />
                     <x-site.field label="Email" name="email" type="email" wire:model="email" autocomplete="email" required prefix="tm" />
                     <x-site.field label="Phone / WhatsApp" name="phone" type="tel" wire:model="phone" autocomplete="tel" optional prefix="tm" hint="Many travellers prefer a quick WhatsApp chat." />
                     <x-site.field label="Country of residence" name="country" type="select" wire:model="country" class="sm:col-span-2" prefix="tm">

@@ -17,6 +17,9 @@ use App\Models\Quote;
 use App\Models\User;
 use App\Notifications\BookingConfirmed as BookingConfirmedNotification;
 use App\Notifications\PaymentReceived;
+use App\Notifications\StaffAlerts;
+use App\Support\Notifications\NotificationSettings;
+use App\Support\Notifications\StaffNotifier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -219,16 +222,20 @@ class PaymentService
     {
         $email = $payment->contact?->email ?? $this->payableContactEmail($payment->payable);
 
-        if ($email) {
+        if ($email && NotificationSettings::enabled('payment_received')) {
             Notification::route('mail', $email)->notify(new PaymentReceived($payment));
         }
+
+        StaffNotifier::send(StaffAlerts::paymentReceived($payment));
     }
 
     private function sendConfirmation(Booking $booking): void
     {
-        if ($email = $booking->contact?->email) {
+        if (($email = $booking->contact?->email) && NotificationSettings::enabled('booking_confirmed')) {
             Notification::route('mail', $email)->notify(new BookingConfirmedNotification($booking));
         }
+
+        StaffNotifier::send(StaffAlerts::bookingConfirmed($booking));
     }
 
     private function payableContactEmail(?Model $payable): ?string

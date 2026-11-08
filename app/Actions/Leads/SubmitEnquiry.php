@@ -58,6 +58,7 @@ class SubmitEnquiry
                 'source' => $data['source'] ?? 'website',
                 'utm' => Arr::only($data['utm'] ?? [], ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid']) ?: null,
                 'landing_page' => $data['landing_page'] ?? null,
+                'form_page' => isset($data['form_page']) ? substr((string) $data['form_page'], 0, 1000) : null,
                 'referrer' => isset($meta['referrer']) ? substr((string) $meta['referrer'], 0, 1000) : null,
                 'ip_address' => $meta['ip'] ?? null,
                 'user_agent' => isset($meta['user_agent']) ? substr((string) $meta['user_agent'], 0, 500) : null,

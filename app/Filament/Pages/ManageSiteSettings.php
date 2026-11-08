@@ -14,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
@@ -21,6 +22,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Mail;
 use UnitEnum;
 
 /**
@@ -174,8 +176,34 @@ class ManageSiteSettings extends Page
                             ->schema([
                                 TextInput::make('notifications.sales_email')
                                     ->label('Sales inbox')
-                                    ->helperText('New enquiries and bookings are emailed here.')
+                                    ->helperText('Replies to customer emails go to this address. Who receives staff alerts (email or the admin bell) is set under Settings → Notifications.')
                                     ->email(),
+                                Callout::make(fn (): string => self::mailStatus()['heading'])
+                                    ->description(fn (): string => self::mailStatus()['description'])
+                                    ->color(fn (): string => self::mailStatus()['ok'] ? 'success' : 'warning')
+                                    ->icon(fn (): Heroicon => self::mailStatus()['ok'] ? Heroicon::OutlinedCheckCircle : Heroicon::OutlinedExclamationTriangle),
+                                Actions::make([
+                                    Action::make('sendTestEmail')
+                                        ->label('Send a test email')
+                                        ->icon(Heroicon::OutlinedPaperAirplane)
+                                        ->color('gray')
+                                        ->schema([
+                                            TextInput::make('to')->label('Send to')->email()->required()
+                                                ->default(fn (): ?string => Setting::get('notifications.sales_email') ?: auth()->user()?->email),
+                                        ])
+                                        ->action(function (array $data): void {
+                                            try {
+                                                Mail::raw('This is a test email from the Wonder Himalaya website. If you can read this, outgoing email works.', function ($message) use ($data): void {
+                                                    $message->to($data['to'])->subject('Test email from '.config('app.name'));
+                                                });
+                                                Notification::make()->title('Test email sent to '.$data['to'])
+                                                    ->body(config('mail.default') === 'log' ? 'The mailer is set to "log", so it was written to storage/logs instead of being delivered.' : 'Check the inbox (and spam folder).')
+                                                    ->success()->send();
+                                            } catch (\Throwable $e) {
+                                                Notification::make()->title('Email could not be sent')->body(str($e->getMessage())->limit(300)->toString())->danger()->persistent()->send();
+                                            }
+                                        }),
+                                ]),
                             ]),
                         Tab::make('Integrations')
                             ->icon(Heroicon::OutlinedPuzzlePiece)
@@ -232,6 +260,26 @@ class ManageSiteSettings extends Page
             ->title('Settings saved')
             ->success()
             ->send();
+    }
+
+    /**
+     * Outgoing-mail configuration as staff see it (credentials live in .env, never in the database).
+     *
+     * @return array{ok: bool, heading: string, description: string}
+     */
+    public static function mailStatus(): array
+    {
+        $mailer = (string) config('mail.default');
+        $from = (string) config('mail.from.address');
+        $host = (string) config("mail.mailers.{$mailer}.host");
+
+        if (in_array($mailer, ['log', 'array'], true)) {
+            return ['ok' => false, 'heading' => 'Email is not being delivered', 'description' => "The mailer is \"{$mailer}\": emails are written to the log only. Set the SMTP details in the server's .env file (MAIL_MAILER=smtp, MAIL_HOST, MAIL_USERNAME, MAIL_PASSWORD) to send real email."];
+        }
+
+        $warning = str_ends_with($from, 'example.com') ? ' The "from" address is still a placeholder: set MAIL_FROM_ADDRESS in .env.' : '';
+
+        return ['ok' => $warning === '', 'heading' => 'Sending with '.strtoupper($mailer).($host ? " via {$host}" : ''), 'description' => "Emails go out from {$from}.{$warning} Use the button below to check delivery."];
     }
 
     /**

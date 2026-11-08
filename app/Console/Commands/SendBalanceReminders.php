@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Notifications\BalancePaymentDue;
 use App\Payments\PaymentLog;
 use App\Payments\PaymentService;
+use App\Support\Notifications\NotificationSettings;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -23,6 +24,12 @@ class SendBalanceReminders extends Command
 {
     public function handle(PaymentService $payments): int
     {
+        if (! NotificationSettings::enabled('balance_due')) {
+            $this->info('Balance reminders are switched off under Settings → Notifications.');
+
+            return self::SUCCESS;
+        }
+
         $window = (int) config('payments.balance_reminder_window_days', 7);
         $today = today()->toDateString();
         $sent = 0;

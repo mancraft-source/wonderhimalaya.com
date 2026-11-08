@@ -18,7 +18,7 @@
                 @foreach (\App\Support\Countries::all() as $c)<option>{{ $c }}</option>@endforeach
             </x-site.field>
             <x-site.field label="Your first name" name="first_name" wire:model="first_name" autocomplete="given-name" required prefix="b2b" />
-            <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" optional prefix="b2b" />
+            <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" prefix="b2b" />
             <x-site.field label="Work email" name="email" type="email" wire:model="email" autocomplete="email" required prefix="b2b" />
             <x-site.field label="Phone / WhatsApp" name="phone" type="tel" wire:model="phone" autocomplete="tel" optional prefix="b2b" />
             <fieldset class="sm:col-span-2">

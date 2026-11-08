@@ -13,6 +13,7 @@ use App\Models\Post;
 use App\Models\Redirect;
 use App\Models\Trip;
 use App\Models\TripDeparture;
+use App\Support\UserAgent;
 use Livewire\Livewire;
 
 function siteTrip(array $attrs = []): Trip
@@ -95,7 +96,7 @@ it('creates a lead from the trip enquiry (group departure)', function () {
 
     Livewire::test(TripEnquiry::class, ['trip' => $trip])
         ->call('selectDeparture', $dep->id)
-        ->set('first_name', 'Ana')->set('email', 'ana@example.com')->set('adults', 2)->set('privacy_accepted', true)
+        ->set('first_name', 'Ana')->set('last_name', 'Traveller')->set('email', 'ana@example.com')->set('adults', 2)->set('privacy_accepted', true)
         ->call('submit')
         ->assertHasNoErrors()
         ->assertSet('reference', fn ($r) => str_starts_with((string) $r, 'WH-'));
@@ -108,7 +109,7 @@ it('creates a lead from the trip enquiry (group departure)', function () {
 
 it('requires privacy consent on enquiries', function () {
     Livewire::test(ContactForm::class)
-        ->set('first_name', 'Bo')->set('email', 'bo@example.com')->set('message', 'Hello, a question about Mardi Himal.')
+        ->set('first_name', 'Bo')->set('last_name', 'Traveller')->set('email', 'bo@example.com')->set('message', 'Hello, a question about Mardi Himal.')
         ->call('submit')
         ->assertHasErrors(['privacy_accepted']);
 
@@ -124,7 +125,7 @@ it('walks the tailor-made builder and stores the brief', function () {
         ->call('toggle', 'interests', 'culture')->call('next')->assertSet('step', 3)
         ->set('travel_month', now()->addMonths(3)->format('Y-m'))->call('next')->assertSet('step', 4)
         ->set('adults', 2)->set('budget', 'US$3,000 – 5,000')->call('next')->assertSet('step', 5)
-        ->set('first_name', 'Kai')->set('email', 'kai@example.com')->set('privacy_accepted', true)
+        ->set('first_name', 'Kai')->set('last_name', 'Traveller')->set('email', 'kai@example.com')->set('privacy_accepted', true)
         ->call('submit')->assertHasNoErrors();
 
     $lead = Lead::first();
@@ -137,7 +138,7 @@ it('walks the tailor-made builder and stores the brief', function () {
 it('creates a company for partner enquiries', function () {
     Livewire::test(PartnerForm::class)
         ->set('company_name', 'Alpine Travel GmbH')->set('company_type', 'tour_operator')->set('country', 'Germany')
-        ->set('first_name', 'Lena')->set('email', 'lena@alpine.test')->set('privacy_accepted', true)
+        ->set('first_name', 'Lena')->set('last_name', 'Traveller')->set('email', 'lena@alpine.test')->set('privacy_accepted', true)
         ->call('submit')->assertHasNoErrors();
 
     expect(Lead::first()->type)->toBe(LeadType::B2B)->and(Lead::first()->company->name)->toBe('Alpine Travel GmbH');
@@ -145,7 +146,7 @@ it('creates a company for partner enquiries', function () {
 
 it('throttles repeated enquiries from one ip', function () {
     $submit = fn () => Livewire::test(ContactForm::class)
-        ->set('first_name', 'Spam')->set('email', 'spam@example.com')->set('message', 'Buy cheap things now please')->set('privacy_accepted', true)
+        ->set('first_name', 'Spam')->set('last_name', 'Traveller')->set('email', 'spam@example.com')->set('message', 'Buy cheap things now please')->set('privacy_accepted', true)
         ->call('submit');
 
     foreach (range(1, 5) as $i) {
@@ -169,7 +170,7 @@ it('rejects submissions that fill the honeypot', function () {
     $honeypot->validFrom = encrypt(now()->subMinute()->timestamp);
 
     $component->set('extraFields', $honeypot)
-        ->set('first_name', 'Bot')->set('email', 'bot@example.com')->set('message', 'Spammy message here ok')->set('privacy_accepted', true)
+        ->set('first_name', 'Bot')->set('last_name', 'Traveller')->set('email', 'bot@example.com')->set('message', 'Spammy message here ok')->set('privacy_accepted', true)
         ->call('submit')
         ->assertForbidden();
 
@@ -186,4 +187,21 @@ it('lists every nepal region in the destinations menu, including ones without jo
     $this->get('/')
         ->assertOk()
         ->assertSeeInOrder(['Our home ground', 'Nepal', '1 journey · 2 regions', 'Dolpo', 'Made to order', 'Everest', '1 journey', 'Beyond Nepal', 'Tibet']);
+});
+
+it('requires a last name on enquiries and records the page the form was sent from', function () {
+    $trip = siteTrip();
+
+    Livewire::test(ContactForm::class)
+        ->set('first_name', 'Ana')->set('email', 'ana@example.com')->set('message', 'A question about Everest.')->set('privacy_accepted', true)
+        ->call('submit')
+        ->assertHasErrors(['last_name' => 'required'])
+        ->set('last_name', 'Silva')
+        ->call('submit')
+        ->assertHasNoErrors();
+
+    $lead = Lead::latest('id')->first();
+    expect($lead->contact->last_name)->toBe('Silva')
+        ->and($lead->form_page)->not->toBeEmpty()
+        ->and(UserAgent::summary('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1'))->toBe('Mobile · Safari · iOS');
 });

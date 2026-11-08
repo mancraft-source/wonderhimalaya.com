@@ -14,7 +14,7 @@ final class EnquiryRules
         return [
             'type' => ['required', Rule::enum(LeadType::class)],
             'first_name' => ['required', 'string', 'max:80'],
-            'last_name' => ['nullable', 'string', 'max:80'],
+            'last_name' => ['required', 'string', 'max:80'],
             'email' => ['required', 'email:rfc,strict', 'max:190'],
             'phone' => ['nullable', 'string', 'max:40', 'regex:/^[0-9 +().\-]{6,40}$/'],
             'whatsapp' => ['nullable', 'string', 'max:40', 'regex:/^[0-9 +().\-]{6,40}$/'],

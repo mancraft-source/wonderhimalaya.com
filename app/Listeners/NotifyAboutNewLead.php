@@ -3,9 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\LeadCreated;
-use App\Models\Setting;
 use App\Notifications\EnquiryReceived;
-use App\Notifications\NewLeadAlert;
+use App\Notifications\StaffAlerts;
+use App\Support\Notifications\NotificationSettings;
+use App\Support\Notifications\StaffNotifier;
 use Illuminate\Support\Facades\Notification;
 
 class NotifyAboutNewLead
@@ -14,10 +15,10 @@ class NotifyAboutNewLead
     {
         $lead = $event->lead->loadMissing('contact');
 
-        Notification::route('mail', $lead->contact->email)->notify(new EnquiryReceived($lead));
-
-        if ($salesEmail = Setting::get('notifications.sales_email')) {
-            Notification::route('mail', $salesEmail)->notify(new NewLeadAlert($lead));
+        if (NotificationSettings::enabled('enquiry_received')) {
+            Notification::route('mail', $lead->contact->email)->notify(new EnquiryReceived($lead));
         }
+
+        StaffNotifier::send(StaffAlerts::newLead($lead));
     }
 }

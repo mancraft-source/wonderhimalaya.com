@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Enums\LeadStatus;
 use App\Enums\LeadType;
+use App\Notifications\StaffAlerts;
+use App\Support\Notifications\StaffNotifier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -39,6 +41,13 @@ class Lead extends Model
     {
         static::creating(function (self $lead) {
             $lead->reference ??= self::nextReference();
+        });
+
+        // Tell the new owner (unless they assigned the lead to themselves).
+        static::updated(function (self $lead): void {
+            if ($lead->wasChanged('owner_id') && $lead->owner_id && $lead->owner_id !== auth()->id() && ($owner = $lead->owner)) {
+                StaffNotifier::send(StaffAlerts::leadAssigned($lead), $owner);
+            }
         });
     }
 

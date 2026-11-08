@@ -14,6 +14,7 @@ beforeEach(function () {
 $payload = fn (array $overrides = []) => array_merge([
     'type' => 'tailor_made',
     'first_name' => 'Ana',
+    'last_name' => 'Silva',
     'email' => 'ana@example.com',
     'adults' => 2,
     'privacy_accepted' => true,

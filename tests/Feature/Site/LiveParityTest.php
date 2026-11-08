@@ -26,7 +26,7 @@ it('lets travellers join a daily-departure group trip on any date after the cut-
     Livewire::test(TripEnquiry::class, ['trip' => $trip])
         ->assertSet('mode', 'group')
         ->call('pickDate', $date)
-        ->set('first_name', 'Noa')->set('email', 'noa@example.com')->set('adults', 2)->set('privacy_accepted', true)
+        ->set('first_name', 'Noa')->set('last_name', 'Traveller')->set('email', 'noa@example.com')->set('adults', 2)->set('privacy_accepted', true)
         ->call('submit')
         ->assertHasNoErrors();
 
@@ -39,7 +39,7 @@ it('lets travellers join a daily-departure group trip on any date after the cut-
 it('rejects daily-departure dates inside the booking cut-off', function () {
     Livewire::test(TripEnquiry::class, ['trip' => dailyTrip()])
         ->call('pickDate', now()->addDays(3)->toDateString())
-        ->set('first_name', 'Noa')->set('email', 'noa@example.com')->set('privacy_accepted', true)
+        ->set('first_name', 'Noa')->set('last_name', 'Traveller')->set('email', 'noa@example.com')->set('privacy_accepted', true)
         ->call('submit')
         ->assertHasErrors(['start_date']);
 });

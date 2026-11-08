@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Support\Money;
+use App\Support\Notifications\NotificationSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -28,11 +29,12 @@ class PaymentReceived extends Notification implements ShouldQueue
         $payment = $this->payment->loadMissing('payable');
         $booking = $payment->payable instanceof Booking ? $payment->payable->loadMissing('trip', 'contact') : null;
         $name = $booking?->contact?->first_name;
+        $values = ['first_name' => $name, 'name' => $booking?->contact?->name, 'amount' => Money::format($payment->amount, $payment->currency), 'booking_number' => $booking?->number, 'trip' => $booking?->trip?->title];
 
         $mail = (new MailMessage)
-            ->subject('Payment received — '.Money::format($payment->amount, $payment->currency))
+            ->subject(NotificationSettings::render('payment_received', 'subject', $values))
             ->greeting('Namaste'.($name ? ' '.$name : '').',')
-            ->line('Thank you — we have received your payment.')
+            ->line(NotificationSettings::render('payment_received', 'intro', $values))
             ->line('**Amount:** '.Money::format($payment->amount, $payment->currency))
             ->line('**Paid on:** '.$payment->paid_at?->format('j M Y, H:i').' (UTC)')
             ->line('**Payment reference:** '.($payment->gateway_reference ?: $payment->uuid));
@@ -42,6 +44,6 @@ class PaymentReceived extends Notification implements ShouldQueue
                 ->line('**Balance remaining:** '.Money::format($booking->balanceDue(), $booking->currency));
         }
 
-        return $mail->salutation('With gratitude — the Wonder Himalaya team');
+        return $mail->salutation(NotificationSettings::render('payment_received', 'signature', $values));
     }
 }

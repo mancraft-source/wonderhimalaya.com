@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Booking;
 use App\Support\Money;
+use App\Support\Notifications\NotificationSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -26,10 +27,12 @@ class BookingConfirmed extends Notification implements ShouldQueue
     {
         $booking = $this->booking->loadMissing('trip', 'contact', 'departure');
 
+        $values = ['first_name' => $booking->contact?->first_name, 'name' => $booking->contact?->name, 'booking_number' => $booking->number, 'trip' => $booking->trip?->title, 'start_date' => $booking->start_date?->format('j F Y')];
+
         $mail = (new MailMessage)
-            ->subject('Your booking is confirmed — '.$booking->number)
+            ->subject(NotificationSettings::render('booking_confirmed', 'subject', $values))
             ->greeting('Namaste '.($booking->contact?->first_name ?? 'traveller').',')
-            ->line('Wonderful news: your booking is confirmed. We cannot wait to welcome you to the Himalaya.')
+            ->line(NotificationSettings::render('booking_confirmed', 'intro', $values))
             ->line('**Booking number:** '.$booking->number);
 
         if ($booking->trip) {
@@ -50,6 +53,6 @@ class BookingConfirmed extends Notification implements ShouldQueue
         return $mail
             ->line('Next step: please send us each traveller\'s passport and insurance details so we can arrange permits.')
             ->action('Add traveller details', route('bookings.travellers.edit', $booking->uuid))
-            ->salutation('See you in the mountains — the Wonder Himalaya team');
+            ->salutation(NotificationSettings::render('booking_confirmed', 'signature', $values));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Leads\Schemas;
 use App\Filament\Resources\Contacts\ContactResource;
 use App\Filament\Resources\Trips\TripResource;
 use App\Models\Lead;
+use App\Support\UserAgent;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
@@ -62,9 +63,16 @@ class LeadInfolist
                         ->columns(2)
                         ->schema([
                             TextEntry::make('source')->placeholder('—'),
-                            TextEntry::make('landing_page')->placeholder('—')->limit(80),
-                            TextEntry::make('referrer')->placeholder('—')->limit(80),
-                            TextEntry::make('ip_address')->label('IP')->placeholder('—'),
+                            TextEntry::make('created_at')->label('Submitted')->dateTime('j M Y, H:i'),
+                            TextEntry::make('form_page')->label('Submitted from')->placeholder('—')->limit(80)
+                                ->url(fn (?string $state): ?string => $state, shouldOpenInNewTab: true)->columnSpanFull(),
+                            TextEntry::make('landing_page')->label('First landing page')->placeholder('—')->limit(80)
+                                ->url(fn (?string $state): ?string => $state, shouldOpenInNewTab: true)->columnSpanFull(),
+                            TextEntry::make('referrer')->label('Came from (external site)')->placeholder('Direct / unknown')->limit(80)->columnSpanFull(),
+                            TextEntry::make('ip_address')->label('IP address')->placeholder('—')->copyable(),
+                            TextEntry::make('user_agent')->label('Device / browser')->placeholder('—')
+                                ->formatStateUsing(fn (?string $state): string => UserAgent::summary($state))
+                                ->tooltip(fn (?string $state): ?string => $state),
                             KeyValueEntry::make('utm')->label('UTM')->columnSpanFull(),
                         ]),
                 ]),
