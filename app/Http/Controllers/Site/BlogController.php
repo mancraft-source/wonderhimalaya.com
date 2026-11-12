@@ -41,8 +41,8 @@ class BlogController extends Controller
             'category' => $category,
             'categories' => PostCategory::withCount(['posts' => fn ($q) => $q->published()])->get()->where('posts_count', '>', 0),
             'seo' => Seo::make(
-                $category ? $category->name.' — Journal' : 'The Journal — stories & advice from the trail',
-                $category?->description ?: 'Trek guides, route intel, culture and stories from the Himalaya, written by our Kathmandu team and guides.',
+                $category ? $category->name.' — Nepal Trekking Blog' : 'Nepal Trekking Blog: Guides & Tips | Wonder Himalaya',
+                $category?->description ?: 'Nepal trekking blog from Wonder Himalaya: trek guides, route advice, culture and stories from the Himalaya, written by our Kathmandu team and trekking guides.',
             ),
         ]);
     }

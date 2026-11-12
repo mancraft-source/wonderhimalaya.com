@@ -1,7 +1,11 @@
 <?php
 
+use App\Providers\ApiServiceProvider;
+use App\Providers\AppServiceProvider;
+use App\Providers\Filament\AdminPanelProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\ApiServiceProvider::class,
-    App\Providers\Filament\AdminPanelProvider::class,
+    AppServiceProvider::class,
+    ApiServiceProvider::class,
+    AdminPanelProvider::class,
 ];

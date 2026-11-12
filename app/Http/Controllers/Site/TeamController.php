@@ -16,7 +16,7 @@ class TeamController extends Controller
         return view('site.team.index', [
             'leaders' => $members->where('is_guide', false)->values(),
             'guides' => $members->where('is_guide', true)->values(),
-            'seo' => Seo::make('Meet our team — guides & trip specialists', 'The Kathmandu office team and licensed mountain guides behind every Wonder Himalaya journey.'),
+            'seo' => Seo::make('Our Team – Guides & Trip Specialists | Wonder Himalaya', 'Meet the Wonder Himalaya team: the founders and trip specialists in our Thamel, Kathmandu office and the licensed trekking guides who lead our trips.'),
         ]);
     }
 

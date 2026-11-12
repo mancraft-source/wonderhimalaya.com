@@ -165,3 +165,31 @@ it('suggests matching journeys on the 404 page and keeps it out of the index', f
 
     $this->get('/qqq-zzz')->assertNotFound()->assertSee('Popular right now');
 });
+
+it('imports suggested titles, descriptions and keyphrases from the audit csv', function () {
+    $trip = seoTrip(['seo' => ['title' => 'Old title', 'noindex' => false]]);
+    $page = seoPage('about-us', ['description' => 'Keep me']);
+    $header = ['Type', 'URL', 'Focus keyphrase', 'Suggested meta description', 'Paste into admin: SEO title', 'Where to edit'];
+    $rows = [
+        ['Trip', url('/trip/everest-base-camp-trek'), 'everest base camp trek', 'Everest Base Camp trek in 14 days from US$1,585.', 'Everest Base Camp Trek – 14 Days', "https://wonderhimalaya.com/admin/trips/{$trip->id}/edit"],
+        ['Page', url('/about-us'), 'about wonder himalaya', 'About the team.', 'About Wonder Himalaya', "https://wonderhimalaya.com/admin/pages/{$page->id}/edit"],
+        ['Listing page', 'https://wonderhimalaya.com/', 'nepal trekking company', 'Locally owned operator in Thamel.', 'Wonder Himalaya – Trekking in Nepal', 'SEO → SEO settings (homepage)'],
+    ];
+    $file = 'storage/framework/testing/seo-import.csv';
+    @mkdir(base_path('storage/framework/testing'), 0777, true);
+    $handle = fopen(base_path($file), 'w');
+    foreach ([$header, ...$rows] as $row) {
+        fputcsv($handle, $row, escape: '\\');
+    }
+    fclose($handle);
+
+    $this->artisan('seo:import', ['file' => $file, '--only-blank' => true])->assertSuccessful();
+    expect($trip->fresh()->seo['title'])->toBe('Old title')
+        ->and(SeoSettings::get('home_title'))->toBe('Wonder Himalaya – Trekking in Nepal');
+
+    $this->artisan('seo:import', ['file' => $file])->assertSuccessful();
+    expect($trip->fresh()->seo)->toMatchArray(['title' => 'Everest Base Camp Trek – 14 Days', 'focus_keyphrase' => 'everest base camp trek', 'noindex' => false])
+        ->and($page->fresh()->seo['description'])->toBe('About the team.');
+
+    unlink(base_path($file));
+});

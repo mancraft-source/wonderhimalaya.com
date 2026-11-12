@@ -22,7 +22,7 @@ class TripController extends Controller
 
     public function index(Request $request): View
     {
-        $seo = Seo::make('All treks, tours & expeditions', 'Browse every Wonder Himalaya journey — guided treks, peak climbs, heli tours, safaris and cultural tours across Nepal, Tibet and Bhutan. Filter by region, style, duration and difficulty.');
+        $seo = Seo::make('All Treks & Tours in Nepal, Tibet & Bhutan | Wonder Himalaya', 'Browse all Wonder Himalaya treks and tours in Nepal, Tibet and Bhutan: guided treks, peak climbs, heli tours, safaris and cultural tours. Filter by region.');
 
         // Filtered/sorted variants would be near-duplicates of the listing: canonicalise them and keep them out of the index.
         if ($request->query->count() > 0) {

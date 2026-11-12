@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\RedirectResolver;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +32,7 @@ class CanonicalUrl
 
         if ($canonical !== '' && $canonical !== $path) {
             // Jump straight to a managed redirect target (one hop instead of two).
-            if ($managed = \App\Support\RedirectResolver::for($request)) {
+            if ($managed = RedirectResolver::for($request)) {
                 return $managed;
             }
 

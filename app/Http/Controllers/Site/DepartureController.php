@@ -27,7 +27,7 @@ class DepartureController extends Controller
             'months' => $departures,
             'stories' => Post::published()->with(['media', 'category'])->latest('published_at')->limit(3)->get(),
             'fixedTrips' => Trip::published()->where('is_fixed_departure', true)->with(['destination', 'difficulty', 'media'])->orderBy('sort')->get(),
-            'seo' => Seo::make('Fixed group departures — join a small group', 'Join a guaranteed small-group departure to Everest, Annapurna, Manaslu, Langtang and more. Fixed dates, shared costs, expert local guides.'),
+            'seo' => Seo::make('Fixed Departure Treks – Join a Group | Wonder Himalaya', 'Fixed departure treks in Nepal: join a group on set dates to Everest, Annapurna, Manaslu, Langtang and more, and share the trip with other trekkers.'),
         ]);
     }
 }

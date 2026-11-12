@@ -17,7 +17,7 @@ class StaticController extends Controller
     public function tailorMade(): View
     {
         return view('site.tailor-made', [
-            'seo' => Seo::make('Plan a tailor-made Himalayan journey', 'Tell us where, when and how you like to travel — a local trip specialist will design a private itinerary for you within 24 hours.'),
+            'seo' => Seo::make('Tailor-Made Private Treks & Tours | Wonder Himalaya', 'Plan a tailor-made private trek or tour in Nepal, Tibet or Bhutan. Tell us where, when and how you like to travel; a local specialist designs your itinerary.'),
         ]);
     }
 
@@ -27,14 +27,14 @@ class StaticController extends Controller
             'regions' => Destination::whereNull('parent_id')->with(['children', 'media'])->orderBy('sort')->get(),
             'testimonials' => Testimonial::where('is_published', true)->orderByDesc('is_featured')->limit(3)->get(),
             'stats' => Setting::get('stats', []),
-            'seo' => Seo::make('B2B — your ground partner in Nepal, Tibet & Bhutan', 'White-label ground handling, FIT curation, small-group expeditions and MICE for travel agencies and tour operators. Licensed, insured, locally owned in Kathmandu.'),
+            'seo' => Seo::make('Nepal, Tibet & Bhutan Ground Handler for Agencies', 'Ground handling in Nepal, Tibet and Bhutan for travel agencies and tour operators: white-label services, FIT, small-group expeditions and MICE from Kathmandu.'),
         ]);
     }
 
     public function contact(): View
     {
         return view('site.contact', [
-            'seo' => Seo::make('Contact our Kathmandu team', 'Call, WhatsApp or email Wonder Himalaya in Thamel, Kathmandu. Trip specialists reply within 24 hours.'),
+            'seo' => Seo::make('Contact Us – Thamel, Kathmandu Office | Wonder Himalaya', 'Contact Wonder Himalaya by phone, WhatsApp or email, or visit our office in Thamel, Kathmandu, to plan a trek or tour in Nepal, Tibet or Bhutan with our team.'),
         ]);
     }
 
@@ -44,7 +44,7 @@ class StaticController extends Controller
             'testimonials' => Testimonial::where('is_published', true)->with('trip')->orderByDesc('is_featured')->latest('reviewed_at')->paginate(12),
             'reviews' => Setting::get('reviews', []),
             'social' => array_filter(Setting::get('social', [])),
-            'seo' => Seo::make('Traveller reviews', 'Read what travellers say about trekking and touring with Wonder Himalaya — reviews from Google and Tripadvisor.'),
+            'seo' => Seo::make('Wonder Himalaya Reviews from Travellers', 'Read Wonder Himalaya reviews from travellers who trekked and toured with us in Nepal, Tibet and Bhutan, collected from Google and Tripadvisor.'),
         ]);
     }
 
