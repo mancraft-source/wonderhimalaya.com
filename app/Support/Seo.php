@@ -107,9 +107,9 @@ final class Seo
             return $this->title;
         }
 
-        // Keep titles within ~65 characters for search results: drop the brand suffix on long titles.
+        // Keep titles within what Google shows in full: drop the brand suffix on long titles.
         $suffixed = $this->title.' '.SeoSettings::separator().' '.$brand;
 
-        return mb_strlen($suffixed) <= 65 ? $suffixed : str($this->title)->limit(65, '…')->toString();
+        return mb_strlen($suffixed) <= SeoSettings::MAX_TITLE_LENGTH ? $suffixed : str($this->title)->limit(65, '…')->toString();
     }
 }

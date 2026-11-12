@@ -93,7 +93,7 @@ trait HasSeo
 
     /**
      * Final <title>: the record's own title (variables allowed) or the type template. A custom title without
-     * variables gets the brand suffix when it fits; templates drop the brand when the result would exceed 65 characters.
+     * variables gets the brand suffix when it fits; templates drop the brand when the result would exceed SeoSettings::MAX_TITLE_LENGTH.
      */
     public function seoTitle(): string
     {
@@ -107,7 +107,7 @@ trait HasSeo
 
         $title = SeoTemplate::render($template, $variables);
 
-        if (mb_strlen($title) > 65) {
+        if (mb_strlen($title) > SeoSettings::MAX_TITLE_LENGTH) {
             $short = SeoTemplate::render(preg_replace('/\s*%%sep%%\s*%%sitename%%\s*$/', '', $template), $variables);
             $title = $short !== '' ? $short : $title;
         }

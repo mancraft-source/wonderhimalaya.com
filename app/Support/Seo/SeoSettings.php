@@ -10,6 +10,9 @@ use App\Models\Setting;
  */
 final class SeoSettings
 {
+    /** Longest title Google shows in full (~580px); the brand suffix is only added when the result stays within it. */
+    public const MAX_TITLE_LENGTH = 60;
+
     /**
      * Content types with SEO templates. Keys match HasSeo::seoType().
      *
