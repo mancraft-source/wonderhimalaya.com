@@ -1,7 +1,8 @@
 # Test, build and deploy `main` to the staging site (Hostinger shared hosting, https://maniramg.com.np).
 #
 # Repository secrets (Settings → Secrets and variables → Actions):
-#   STAGING_SSH_KEY      private half of the deploy-only key (its public half is in ~/.ssh/authorized_keys on the server)
+#   STAGING_SSH_KEY      private half of the deploy-only key, as one line of base64 (`base64 -i key | pbcopy`) or the raw key;
+#                        its public half is in ~/.ssh/authorized_keys on the server
 #   STAGING_KNOWN_HOSTS  the server's host-key line, so the connection can't be intercepted
 #   STAGING_HOST, STAGING_PORT, STAGING_USER
 #
@@ -54,10 +55,18 @@ jobs:
           composer test
 
       - name: Configure SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.STAGING_SSH_KEY }}
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s\n' "${{ secrets.STAGING_SSH_KEY }}" > ~/.ssh/deploy_key
+          # The key secret may be the multi-line key or (safer to paste) a single line of base64 of it.
+          if printf '%s' "$DEPLOY_KEY" | grep -q 'BEGIN OPENSSH PRIVATE KEY'; then
+            printf '%s\n' "$DEPLOY_KEY" | tr -d '\r' > ~/.ssh/deploy_key
+          else
+            printf '%s' "$DEPLOY_KEY" | tr -d ' \r\n' | base64 -d > ~/.ssh/deploy_key
+          fi
           chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null || { echo "::error title=Deploy key unreadable::STAGING_SSH_KEY is not a valid private key. Paste the base64 single-line version."; exit 1; }
           printf '%s\n' "${{ secrets.STAGING_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
           printf 'Host staging\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n' \
             "${{ secrets.STAGING_HOST }}" "${{ secrets.STAGING_PORT }}" "${{ secrets.STAGING_USER }}" > ~/.ssh/config
