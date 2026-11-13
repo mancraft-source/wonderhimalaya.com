@@ -16,3 +16,8 @@ Schedule::command('bookings:send-balance-reminders')->dailyAt('09:00')->timezone
 Schedule::command('backup:clean')->dailyAt('01:00')->onOneServer();
 Schedule::command('backup:run')->dailyAt('01:30')->onOneServer();
 Schedule::command('backup:monitor')->dailyAt('03:00')->onOneServer();
+
+// --- Queue (emails, staff alerts) ---
+// Shared hosting can't keep a worker running, so the every-minute scheduler drains the queue instead.
+// On a server with a supervised `queue:work` this is harmless: the queue is simply empty.
+Schedule::command('queue:work --stop-when-empty --max-time=50 --tries=3')->everyMinute()->withoutOverlapping()->runInBackground();
