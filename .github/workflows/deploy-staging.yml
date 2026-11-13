@@ -1,0 +1,89 @@
+# Test, build and deploy `main` to the staging site (Hostinger shared hosting, https://maniramg.com.np).
+#
+# Repository secrets (Settings → Secrets and variables → Actions):
+#   STAGING_SSH_KEY      private half of the deploy-only key (its public half is in ~/.ssh/authorized_keys on the server)
+#   STAGING_KNOWN_HOSTS  the server's host-key line, so the connection can't be intercepted
+#   STAGING_HOST, STAGING_PORT, STAGING_USER
+#
+# The server keeps its own .env, storage/ (uploaded media, logs, cache) and vendor/ (installed there by Composer).
+name: Deploy staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+env:
+  APP_DIR: domains/maniramg.com.np/wonderhimalaya
+  REMOTE_PHP: /opt/alt/php84/usr/bin/php
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, gd, zip, pdo_sqlite, bcmath, exif
+          coverage: none
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Build front-end assets (the CSS also scans vendor/ views, so this runs after composer)
+        run: |
+          npm ci
+          npm run build
+
+      - name: Run the test suite (needs the built assets)
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          composer test
+
+      - name: Configure SSH
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${{ secrets.STAGING_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.STAGING_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          printf 'Host staging\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n' \
+            "${{ secrets.STAGING_HOST }}" "${{ secrets.STAGING_PORT }}" "${{ secrets.STAGING_USER }}" > ~/.ssh/config
+
+      - name: Upload code
+        run: |
+          rsync -az --delete \
+            --exclude='.git/' --exclude='.github/' --exclude='node_modules/' --exclude='tests/' \
+            --exclude='/.env' --exclude='/vendor/' --exclude='/storage/' --exclude='/bootstrap/cache/*.php' \
+            --exclude='/public/storage' --exclude='/public/hot' \
+            ./ "staging:$APP_DIR/"
+
+      - name: Install, migrate and cache on the server
+        run: |
+          ssh staging "set -e
+            cd $APP_DIR
+            echo ${GITHUB_SHA::7} > REVISION
+            $REMOTE_PHP /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+            $REMOTE_PHP artisan down --retry=15 || true
+            trap '$REMOTE_PHP artisan up' EXIT
+            $REMOTE_PHP artisan migrate --force
+            $REMOTE_PHP artisan optimize
+            $REMOTE_PHP artisan filament:optimize
+            $REMOTE_PHP artisan queue:restart"
+
+      - name: Check the site responds
+        run: |
+          sleep 3
+          curl --fail --silent --show-error --max-time 30 -o /dev/null -w 'Homepage: %{http_code} in %{time_total}s\n' https://maniramg.com.np/
