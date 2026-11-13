@@ -62,6 +62,15 @@ jobs:
           printf 'Host staging\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n' \
             "${{ secrets.STAGING_HOST }}" "${{ secrets.STAGING_PORT }}" "${{ secrets.STAGING_USER }}" > ~/.ssh/config
 
+      - name: Check the SSH connection
+        run: |
+          echo "Key: $(ssh-keygen -lf ~/.ssh/deploy_key 2>&1 | cut -d' ' -f1-2) · known_hosts lines: $(grep -c . ~/.ssh/known_hosts) · host set: ${{ secrets.STAGING_HOST != '' }}"
+          if ! out=$(ssh -o ConnectTimeout=20 -o BatchMode=yes staging 'echo connected' 2>&1); then
+            echo "::error title=SSH connection failed::$(printf '%s' "$out" | tail -n 3 | tr '\n' ' ')"
+            exit 1
+          fi
+          echo "$out"
+
       - name: Upload code
         run: |
           rsync -az --delete \
