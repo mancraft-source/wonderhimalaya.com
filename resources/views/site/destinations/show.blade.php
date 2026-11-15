@@ -17,7 +17,7 @@
 
     @if ($destination->description && strlen(strip_tags($destination->description)) > 260)
         <x-site.about-section :eyebrow="'About '.$shortName" :html="$destination->description">
-            <div class="rounded-[1.75rem] bg-juniper-900 p-7 text-stone-100 shadow-[0_24px_60px_-30px_rgba(15,29,25,0.6)]">
+            <div class="rounded-[1.75rem] bg-navy-900 p-7 text-stone-100 shadow-[0_24px_60px_-30px_rgba(1,9,30,0.6)]">
                 @if ($trips->isNotEmpty())<p class="flex items-baseline gap-3"><span class="font-display text-5xl text-saffron-300">{{ $trips->count() }}</span><span class="text-sm text-stone-100/75">{{ str('journey')->plural($trips->count()) }} in {{ $shortName }}</span></p>@else<p class="font-display text-2xl text-stone-100">Journeys here are designed to order</p>@endif
                 @if ($destination->highlights)
                     <p class="mt-6 text-xs font-semibold tracking-[0.18em] text-stone-100/60 uppercase">Highlights</p>

@@ -10,7 +10,7 @@
             @if ($post->category)<a href="{{ route('blog.category', $post->category->slug) }}" class="text-terracotta-500 hover:underline">{{ $post->category->name }}</a>@endif
             @if ($post->reading_minutes)<span>{{ $post->reading_minutes }} min read</span>@endif
         </p>
-        <h3 @class(['mt-3 font-display leading-tight text-juniper-800', 'text-3xl lg:text-4xl' => $large, 'text-2xl' => ! $large])>
+        <h3 @class(['mt-3 font-display leading-tight text-navy-800', 'text-3xl lg:text-4xl' => $large, 'text-2xl' => ! $large])>
             <a href="{{ url($post->publicPath()) }}" class="decoration-terracotta-500/40 decoration-1 underline-offset-4 group-hover:underline">{{ $post->title }}</a>
         </h3>
         @if ($post->excerpt)<p @class(['mt-3 text-ink-soft', 'line-clamp-3' => $large, 'line-clamp-2' => ! $large])>{{ strip_tags($post->excerpt) }}</p>@endif

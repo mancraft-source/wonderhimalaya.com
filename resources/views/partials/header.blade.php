@@ -18,30 +18,30 @@
 
         @php
             $linkBase = 'relative inline-flex items-center gap-1 whitespace-nowrap py-2 text-[0.95rem] font-medium transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-terracotta-500 after:transition-transform after:duration-300 hover:after:scale-x-100';
-            $linkColor = $transparent ? 'text-white group-data-[scrolled]/header:text-juniper-800' : 'text-juniper-800';
+            $linkColor = $transparent ? 'text-white group-data-[scrolled]/header:text-navy-800' : 'text-navy-800';
         @endphp
 
         <nav class="hidden items-center gap-7 lg:flex xl:gap-9" aria-label="Main">
-            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'destinations' ? null : 'destinations'" x-on:mouseenter="mega && (mega = 'destinations')" x-bind:aria-expanded="mega === 'destinations'">
+            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-navy-800'" x-on:click="mega = mega === 'destinations' ? null : 'destinations'" x-on:mouseenter="mega && (mega = 'destinations')" x-bind:aria-expanded="mega === 'destinations'">
                 Destinations <x-heroicon-m-chevron-down class="size-4 transition" x-bind:class="mega === 'destinations' && 'rotate-180'" />
             </button>
-            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'journeys' ? null : 'journeys'" x-on:mouseenter="mega && (mega = 'journeys')" x-bind:aria-expanded="mega === 'journeys'">
+            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-navy-800'" x-on:click="mega = mega === 'journeys' ? null : 'journeys'" x-on:mouseenter="mega && (mega = 'journeys')" x-bind:aria-expanded="mega === 'journeys'">
                 Journeys <x-heroicon-m-chevron-down class="size-4 transition" x-bind:class="mega === 'journeys' && 'rotate-180'" />
             </button>
-            <a href="{{ route('departures') }}" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">Group departures</a>
-            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" x-on:click="mega = mega === 'about' ? null : 'about'" x-on:mouseenter="mega && (mega = 'about')" x-bind:aria-expanded="mega === 'about'">
+            <a href="{{ route('departures') }}" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-navy-800'">Group departures</a>
+            <button type="button" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-navy-800'" x-on:click="mega = mega === 'about' ? null : 'about'" x-on:mouseenter="mega && (mega = 'about')" x-bind:aria-expanded="mega === 'about'">
                 Why us <x-heroicon-m-chevron-down class="size-4 transition" x-bind:class="mega === 'about' && 'rotate-180'" />
             </button>
-            <a href="{{ route('blog.index') }}" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">Journal</a>
+            <a href="{{ route('blog.index') }}" class="{{ $linkBase }} {{ $linkColor }}" x-bind:class="mega && '!text-navy-800'">Journal</a>
         </nav>
 
         <div class="flex items-center gap-3">
-            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="hidden items-center gap-2 whitespace-nowrap text-sm font-medium 2xl:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'">
+            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="hidden items-center gap-2 whitespace-nowrap text-sm font-medium 2xl:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-navy-800'">
                 <x-heroicon-o-phone class="size-4" /> {{ $phone }}
             </a>
-            <a href="{{ route('search') }}" class="hidden size-10 items-center justify-center rounded-full transition hover:bg-black/5 lg:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-juniper-800'" aria-label="Search"><x-heroicon-o-magnifying-glass class="size-5" /></a>
+            <a href="{{ route('search') }}" class="hidden size-10 items-center justify-center rounded-full transition hover:bg-black/5 lg:inline-flex {{ $linkColor }}" x-bind:class="mega && '!text-navy-800'" aria-label="Search"><x-heroicon-o-magnifying-glass class="size-5" /></a>
             <a href="{{ route('tailor-made') }}" class="btn-primary hidden whitespace-nowrap !px-5 !py-3 sm:inline-flex">Plan your journey</a>
-            <button type="button" class="relative z-10 inline-flex size-11 items-center justify-center rounded-full lg:hidden {{ $transparent ? 'text-white group-data-[scrolled]/header:text-juniper-800' : 'text-juniper-800' }}" x-bind:class="open && '!text-juniper-800'" x-on:click="open = !open" x-bind:aria-expanded="open" aria-controls="mobile-menu">
+            <button type="button" class="relative z-10 inline-flex size-11 items-center justify-center rounded-full lg:hidden {{ $transparent ? 'text-white group-data-[scrolled]/header:text-navy-800' : 'text-navy-800' }}" x-bind:class="open && '!text-navy-800'" x-on:click="open = !open" x-bind:aria-expanded="open" aria-controls="mobile-menu">
                 <span class="sr-only">Menu</span>
                 <x-heroicon-o-bars-2 class="size-7" x-show="!open" />
                 <x-heroicon-o-x-mark class="size-7" x-show="open" x-cloak />
@@ -53,7 +53,7 @@
     <div class="hidden lg:block" x-show="mega" x-cloak x-on:click.outside="mega = null"
          x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
          x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-        <div class="border-t border-stone-300/60 bg-stone-100 shadow-[0_30px_60px_-30px_rgba(15,29,25,0.35)]">
+        <div class="border-t border-stone-300/60 bg-stone-100 shadow-[0_30px_60px_-30px_rgba(1,9,30,0.35)]">
             <div class="container-page py-12">
                 @php
                     $nepal = collect($nav['destinations'])->first(fn ($c) => $c['children'] !== []);
@@ -66,7 +66,7 @@
                                 <div>
                                     <p class="eyebrow">Our home ground</p>
                                     <a href="{{ $nepal['url'] }}" class="group mt-3 flex items-baseline gap-4">
-                                        <span class="font-display text-4xl text-juniper-800 transition-colors group-hover:text-terracotta-500">{{ $nepal['name'] }}</span>
+                                        <span class="font-display text-4xl text-navy-800 transition-colors group-hover:text-terracotta-500">{{ $nepal['name'] }}</span>
                                         <span class="data text-xs text-stone-500">{{ $nepal['count'] }} {{ str('journey')->plural($nepal['count']) }} · {{ count($nepal['children']) }} regions</span>
                                     </a>
                                 </div>
@@ -75,20 +75,20 @@
                             <ul class="mt-6 grid grid-cols-4 gap-4">
                                 @foreach ($nepal['children'] as $region)
                                     <li class="mega-item" style="--i: {{ $loop->iteration }}">
-                                        <a href="{{ $region['url'] }}" class="group relative block aspect-[16/11] overflow-hidden rounded-2xl bg-juniper-900 outline-offset-4 focus-visible:outline-2 focus-visible:outline-terracotta-500">
+                                        <a href="{{ $region['url'] }}" class="group relative block aspect-[16/11] overflow-hidden rounded-2xl bg-navy-900 outline-offset-4 focus-visible:outline-2 focus-visible:outline-terracotta-500">
                                             @if ($region['image'])
                                                 <img src="{{ $region['image'] }}" alt="" loading="lazy" class="absolute inset-0 size-full object-cover opacity-90 transition duration-[1200ms] ease-(--ease-mountain) group-hover:scale-110 group-hover:opacity-100">
                                             @else
                                                 {{-- No photo yet: an illustrated range so the tile still reads as a place. --}}
                                                 <svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMax slice" aria-hidden="true" class="absolute inset-0 size-full transition duration-[1200ms] ease-(--ease-mountain) group-hover:scale-110">
-                                                    <rect width="160" height="110" fill="#1f3a33" />
+                                                    <rect width="160" height="110" fill="#082047" />
                                                     <circle cx="122" cy="26" r="9" fill="#ecc77e" opacity=".55" />
                                                     <path d="M0 78 22 52l14 12 24-34 22 26 16-14 26 30 16-10 20 20v28H0Z" fill="#9db8c2" opacity=".35" />
                                                     <path d="m60 30-7 11 5-2 4 3 4-4 3 3Z" fill="#fbf9f5" opacity=".7" />
-                                                    <path d="M0 92 28 70l18 12 30-26 26 22 20-10 38 24v18H0Z" fill="#162b26" />
+                                                    <path d="M0 92 28 70l18 12 30-26 26 22 20-10 38 24v18H0Z" fill="#021131" />
                                                 </svg>
                                             @endif
-                                            <span class="absolute inset-0 bg-gradient-to-t from-juniper-950/90 via-juniper-950/25 to-transparent"></span>
+                                            <span class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/25 to-transparent"></span>
                                             <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 text-white">
                                                 <span>
                                                     <span class="block font-display text-xl leading-tight">{{ str_replace(' Region', '', $region['name']) }}</span>
@@ -101,7 +101,7 @@
                                 @endforeach
                                 @if (count($nepal['children']) % 4 !== 0)
                                     <li class="mega-item" style="--i: {{ count($nepal['children']) + 1 }}">
-                                        <a href="{{ route('tailor-made') }}" class="group relative flex aspect-[16/11] flex-col justify-between overflow-hidden rounded-2xl bg-terracotta-500 p-4 text-white outline-offset-4 focus-visible:outline-2 focus-visible:outline-juniper-800">
+                                        <a href="{{ route('tailor-made') }}" class="group relative flex aspect-[16/11] flex-col justify-between overflow-hidden rounded-2xl bg-terracotta-500 p-4 text-white outline-offset-4 focus-visible:outline-2 focus-visible:outline-navy-800">
                                             <x-site.gear icon="map" class="absolute -right-4 -bottom-4 w-28 text-white/20 transition duration-700 group-hover:-rotate-6 group-hover:scale-110" />
                                             <span class="text-xs font-semibold tracking-[0.18em] text-white/80 uppercase">Not sure where?</span>
                                             <span class="relative font-display text-xl leading-tight">Let us shape a route around you <x-heroicon-m-arrow-right class="inline size-4 transition group-hover:translate-x-1" /></span>
@@ -117,11 +117,11 @@
                             @foreach ($beyond as $country)
                                 <li class="mega-item" style="--i: {{ $loop->iteration + 2 }}">
                                     <a href="{{ $country['url'] }}" class="group flex items-center gap-4 rounded-2xl p-2 -m-2 transition hover:bg-stone-200/70 focus-visible:outline-2 focus-visible:outline-terracotta-500">
-                                        <span class="relative size-20 flex-none overflow-hidden rounded-xl bg-juniper-900">
+                                        <span class="relative size-20 flex-none overflow-hidden rounded-xl bg-navy-900">
                                             @if ($country['image'])<img src="{{ $country['image'] }}" alt="" loading="lazy" class="size-full object-cover transition duration-700 group-hover:scale-110">@endif
                                         </span>
                                         <span class="min-w-0 flex-1">
-                                            <span class="block font-display text-2xl text-juniper-800 transition-colors group-hover:text-terracotta-500">{{ $country['name'] }}</span>
+                                            <span class="block font-display text-2xl text-navy-800 transition-colors group-hover:text-terracotta-500">{{ $country['name'] }}</span>
                                             @if ($country['tagline'])<span class="line-clamp-2 text-sm leading-snug text-ink-soft">{{ $country['tagline'] }}</span>@endif
                                             <span class="data mt-0.5 block text-[0.68rem] text-stone-500">{{ $country['count'] }} {{ str('journey')->plural($country['count']) }}</span>
                                         </span>
@@ -132,7 +132,7 @@
                         </ul>
                         <div class="mega-item mt-auto space-y-3 border-t border-stone-300/70 pt-5 text-[0.95rem]" style="--i: 6">
                             <a href="{{ route('trips.index') }}" class="link-arrow">Every journey <x-heroicon-m-arrow-right class="size-4" /></a>
-                            <a href="{{ route('departures') }}" class="flex items-center gap-2 text-ink-soft hover:text-juniper-800"><x-heroicon-o-calendar-days class="size-4" /> Fixed group departures</a>
+                            <a href="{{ route('departures') }}" class="flex items-center gap-2 text-ink-soft hover:text-navy-800"><x-heroicon-o-calendar-days class="size-4" /> Fixed group departures</a>
                         </div>
                     </div>
                 </div>
@@ -140,17 +140,17 @@
                 <div x-show="mega === 'journeys'" class="mega-panel grid grid-cols-12 gap-10">
                     <div class="col-span-3">
                         <p class="eyebrow">How you travel</p>
-                        <p class="mt-4 font-display text-3xl text-juniper-800">From tea-house trails to summit pushes.</p>
+                        <p class="mt-4 font-display text-3xl text-navy-800">From tea-house trails to summit pushes.</p>
                         <a href="{{ route('tailor-made') }}" class="link-arrow mt-6">Design a private trip <x-heroicon-m-arrow-right class="size-4" /></a>
                     </div>
                     <ul class="col-span-9 grid grid-cols-3 gap-x-10 gap-y-4">
                         @foreach ($nav['activities'] as $activity)
-                            <li class="mega-item" style="--i: {{ $loop->iteration }}"><a href="{{ $activity['url'] }}" class="group flex items-center justify-between border-b border-stone-300/70 py-3 text-lg text-juniper-800 hover:border-terracotta-500">
+                            <li class="mega-item" style="--i: {{ $loop->iteration }}"><a href="{{ $activity['url'] }}" class="group flex items-center justify-between border-b border-stone-300/70 py-3 text-lg text-navy-800 hover:border-terracotta-500">
                                 <span class="font-display">{{ $activity['name'] }}</span>
                                 <x-heroicon-m-arrow-up-right class="size-4 text-stone-400 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-terracotta-500" />
                             </a></li>
                         @endforeach
-                        <li><a href="{{ route('trips.index', ['tier' => 'luxury']) }}" class="group flex items-center justify-between border-b border-stone-300/70 py-3 text-lg text-juniper-800 hover:border-terracotta-500">
+                        <li><a href="{{ route('trips.index', ['tier' => 'luxury']) }}" class="group flex items-center justify-between border-b border-stone-300/70 py-3 text-lg text-navy-800 hover:border-terracotta-500">
                             <span class="font-display italic">Luxury journeys</span>
                             <x-heroicon-m-arrow-up-right class="size-4 text-stone-400 group-hover:text-terracotta-500" />
                         </a></li>
@@ -160,7 +160,7 @@
                 <div x-show="mega === 'about'" class="mega-panel grid grid-cols-12 gap-10">
                     <div class="col-span-3">
                         <p class="eyebrow">Why Wonder Himalaya</p>
-                        <p class="mt-4 font-display text-3xl text-juniper-800">A small Thamel team who know these trails by name.</p>
+                        <p class="mt-4 font-display text-3xl text-navy-800">A small Thamel team who know these trails by name.</p>
                     </div>
                     <div class="col-span-9 grid grid-cols-3 gap-10">
                         <ul class="space-y-3 text-[0.95rem]">
@@ -185,7 +185,7 @@
     </div>
 
     {{-- Page dimmer under an open mega menu (absolute: the blurred header is the containing block). --}}
-    <div class="absolute inset-x-0 top-full -z-10 hidden h-screen bg-juniper-950/30 backdrop-blur-[2px] lg:block" x-show="mega" x-cloak
+    <div class="absolute inset-x-0 top-full -z-10 hidden h-screen bg-navy-950/30 backdrop-blur-[2px] lg:block" x-show="mega" x-cloak
          x-transition:enter="transition-opacity duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
          x-transition:leave="transition-opacity duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
 
@@ -195,11 +195,11 @@
         <nav class="container-page flex flex-col gap-2 py-8" aria-label="Mobile">
             <div x-data="{ s: null }" class="divide-y divide-stone-300/70">
                 <div class="py-4">
-                    <button type="button" class="flex w-full items-center justify-between font-display text-2xl text-juniper-800" x-on:click="s = s === 'd' ? null : 'd'">Destinations <x-heroicon-m-plus class="size-5" /></button>
+                    <button type="button" class="flex w-full items-center justify-between font-display text-2xl text-navy-800" x-on:click="s = s === 'd' ? null : 'd'">Destinations <x-heroicon-m-plus class="size-5" /></button>
                     <div x-show="s === 'd'" x-collapse class="mt-4 space-y-4">
                         @foreach ($nav['destinations'] as $country)
                             <div>
-                                <a href="{{ $country['url'] }}" class="font-semibold text-juniper-800">{{ $country['name'] }}</a>
+                                <a href="{{ $country['url'] }}" class="font-semibold text-navy-800">{{ $country['name'] }}</a>
                                 <div class="mt-2 flex flex-wrap gap-2">
                                     @foreach ($country['children'] as $region)
                                         <a href="{{ $region['url'] }}" class="chip">{{ $region['name'] }}</a>
@@ -210,17 +210,17 @@
                     </div>
                 </div>
                 <div class="py-4">
-                    <button type="button" class="flex w-full items-center justify-between font-display text-2xl text-juniper-800" x-on:click="s = s === 'j' ? null : 'j'">Journeys <x-heroicon-m-plus class="size-5" /></button>
+                    <button type="button" class="flex w-full items-center justify-between font-display text-2xl text-navy-800" x-on:click="s = s === 'j' ? null : 'j'">Journeys <x-heroicon-m-plus class="size-5" /></button>
                     <div x-show="s === 'j'" x-collapse class="mt-4 flex flex-wrap gap-2">
                         @foreach ($nav['activities'] as $activity)
                             <a href="{{ $activity['url'] }}" class="chip">{{ $activity['name'] }}</a>
                         @endforeach
                     </div>
                 </div>
-                <a href="{{ route('departures') }}" class="block py-4 font-display text-2xl text-juniper-800">Group departures</a>
-                <a href="{{ url('/about-us') }}" class="block py-4 font-display text-2xl text-juniper-800">About us</a>
-                <a href="{{ route('blog.index') }}" class="block py-4 font-display text-2xl text-juniper-800">Journal</a>
-                <a href="{{ route('contact') }}" class="block py-4 font-display text-2xl text-juniper-800">Contact</a>
+                <a href="{{ route('departures') }}" class="block py-4 font-display text-2xl text-navy-800">Group departures</a>
+                <a href="{{ url('/about-us') }}" class="block py-4 font-display text-2xl text-navy-800">About us</a>
+                <a href="{{ route('blog.index') }}" class="block py-4 font-display text-2xl text-navy-800">Journal</a>
+                <a href="{{ route('contact') }}" class="block py-4 font-display text-2xl text-navy-800">Contact</a>
             </div>
             <a href="{{ route('tailor-made') }}" class="btn-primary mt-6">Plan your journey</a>
             <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="btn-outline">Call {{ $phone }}</a>
@@ -232,7 +232,7 @@
         'opacity-0 group-data-[scrolled]/header:opacity-100' => $transparent,
     ]) x-bind:class="(open || mega) && '!opacity-0'">
         <path d="M0,7.3 L16,7.9 L32,8.9 L48,8.5 L64,8.0 L80,8.1 L96,8.5 L112,7.8 L128,7.5 L144,6.5 L160,7.5 L176,7.6 L192,8.1 L208,8.6 L224,9.3 L240,10.9 L256,10.4 L272,9.6 L288,8.5 L304,5.9 L320,4.6 L336,3.9 L352,3.0 L368,2.6 L384,2.4 L400,1.0 L416,2.6 L432,3.5 L448,4.0 L464,4.0 L480,5.0 L496,4.4 L512,5.8 L528,5.3 L544,4.1 L560,3.1 L576,4.1 L592,3.5 L608,4.5 L624,5.3 L640,5.9 L656,7.0 L672,8.8 L688,9.7 L704,10.0 L720,10.7 L736,11 L752,9.6 L768,8.8 L784,8.9 L800,7.2 L816,6.9 L832,6.1 L848,5.6 L864,7.0 L880,5.7 L896,6.6 L912,6.6 L928,7.6 L944,6.7 L960,6.4 L976,6.3 L992,4.3 L1008,3.6 L1024,3.1 L1040,1 L1056,1 L1072,1 L1088,1.5 L1104,2.1 L1120,2.4 L1136,3.9 L1152,4.8 L1168,6.3 L1184,6.2 L1200,7.8 L1216,8.1 L1232,7.9 L1248,7.0 L1264,7.1 L1280,5.0 L1296,5.7 L1312,7.5 L1328,7.8 L1344,8.1 L1360,10.2 L1376,10.5 L1392,11 L1408,10.7 L1424,10.3 L1440,10.1 L1456,8.4 L1472,7.5 L1488,7.3 L1504,4.7 L1520,3.1 L1536,2.5 L1552,2.5 L1568,3.9 L1584,3.5 L1600,3.9 L1600,0 L0,0 Z" fill="#f4efe6" fill-opacity=".92" />
-        <path d="M0,7.3 L16,7.9 L32,8.9 L48,8.5 L64,8.0 L80,8.1 L96,8.5 L112,7.8 L128,7.5 L144,6.5 L160,7.5 L176,7.6 L192,8.1 L208,8.6 L224,9.3 L240,10.9 L256,10.4 L272,9.6 L288,8.5 L304,5.9 L320,4.6 L336,3.9 L352,3.0 L368,2.6 L384,2.4 L400,1.0 L416,2.6 L432,3.5 L448,4.0 L464,4.0 L480,5.0 L496,4.4 L512,5.8 L528,5.3 L544,4.1 L560,3.1 L576,4.1 L592,3.5 L608,4.5 L624,5.3 L640,5.9 L656,7.0 L672,8.8 L688,9.7 L704,10.0 L720,10.7 L736,11 L752,9.6 L768,8.8 L784,8.9 L800,7.2 L816,6.9 L832,6.1 L848,5.6 L864,7.0 L880,5.7 L896,6.6 L912,6.6 L928,7.6 L944,6.7 L960,6.4 L976,6.3 L992,4.3 L1008,3.6 L1024,3.1 L1040,1 L1056,1 L1072,1 L1088,1.5 L1104,2.1 L1120,2.4 L1136,3.9 L1152,4.8 L1168,6.3 L1184,6.2 L1200,7.8 L1216,8.1 L1232,7.9 L1248,7.0 L1264,7.1 L1280,5.0 L1296,5.7 L1312,7.5 L1328,7.8 L1344,8.1 L1360,10.2 L1376,10.5 L1392,11 L1408,10.7 L1424,10.3 L1440,10.1 L1456,8.4 L1472,7.5 L1488,7.3 L1504,4.7 L1520,3.1 L1536,2.5 L1552,2.5 L1568,3.9 L1584,3.5 L1600,3.9" fill="none" stroke="#1f3a33" stroke-opacity=".12" vector-effect="non-scaling-stroke" />
+        <path d="M0,7.3 L16,7.9 L32,8.9 L48,8.5 L64,8.0 L80,8.1 L96,8.5 L112,7.8 L128,7.5 L144,6.5 L160,7.5 L176,7.6 L192,8.1 L208,8.6 L224,9.3 L240,10.9 L256,10.4 L272,9.6 L288,8.5 L304,5.9 L320,4.6 L336,3.9 L352,3.0 L368,2.6 L384,2.4 L400,1.0 L416,2.6 L432,3.5 L448,4.0 L464,4.0 L480,5.0 L496,4.4 L512,5.8 L528,5.3 L544,4.1 L560,3.1 L576,4.1 L592,3.5 L608,4.5 L624,5.3 L640,5.9 L656,7.0 L672,8.8 L688,9.7 L704,10.0 L720,10.7 L736,11 L752,9.6 L768,8.8 L784,8.9 L800,7.2 L816,6.9 L832,6.1 L848,5.6 L864,7.0 L880,5.7 L896,6.6 L912,6.6 L928,7.6 L944,6.7 L960,6.4 L976,6.3 L992,4.3 L1008,3.6 L1024,3.1 L1040,1 L1056,1 L1072,1 L1088,1.5 L1104,2.1 L1120,2.4 L1136,3.9 L1152,4.8 L1168,6.3 L1184,6.2 L1200,7.8 L1216,8.1 L1232,7.9 L1248,7.0 L1264,7.1 L1280,5.0 L1296,5.7 L1312,7.5 L1328,7.8 L1344,8.1 L1360,10.2 L1376,10.5 L1392,11 L1408,10.7 L1424,10.3 L1440,10.1 L1456,8.4 L1472,7.5 L1488,7.3 L1504,4.7 L1520,3.1 L1536,2.5 L1552,2.5 L1568,3.9 L1584,3.5 L1600,3.9" fill="none" stroke="#082047" stroke-opacity=".12" vector-effect="non-scaling-stroke" />
         <path class="header-ridge__progress" d="M0,7.3 L16,7.9 L32,8.9 L48,8.5 L64,8.0 L80,8.1 L96,8.5 L112,7.8 L128,7.5 L144,6.5 L160,7.5 L176,7.6 L192,8.1 L208,8.6 L224,9.3 L240,10.9 L256,10.4 L272,9.6 L288,8.5 L304,5.9 L320,4.6 L336,3.9 L352,3.0 L368,2.6 L384,2.4 L400,1.0 L416,2.6 L432,3.5 L448,4.0 L464,4.0 L480,5.0 L496,4.4 L512,5.8 L528,5.3 L544,4.1 L560,3.1 L576,4.1 L592,3.5 L608,4.5 L624,5.3 L640,5.9 L656,7.0 L672,8.8 L688,9.7 L704,10.0 L720,10.7 L736,11 L752,9.6 L768,8.8 L784,8.9 L800,7.2 L816,6.9 L832,6.1 L848,5.6 L864,7.0 L880,5.7 L896,6.6 L912,6.6 L928,7.6 L944,6.7 L960,6.4 L976,6.3 L992,4.3 L1008,3.6 L1024,3.1 L1040,1 L1056,1 L1072,1 L1088,1.5 L1104,2.1 L1120,2.4 L1136,3.9 L1152,4.8 L1168,6.3 L1184,6.2 L1200,7.8 L1216,8.1 L1232,7.9 L1248,7.0 L1264,7.1 L1280,5.0 L1296,5.7 L1312,7.5 L1328,7.8 L1344,8.1 L1360,10.2 L1376,10.5 L1392,11 L1408,10.7 L1424,10.3 L1440,10.1 L1456,8.4 L1472,7.5 L1488,7.3 L1504,4.7 L1520,3.1 L1536,2.5 L1552,2.5 L1568,3.9 L1584,3.5 L1600,3.9" pathLength="1" fill="none" stroke="#b5532e" stroke-width="1.5" vector-effect="non-scaling-stroke" />
     </svg>
 </header>

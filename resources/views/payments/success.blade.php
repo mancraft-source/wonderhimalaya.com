@@ -8,7 +8,7 @@
 @endphp
 <x-layouts.site :seo="$seo">
     <div class="container-narrow py-16 text-center lg:py-24">
-        <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full {{ $paid ? 'bg-juniper-800 text-stone-100' : 'bg-saffron-300 text-juniper-900' }}">
+        <span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full {{ $paid ? 'bg-navy-800 text-stone-100' : 'bg-saffron-300 text-navy-900' }}">
             <svg aria-hidden="true" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="{{ $paid ? 'M5 12l5 5L20 7' : 'M12 7v5l3 3' }}"/></svg>
         </span>
         <h1 class="mt-6 text-display-md">{{ $paid ? 'Dhanyabad — payment received!' : 'Thank you — we are confirming your payment' }}</h1>
@@ -28,7 +28,7 @@
         @if ($booking)
             <div class="card-surface mx-auto mt-10 max-w-md p-6 text-left">
                 <p class="text-sm text-ink-soft">Booking number</p>
-                <p class="data text-2xl font-semibold text-juniper-800">{{ $booking->number }}</p>
+                <p class="data text-2xl font-semibold text-navy-800">{{ $booking->number }}</p>
                 @if ($booking->trip)<p class="mt-2">{{ $booking->trip->title }}@if ($booking->start_date) · {{ $booking->start_date->format('j M Y') }}@endif</p>@endif
             </div>
 

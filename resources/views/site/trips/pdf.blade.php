@@ -10,21 +10,21 @@
         header img { height: 12mm; float: left; }
         header .contact { float: right; text-align: right; font-size: 9px; color: #4a4843; padding-top: 2mm; }
         footer { position: fixed; bottom: -14mm; left: 0; right: 0; font-size: 8.5px; color: #8f7f66; text-align: center; }
-        h1 { font-family: DejaVu Serif, serif; font-weight: normal; font-size: 26px; color: #1f3a33; margin: 0 0 4px; }
-        h2 { font-family: DejaVu Serif, serif; font-weight: normal; font-size: 16px; color: #1f3a33; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 2px solid #b5532e; }
+        h1 { font-family: DejaVu Serif, serif; font-weight: normal; font-size: 26px; color: #082047; margin: 0 0 4px; }
+        h2 { font-family: DejaVu Serif, serif; font-weight: normal; font-size: 16px; color: #082047; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 2px solid #b5532e; }
         .lead { color: #4a4843; font-size: 11.5px; }
         table.facts { width: 100%; border-collapse: collapse; margin-top: 12px; }
         table.facts td { width: 25%; padding: 7px 8px; background: #f4efe6; border: 2px solid #fff; vertical-align: top; }
         table.facts .k { display: block; font-size: 8px; text-transform: uppercase; letter-spacing: 1.2px; color: #8f7f66; }
-        table.facts .v { font-weight: bold; color: #1f3a33; }
+        table.facts .v { font-weight: bold; color: #082047; }
         .day { margin: 0 0 9px; page-break-inside: avoid; }
         .day .n { display: inline-block; width: 42px; font-weight: bold; color: #b5532e; }
-        .day .t { font-weight: bold; color: #1f3a33; }
+        .day .t { font-weight: bold; color: #082047; }
         .day .m { color: #8f7f66; font-size: 9px; margin-left: 42px; }
         ul { margin: 4px 0 0 0; padding-left: 14px; }
         li { margin-bottom: 3px; }
         .cols td { width: 50%; vertical-align: top; padding-right: 12px; }
-        .price { font-size: 18px; color: #1f3a33; font-family: DejaVu Serif, serif; }
+        .price { font-size: 18px; color: #082047; font-family: DejaVu Serif, serif; }
         .note { margin-top: 18px; padding: 10px 12px; background: #f4efe6; color: #4a4843; font-size: 9.5px; }
     </style>
 </head>

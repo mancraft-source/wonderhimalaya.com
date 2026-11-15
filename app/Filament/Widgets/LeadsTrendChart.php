@@ -44,8 +44,8 @@ class LeadsTrendChart extends ChartWidget
                 [
                     'label' => 'Leads',
                     'data' => $weeks->map(fn ($w) => (int) ($all[$w->toDateString()] ?? 0))->all(),
-                    'borderColor' => '#1F3A33',
-                    'backgroundColor' => 'rgba(31, 58, 51, 0.15)',
+                    'borderColor' => '#2A549B',
+                    'backgroundColor' => 'rgba(42, 84, 155, 0.15)',
                     'fill' => true,
                     'tension' => 0.3,
                 ],

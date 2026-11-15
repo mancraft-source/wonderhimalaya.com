@@ -1,7 +1,7 @@
 @php $c = \App\Support\Content::landing('b2b'); @endphp
 <x-layouts.site :seo="$seo">
     {{-- Hero --}}
-    <section class="relative overflow-hidden bg-juniper-900 text-stone-100">
+    <section class="relative overflow-hidden bg-navy-900 text-stone-100">
         <div class="topo pointer-events-none absolute inset-0 opacity-30 invert" aria-hidden="true"></div>
         <div class="container-page relative grid gap-12 py-20 lg:grid-cols-12 lg:py-32">
             <div class="lg:col-span-8">
@@ -66,7 +66,7 @@
             <x-site.section-heading :eyebrow="$c['integrity_eyebrow']" :title="e($c['integrity_title'])" />
             <dl class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4">
                 @foreach (collect($c['integrity'])->map(fn ($i) => [$i['value'] ?? '', $i['label'] ?? ''])->merge(collect($stats)->map(fn ($s) => [$s['value'], $s['label']]))->take(4) as [$v, $l])
-                    <div class="bg-stone-100 p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $l }}</dt><dd class="mt-3 font-display text-5xl text-juniper-800">{{ $v }}</dd></div>
+                    <div class="bg-stone-100 p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $l }}</dt><dd class="mt-3 font-display text-5xl text-navy-800">{{ $v }}</dd></div>
                 @endforeach
             </dl>
         </div>
@@ -78,7 +78,7 @@
                 @foreach ($testimonials as $t)
                     <figure class="rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60" data-reveal>
                         <blockquote class="text-ink-soft">“{{ str($t->body)->limit(260) }}”</blockquote>
-                        <figcaption class="mt-5 text-sm font-semibold text-juniper-800">{{ $t->author_name }}</figcaption>
+                        <figcaption class="mt-5 text-sm font-semibold text-navy-800">{{ $t->author_name }}</figcaption>
                     </figure>
                 @endforeach
             </div>
@@ -86,7 +86,7 @@
     @endif
 
     {{-- Partnership form --}}
-    <section id="partner-form" class="scroll-mt-28 bg-juniper-800 py-24 text-stone-100 lg:py-32">
+    <section id="partner-form" class="scroll-mt-28 bg-navy-800 py-24 text-stone-100 lg:py-32">
         <div class="container-page grid gap-14 lg:grid-cols-12">
             <div class="lg:col-span-4">
                 <p class="eyebrow eyebrow-light">{{ $c['form_eyebrow'] }}</p>

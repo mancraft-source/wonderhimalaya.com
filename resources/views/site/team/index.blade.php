@@ -10,7 +10,7 @@
                             <div class="aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-stone-200">
                                 <x-site.picture :model="$m" collection="photo" sizes="(min-width: 1024px) 25vw, 50vw" class="h-full w-full grayscale-[25%] transition duration-700 group-hover:scale-[1.03] group-hover:grayscale-0" />
                             </div>
-                            <h3 class="mt-4 font-display text-xl text-juniper-800 group-hover:underline sm:text-2xl">{{ $m->name }}</h3>
+                            <h3 class="mt-4 font-display text-xl text-navy-800 group-hover:underline sm:text-2xl">{{ $m->name }}</h3>
                             @if ($m->role)<p class="text-sm text-ink-soft">{{ $m->role }}</p>@endif
                         </a>
                     @endforeach

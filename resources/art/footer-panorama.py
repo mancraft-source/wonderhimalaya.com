@@ -73,7 +73,7 @@ mid = ridge(13, 312, [(110, 46, 170), (420, 30, 200), (640, 58, 170), (930, 40, 
 pagoda_x = 640
 py = at(mid, pagoda_x) + 4
 pagoda = (
-    f'<g fill="#1f3a33">'
+    f'<g fill="#082047">'
     f'<rect x="{pagoda_x - 13}" y="{py - 12}" width="26" height="12"/>'
     f'<path d="M{pagoda_x - 22},{py - 12} L{pagoda_x + 22},{py - 12} L{pagoda_x + 13},{py - 21} L{pagoda_x - 13},{py - 21} Z"/>'
     f'<rect x="{pagoda_x - 9}" y="{py - 29}" width="18" height="8"/>'
@@ -94,8 +94,8 @@ stupa = (
     f'<rect x="{sx - 36}" y="{sy - 14}" width="72" height="6" fill="#f4efe6"/>'
     f'<path d="M{sx - 32},{sy - 14} A32,30 0 0 1 {sx + 32},{sy - 14} Z" fill="#fbf9f5"/>'
     f'<rect x="{sx - 9}" y="{sy - 56}" width="18" height="13" fill="#e0b04a"/>'
-    f'<path d="M{sx - 5},{sy - 51} q2,-2 4,0 M{sx + 1},{sy - 51} q2,-2 4,0" fill="none" stroke="#1f3a33" stroke-width="1.4" stroke-linecap="round"/>'
-    f'<path d="M{sx - 1},{sy - 48} q1,3 2,0" fill="none" stroke="#1f3a33" stroke-width="1.2"/>'
+    f'<path d="M{sx - 5},{sy - 51} q2,-2 4,0 M{sx + 1},{sy - 51} q2,-2 4,0" fill="none" stroke="#082047" stroke-width="1.4" stroke-linecap="round"/>'
+    f'<path d="M{sx - 1},{sy - 48} q1,3 2,0" fill="none" stroke="#082047" stroke-width="1.2"/>'
     f'<path d="M{sx - 8},{sy - 56} L{sx + 8},{sy - 56} L{sx},{sy - 96} Z" fill="#d9a441"/>'
     f'<path d="M{sx - 6},{sy - 66} L{sx + 6},{sy - 66} M{sx - 4.5},{sy - 74} L{sx + 4.5},{sy - 74} M{sx - 3},{sy - 82} L{sx + 3},{sy - 82}" stroke="#b5862f" stroke-width="1.4"/>'
     f'<circle cx="{sx}" cy="{sy - 99}" r="3" fill="#e0b04a"/>'
@@ -113,12 +113,12 @@ def trekker(x, h, flip=False):
     y = at(front, x) + 3
     s = -1 if flip else 1
     return (
-        f'<g fill="#0f1d19" transform="translate({x},{y}) scale({s * h / 26:.3f},{h / 26:.3f})">'
+        f'<g fill="#01091e" transform="translate({x},{y}) scale({s * h / 26:.3f},{h / 26:.3f})">'
         '<circle cx="0" cy="-23.5" r="2.6"/>'
         '<path d="M-2.5,-20.5 L2.2,-20.5 L3,-10 L-2,-10 Z"/>'
         '<path d="M-2.4,-20 L-6.8,-19 L-7.4,-11 L-2.6,-11 Z"/>'
         '<path d="M-1.6,-10.5 L-4.8,0 L-2.9,0 L0,-8 L2.6,0 L4.5,0 L1.6,-10.5 Z"/>'
-        '<path d="M2.8,-17 L7.4,-1" stroke="#0f1d19" stroke-width="0.9"/>'
+        '<path d="M2.8,-17 L7.4,-1" stroke="#01091e" stroke-width="0.9"/>'
         '</g>'
     )
 
@@ -141,34 +141,34 @@ while x < W:
 lake = (
     '<path d="M170,330 C230,316 330,314 470,322 C430,336 300,340 190,338 Z" fill="#9db8c2"/>'
     '<path d="M215,328 h48 M300,331 h70 M245,334 h36" stroke="#fbf9f5" stroke-opacity=".7" stroke-width="1.4" stroke-linecap="round"/>'
-    '<path d="M332,326 l18,0 l-4,4 l-10,0 Z" fill="#c0392b"/><path d="M341,326 l0,-9" stroke="#1f3a33" stroke-width="1"/>'
+    '<path d="M332,326 l18,0 l-4,4 l-10,0 Z" fill="#c0392b"/><path d="M341,326 l0,-9" stroke="#082047" stroke-width="1"/>'
 )
 
 paraglider = (
     '<g transform="translate(430,128)">'
     '<path d="M-22,0 C-14,-12 14,-12 22,0 C14,-6 -14,-6 -22,0 Z" fill="#b5532e"/>'
-    '<path d="M-20,0 L0,26 M20,0 L0,26 M-7,-4 L0,26 M7,-4 L0,26" stroke="#1f3a33" stroke-width=".7" stroke-opacity=".7"/>'
-    '<circle cx="0" cy="28" r="2.6" fill="#1f3a33"/>'
+    '<path d="M-20,0 L0,26 M20,0 L0,26 M-7,-4 L0,26 M7,-4 L0,26" stroke="#082047" stroke-width=".7" stroke-opacity=".7"/>'
+    '<circle cx="0" cy="28" r="2.6" fill="#082047"/>'
     '</g>'
 )
 
 plane = (
-    '<path d="M150,118 C230,92 330,74 452,62" fill="none" stroke="#1f3a33" stroke-opacity=".35" stroke-width="1.4" stroke-dasharray="4 6"/>'
-    '<g transform="translate(460,61) rotate(-6)" fill="#1f3a33" opacity=".8">'
+    '<path d="M150,118 C230,92 330,74 452,62" fill="none" stroke="#082047" stroke-opacity=".35" stroke-width="1.4" stroke-dasharray="4 6"/>'
+    '<g transform="translate(460,61) rotate(-6)" fill="#082047" opacity=".8">'
     '<path d="M-10,0 L10,-1 L13,0 L10,1 Z"/><path d="M-1,0 L-6,-7 L-3,-7 L4,0 Z"/><path d="M-1,0 L-6,7 L-3,7 L4,0 Z"/><path d="M-9,0 L-12,-4 L-10,-4 L-7,0 Z"/>'
     '</g>'
 )
 
 birds = (
-    '<g fill="none" stroke="#27463e" stroke-width="2" stroke-linecap="round" opacity=".5">'
+    '<g fill="none" stroke="#0e2e62" stroke-width="2" stroke-linecap="round" opacity=".5">'
     '<path d="M1080,60 q7,-7 14,0 q7,-7 14,0"/><path d="M1118,80 q5,-5 10,0 q5,-5 10,0"/><path d="M1056,90 q5,-5 10,0 q5,-5 10,0"/>'
     '</g>'
 )
 
 
 def label(x, y, text, anchor='middle', lx=None, ly=None):
-    lead = f'<path d="M{x},{y + 5} L{lx},{ly}" stroke="#1f3a33" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 3"/>' if lx is not None else ''
-    return f'<g class="mtn-label">{lead}<text x="{x}" y="{y}" text-anchor="{anchor}" font-size="13" letter-spacing="2.5" fill="#1f3a33" fill-opacity=".62" font-family="var(--font-jetbrains-mono), ui-monospace, monospace">{text}</text></g>'
+    lead = f'<path d="M{x},{y + 5} L{lx},{ly}" stroke="#082047" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 3"/>' if lx is not None else ''
+    return f'<g class="mtn-label">{lead}<text x="{x}" y="{y}" text-anchor="{anchor}" font-size="13" letter-spacing="2.5" fill="#082047" fill-opacity=".62" font-family="var(--font-jetbrains-mono), ui-monospace, monospace">{text}</text></g>'
 
 
 svg_open = '<svg viewBox="0 0 1600 400" preserveAspectRatio="xMidYMax slice" class="absolute inset-x-0 bottom-0 h-full w-full" aria-hidden="true">'
@@ -222,7 +222,7 @@ blade = f'''{{{{-- "Journey across Nepal" panorama between page content and foot
         </svg>
     </div>
 
-    {{{{-- Front: trekkers on the trail, Lumbini stupa with prayer flags, pines (footer colour at the base) --}}}}
+    {{{{-- Front: trekkers on the trail, Lumbini stupa with prayer flags, pines (green); the base band matches the navy footer --}}}}
     {svg_open}
         <path d="{area(front)}" fill="#27463e"/>
         <path d="{trail_path}" fill="none" stroke="#e9e1d3" stroke-opacity=".55" stroke-width="2" stroke-dasharray="3 6" stroke-linecap="round"/>
@@ -230,7 +230,7 @@ blade = f'''{{{{-- "Journey across Nepal" panorama between page content and foot
         {stupa_flags}
         {stupa}
         <path d="{' '.join(pines)}" fill="#162b26"/>
-        <path d="M0,382 C300,366 520,390 820,376 C1100,362 1340,386 1600,372 L1600,400 L0,400 Z" fill="#162b26"/>
+        <path d="M0,382 C300,366 520,390 820,376 C1100,362 1340,386 1600,372 L1600,400 L0,400 Z" fill="#021131"/>
         {label(sx, sy - 112, 'LUMBINI')}
     </svg>
 </div>

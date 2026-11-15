@@ -42,9 +42,9 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => view('filament.brand'))
             ->brandLogoHeight('2.75rem')
             ->favicon(asset('favicon.png'))
-            // Hand-tuned brand scales (Color::hex() would turn Juniper into a bright teal) — see BrandColors.
+            // Hand-tuned brand scales (Color::hex() would turn the logo navy into a bright royal blue) — see BrandColors.
             ->colors([
-                'primary' => BrandColors::JUNIPER,
+                'primary' => BrandColors::NAVY,
                 'gray' => BrandColors::GRAY,
                 'warning' => BrandColors::SAFFRON,
                 'danger' => BrandColors::TERRACOTTA,

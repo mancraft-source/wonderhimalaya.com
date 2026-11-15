@@ -1,7 +1,7 @@
 @php $steps = \App\Livewire\TailorMadeBuilder::STEPS; @endphp
 <div x-data x-on:step-changed.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })" class="scroll-mt-28">
     @if ($reference)
-        <div class="mx-auto max-w-2xl rounded-[2.5rem] bg-juniper-800 p-10 text-center text-stone-100 sm:p-16" data-reveal>
+        <div class="mx-auto max-w-2xl rounded-[2.5rem] bg-navy-800 p-10 text-center text-stone-100 sm:p-16" data-reveal>
             <svg viewBox="0 0 120 60" class="mx-auto h-16 text-saffron-300" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 58 32 20l14 18 16-24 28 44" /><circle cx="92" cy="12" r="7" /><path d="M10 58c18-6 30 2 46-4s22-14 40-6" stroke-dasharray="2 4" /></svg>
             <h2 class="mt-8 font-display text-display-sm text-stone-100">Your journey is taking shape.</h2>
             <p class="mx-auto mt-4 max-w-lg text-stone-300">{{ $first_name }}, a Kathmandu trip specialist is reading your brief now. Expect a personal reply — with a first draft itinerary — within 24 hours.</p>
@@ -16,11 +16,11 @@
                 <li class="flex shrink-0 items-center gap-2">
                     <button type="button" wire:click="goTo({{ $n }})" @disabled($n >= $step)
                         @class(['flex items-center gap-2.5 rounded-full py-2 pr-4 pl-2 text-sm font-semibold transition',
-                            'bg-juniper-800 text-stone-100' => $n === $step,
-                            'bg-juniper-100 text-juniper-800 hover:bg-juniper-50' => $n < $step,
+                            'bg-navy-800 text-stone-100' => $n === $step,
+                            'bg-navy-100 text-navy-800 hover:bg-navy-50' => $n < $step,
                             'text-stone-400' => $n > $step])
                         @if ($n === $step) aria-current="step" @endif>
-                        <span @class(['flex size-7 items-center justify-center rounded-full text-xs', 'bg-saffron-500 text-ink' => $n === $step, 'bg-juniper-800 text-stone-100' => $n < $step, 'bg-stone-200' => $n > $step])>
+                        <span @class(['flex size-7 items-center justify-center rounded-full text-xs', 'bg-saffron-500 text-ink' => $n === $step, 'bg-navy-800 text-stone-100' => $n < $step, 'bg-stone-200' => $n > $step])>
                             @if ($n < $step)<x-heroicon-m-check class="size-4" />@else{{ $n }}@endif
                         </span>
                         {{ $label }}
@@ -43,8 +43,8 @@
                         @php $on = in_array($place, $destinations, true); @endphp
                         <button type="button" wire:key="p-{{ md5($place) }}" wire:click="toggle('destinations', @js($place))" aria-pressed="{{ $on ? 'true' : 'false' }}"
                             @class(['group relative flex min-h-24 flex-col justify-between rounded-3xl p-5 text-left ring-1 transition duration-300',
-                                'bg-juniper-800 text-stone-100 ring-juniper-800' => $on,
-                                'bg-white text-juniper-800 ring-stone-300 hover:-translate-y-0.5 hover:ring-juniper-500' => ! $on])>
+                                'bg-navy-800 text-stone-100 ring-navy-800' => $on,
+                                'bg-white text-navy-800 ring-stone-300 hover:-translate-y-0.5 hover:ring-navy-500' => ! $on])>
                             <span @class(['absolute top-4 right-4 flex size-6 items-center justify-center rounded-full ring-1', 'bg-saffron-500 text-ink ring-saffron-500' => $on, 'ring-stone-300' => ! $on])>
                                 @if ($on)<x-heroicon-m-check class="size-4" />@endif
                             </span>
@@ -66,13 +66,13 @@
                         @php $on = in_array($key, $interests, true); @endphp
                         <button type="button" wire:key="i-{{ $key }}" wire:click="toggle('interests', '{{ $key }}')" aria-pressed="{{ $on ? 'true' : 'false' }}"
                             @class(['flex items-start gap-4 rounded-3xl p-5 text-left ring-1 transition duration-300',
-                                'bg-juniper-800 text-stone-100 ring-juniper-800' => $on,
-                                'bg-white ring-stone-300 hover:ring-juniper-500' => ! $on])>
+                                'bg-navy-800 text-stone-100 ring-navy-800' => $on,
+                                'bg-white ring-stone-300 hover:ring-navy-500' => ! $on])>
                             <span @class(['mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full ring-1', 'bg-saffron-500 text-ink ring-saffron-500' => $on, 'ring-stone-300' => ! $on])>
                                 @if ($on)<x-heroicon-m-check class="size-4" />@endif
                             </span>
                             <span>
-                                <span @class(['block font-display text-lg', 'text-juniper-800' => ! $on])>{{ $label }}</span>
+                                <span @class(['block font-display text-lg', 'text-navy-800' => ! $on])>{{ $label }}</span>
                                 <span @class(['mt-1 block text-sm', 'text-stone-300' => $on, 'text-ink-soft' => ! $on])>{{ $desc }}</span>
                             </span>
                         </button>
@@ -90,7 +90,7 @@
                 <div class="flex flex-wrap gap-2">
                     @foreach ($this->months as $value => $label)
                         <button type="button" wire:key="m-{{ $value }}" wire:click="$set('travel_month', '{{ $value }}')"
-                            @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $travel_month === $value, 'bg-white text-juniper-800 ring-stone-300 hover:ring-juniper-500' => $travel_month !== $value])>{{ $label }}</button>
+                            @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-navy-800 text-stone-100 ring-navy-800' => $travel_month === $value, 'bg-white text-navy-800 ring-stone-300 hover:ring-navy-500' => $travel_month !== $value])>{{ $label }}</button>
                     @endforeach
                 </div>
                 <div class="mt-8 grid gap-6 md:grid-cols-2">
@@ -102,7 +102,7 @@
                 <div class="mt-8" x-data="{ d: @entangle('duration_days') }">
                     <div class="flex items-baseline justify-between">
                         <label for="tm-duration" class="field-label">Trip length</label>
-                        <span class="font-display text-2xl text-juniper-800"><span x-text="d"></span> days</span>
+                        <span class="font-display text-2xl text-navy-800"><span x-text="d"></span> days</span>
                     </div>
                     <input id="tm-duration" type="range" min="3" max="35" x-model="d" class="mt-3 w-full accent-terracotta-500">
                     <div class="mt-1 flex justify-between text-xs text-stone-500"><span>Short escape</span><span>Grand traverse</span></div>
@@ -119,7 +119,7 @@
                             <p class="field-label">{{ $label }}</p>
                             <div class="flex items-center gap-3 rounded-2xl bg-white p-2 ring-1 ring-stone-300">
                                 <button type="button" class="flex size-10 items-center justify-center rounded-xl hover:bg-stone-200" wire:click="$set('{{ $field }}', {{ max($min, $this->{$field} - 1) }})" aria-label="Fewer {{ strtolower($label) }}"><x-heroicon-m-minus class="size-4" /></button>
-                                <span class="flex-1 text-center font-display text-2xl text-juniper-800">{{ $this->{$field} }}</span>
+                                <span class="flex-1 text-center font-display text-2xl text-navy-800">{{ $this->{$field} }}</span>
                                 <button type="button" class="flex size-10 items-center justify-center rounded-xl hover:bg-stone-200" wire:click="$set('{{ $field }}', {{ min(40, $this->{$field} + 1) }})" aria-label="More {{ strtolower($label) }}"><x-heroicon-m-plus class="size-4" /></button>
                             </div>
                         </div>
@@ -133,8 +133,8 @@
                         @php $tierCopy = ['standard' => 'Best local tea-houses & hotels, licensed guide, great value.', 'premium' => 'Upgraded lodges with attached bathrooms, boutique hotels, smaller groups.', 'luxury' => 'The finest lodges, 5★ Kathmandu stays, private guide, heli options.']; @endphp
                         @foreach ($this->tiers as $tier)
                             <button type="button" wire:key="t-{{ $tier->id }}" wire:click="$set('tier_id', {{ $tier_id === $tier->id ? 'null' : $tier->id }})"
-                                @class(['rounded-3xl p-6 text-left ring-1 transition', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $tier_id === $tier->id, 'bg-white ring-stone-300 hover:ring-juniper-500' => $tier_id !== $tier->id])>
-                                <span @class(['block font-display text-2xl', 'text-juniper-800' => $tier_id !== $tier->id])>{{ $tier->name }}</span>
+                                @class(['rounded-3xl p-6 text-left ring-1 transition', 'bg-navy-800 text-stone-100 ring-navy-800' => $tier_id === $tier->id, 'bg-white ring-stone-300 hover:ring-navy-500' => $tier_id !== $tier->id])>
+                                <span @class(['block font-display text-2xl', 'text-navy-800' => $tier_id !== $tier->id])>{{ $tier->name }}</span>
                                 <span @class(['mt-2 block text-sm', 'text-stone-300' => $tier_id === $tier->id, 'text-ink-soft' => $tier_id !== $tier->id])>{{ $tier->description ?: ($tierCopy[$tier->slug] ?? '') }}</span>
                             </button>
                         @endforeach
@@ -145,7 +145,7 @@
                 <div class="flex flex-wrap gap-2">
                     @foreach (\App\Livewire\TailorMadeBuilder::BUDGETS as $b)
                         <button type="button" wire:key="b-{{ md5($b) }}" wire:click="$set('budget', @js($b))"
-                            @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $budget === $b, 'bg-white text-juniper-800 ring-stone-300 hover:ring-juniper-500' => $budget !== $b])>{{ $b }}</button>
+                            @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-navy-800 text-stone-100 ring-navy-800' => $budget === $b, 'bg-white text-navy-800 ring-stone-300 hover:ring-navy-500' => $budget !== $b])>{{ $b }}</button>
                     @endforeach
                 </div>
             </section>

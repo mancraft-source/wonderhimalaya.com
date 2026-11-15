@@ -6,24 +6,24 @@ namespace App\Filament\Support;
  * Hand-tuned OKLCH colour scales for the admin panel.
  *
  * Filament's Color::hex() keeps only the hue of a colour and applies one fixed lightness/chroma curve,
- * which turns the brand's deep Juniper into a bright teal. These scales keep the real brand shades at the
+ * which turns the brand's deep navy into a bright royal blue. These scales keep the real brand shades at the
  * steps Filament uses most: 600 = buttons and links in light mode, 400/500 = the same in dark mode.
  */
 final class BrandColors
 {
-    /** Juniper #1f3a33 (≈ 700) — primary buttons, links, focus rings. */
-    public const JUNIPER = [
-        50 => 'oklch(0.975 0.012 172)',
-        100 => 'oklch(0.95 0.022 172)',
-        200 => 'oklch(0.9 0.04 172)',
-        300 => 'oklch(0.82 0.06 172)',
-        400 => 'oklch(0.69 0.07 172)',
-        500 => 'oklch(0.56 0.065 172)',
-        600 => 'oklch(0.4 0.05 172)',
-        700 => 'oklch(0.335 0.042 172)',
-        800 => 'oklch(0.29 0.036 172)',
-        900 => 'oklch(0.255 0.03 172)',
-        950 => 'oklch(0.2 0.022 172)',
+    /** Navy #021131 (the logo navy, = 950) — primary buttons, links, focus rings; 600 stays a visible blue. */
+    public const NAVY = [
+        50 => 'oklch(0.97 0.012 260)',
+        100 => 'oklch(0.935 0.026 260)',
+        200 => 'oklch(0.87 0.048 260)',
+        300 => 'oklch(0.78 0.078 260)',
+        400 => 'oklch(0.69 0.105 260)',
+        500 => 'oklch(0.55 0.125 260)',
+        600 => 'oklch(0.43 0.125 260)',
+        700 => 'oklch(0.35 0.11 260)',
+        800 => 'oklch(0.29 0.09 260)',
+        900 => 'oklch(0.235 0.075 260)',
+        950 => 'oklch(0.188 0.068 260)',
     ];
 
     /** Saffron #d9a441 (≈ 500) — warnings, pending states. */
@@ -71,18 +71,18 @@ final class BrandColors
         950 => 'oklch(0.22 0.025 230)',
     ];
 
-    /** Neutral: Stone's warm light end (matches the paper canvas) easing into Juniper green at the dark end. */
+    /** Neutral: Stone's warm light end (matches the paper canvas) easing into navy at the dark end (dark-mode surfaces). */
     public const GRAY = [
         50 => 'oklch(0.985 0.001 106.4)',
         100 => 'oklch(0.97 0.002 106.4)',
         200 => 'oklch(0.923 0.004 80)',
         300 => 'oklch(0.869 0.006 90)',
-        400 => 'oklch(0.709 0.012 150)',
-        500 => 'oklch(0.553 0.016 160)',
-        600 => 'oklch(0.444 0.018 165)',
-        700 => 'oklch(0.374 0.022 168)',
-        800 => 'oklch(0.315 0.028 170)',
-        900 => 'oklch(0.262 0.027 170)',
-        950 => 'oklch(0.205 0.022 170)',
+        400 => 'oklch(0.709 0.012 250)',
+        500 => 'oklch(0.553 0.018 255)',
+        600 => 'oklch(0.444 0.022 258)',
+        700 => 'oklch(0.374 0.028 260)',
+        800 => 'oklch(0.31 0.036 261)',
+        900 => 'oklch(0.252 0.04 262)',
+        950 => 'oklch(0.198 0.038 262)',
     ];
 }

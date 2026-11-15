@@ -11,7 +11,7 @@
                     <p class="mt-6 text-lg text-ink-soft">{{ $c['intro'] }}</p>
                     <ul class="mt-10 space-y-5">
                         @foreach (collect($c['benefits'])->map(fn ($x) => [$x['text'] ?? '', $x['icon'] ?? 'check-badge']) as [$text, $icon])
-                            <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-juniper-800 text-saffron-300"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span><span class="pt-2 text-ink-soft">{{ $text }}</span></li>
+                            <li class="flex gap-4"><span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-navy-800 text-saffron-300"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span><span class="pt-2 text-ink-soft">{{ $text }}</span></li>
                         @endforeach
                     </ul>
                 </div>

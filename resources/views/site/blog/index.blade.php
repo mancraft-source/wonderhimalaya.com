@@ -3,9 +3,9 @@
         :intro="$category?->description ?: 'Route intel, seasonal advice, culture and stories from the trail — written by our team and guides.'"
         :crumbs="array_values(array_filter([['label' => 'Journal', 'url' => $category ? route('blog.index') : null], $category ? ['label' => $category->name] : null]))">
         <div class="mt-8 flex flex-wrap gap-2">
-            <a href="{{ route('blog.index') }}" @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-juniper-800 text-stone-100 ring-juniper-800' => ! $category, 'ring-stone-300 hover:ring-juniper-500' => $category])>All</a>
+            <a href="{{ route('blog.index') }}" @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-navy-800 text-stone-100 ring-navy-800' => ! $category, 'ring-stone-300 hover:ring-navy-500' => $category])>All</a>
             @foreach ($categories as $cat)
-                <a href="{{ route('blog.category', $cat->slug) }}" @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $category?->id === $cat->id, 'ring-stone-300 hover:ring-juniper-500' => $category?->id !== $cat->id])>{{ $cat->name }}</a>
+                <a href="{{ route('blog.category', $cat->slug) }}" @class(['rounded-full px-4 py-2 text-sm font-medium ring-1 transition', 'bg-navy-800 text-stone-100 ring-navy-800' => $category?->id === $cat->id, 'ring-stone-300 hover:ring-navy-500' => $category?->id !== $cat->id])>{{ $cat->name }}</a>
             @endforeach
         </div>
     </x-site.page-hero>

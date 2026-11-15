@@ -9,9 +9,9 @@
                 ['Email', $c['email'] ?? null, 'mailto:'.($c['email'] ?? ''), 'envelope'],
                 ['Visit us', $c['address'] ?? null, 'https://maps.google.com/?q='.rawurlencode('Wonder Himalaya, '.($c['address'] ?? 'Thamel, Kathmandu')), 'map-pin'],
             ], fn ($row) => filled($row[1])) as [$label, $value, $href, $icon])
-                <a href="{{ $href }}" @if (str_starts_with($href, 'http')) target="_blank" rel="noopener" @endif class="group flex items-start gap-5 rounded-[1.75rem] bg-stone-50 p-6 ring-1 ring-stone-300/60 transition hover:ring-juniper-500">
-                    <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-juniper-800 text-saffron-300"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span>
-                    <span><span class="block text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{{ $label }}</span><span class="mt-1 block font-display text-xl text-juniper-800 group-hover:underline">{{ $value }}</span></span>
+                <a href="{{ $href }}" @if (str_starts_with($href, 'http')) target="_blank" rel="noopener" @endif class="group flex items-start gap-5 rounded-[1.75rem] bg-stone-50 p-6 ring-1 ring-stone-300/60 transition hover:ring-navy-500">
+                    <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-navy-800 text-saffron-300"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span>
+                    <span><span class="block text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{{ $label }}</span><span class="mt-1 block font-display text-xl text-navy-800 group-hover:underline">{{ $value }}</span></span>
                 </a>
             @endforeach
             @if (! empty($c['hours']))<p class="px-2 text-sm text-ink-soft">Office hours: {{ $c['hours'] }}</p>@endif

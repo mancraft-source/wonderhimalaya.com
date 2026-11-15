@@ -22,11 +22,11 @@
                                 <span class="absolute bottom-1.5 left-1.5 rounded-full bg-stone-100/90 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-terracotta-600">Daily</span>
                             </a>
                             <div>
-                                <a href="{{ url($trip->publicPath()) }}" class="font-display text-xl text-juniper-800 hover:underline">{{ $trip->title }}</a>
+                                <a href="{{ url($trip->publicPath()) }}" class="font-display text-xl text-navy-800 hover:underline">{{ $trip->title }}</a>
                                 <p class="text-sm text-ink-soft">{{ $trip->destination?->name }} · {{ $trip->durationLabel() }} @if ($trip->difficulty)· {{ $trip->difficulty->name }}@endif</p>
                             </div>
                             <span class="chip w-max">From {{ $trip->earliestStartDate()->format('j M Y') }}</span>
-                            <span class="font-display text-2xl text-juniper-800">{{ $trip->displayPrice() ? 'US$'.number_format($trip->displayPrice()) : 'On request' }}</span>
+                            <span class="font-display text-2xl text-navy-800">{{ $trip->displayPrice() ? 'US$'.number_format($trip->displayPrice()) : 'On request' }}</span>
                             <a href="{{ url($trip->publicPath()) }}#departures" class="btn-primary !px-5 !py-2.5 !text-xs">Choose date</a>
                         </div>
                     @endforeach
@@ -41,15 +41,15 @@
                     @foreach ($departures as $d)
                         <div class="grid items-center gap-4 p-5 sm:grid-cols-[6rem_1fr_auto_auto_auto] sm:gap-8 sm:p-6">
                             <div class="flex items-baseline gap-2 sm:block">
-                                <p class="font-display text-4xl leading-none text-juniper-800">{{ $d->start_date->format('d') }}</p>
+                                <p class="font-display text-4xl leading-none text-navy-800">{{ $d->start_date->format('d') }}</p>
                                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{{ $d->start_date->format('D') }}</p>
                             </div>
                             <div>
-                                <a href="{{ url($d->trip->publicPath()) }}" class="font-display text-xl text-juniper-800 hover:underline">{{ $d->trip->title }}</a>
+                                <a href="{{ url($d->trip->publicPath()) }}" class="font-display text-xl text-navy-800 hover:underline">{{ $d->trip->title }}</a>
                                 <p class="text-sm text-ink-soft">{{ $d->trip->destination?->name }} · {{ $d->trip->durationLabel() }} @if ($d->trip->difficulty)· {{ $d->trip->difficulty->name }}@endif</p>
                             </div>
                             <span class="chip w-max">{{ $d->status->getLabel() }} · {{ $d->seatsLeft() }} left</span>
-                            <span class="font-display text-2xl text-juniper-800">{{ $d->effectivePrice() ? 'US$'.number_format($d->effectivePrice()) : 'On request' }}</span>
+                            <span class="font-display text-2xl text-navy-800">{{ $d->effectivePrice() ? 'US$'.number_format($d->effectivePrice()) : 'On request' }}</span>
                             <a href="{{ url($d->trip->publicPath()) }}?departure={{ $d->id }}#enquire" @class(['btn-primary !px-5 !py-2.5 !text-xs', 'pointer-events-none opacity-50' => ! $d->isBookable()])>{{ $d->isBookable() ? 'Join' : 'Full' }}</a>
                         </div>
                     @endforeach

@@ -7,11 +7,11 @@
     <style>
         @page { margin: 28mm 18mm 22mm; }
         body { font-family: DejaVu Sans, sans-serif; font-size: 10.5pt; color: #1b1b1a; line-height: 1.5; }
-        h1, h2, h3 { font-family: DejaVu Serif, Georgia, serif; font-weight: normal; color: #1f3a33; margin: 0; }
+        h1, h2, h3 { font-family: DejaVu Serif, Georgia, serif; font-weight: normal; color: #082047; margin: 0; }
         h1 { font-size: 22pt; line-height: 1.15; }
         h2 { font-size: 13pt; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #d8ccb8; }
-        .header { position: fixed; top: -20mm; left: 0; right: 0; height: 14mm; border-bottom: 2px solid #1f3a33; }
-        .brand { font-family: DejaVu Serif, serif; font-size: 15pt; color: #1f3a33; }
+        .header { position: fixed; top: -20mm; left: 0; right: 0; height: 14mm; border-bottom: 2px solid #082047; }
+        .brand { font-family: DejaVu Serif, serif; font-size: 15pt; color: #082047; }
         .muted { color: #4a4843; }
         .eyebrow { font-size: 8pt; letter-spacing: 2px; text-transform: uppercase; color: #b5532e; }
         .footer { position: fixed; bottom: -14mm; left: 0; right: 0; font-size: 8pt; color: #8f7f66; text-align: center; }
@@ -21,10 +21,10 @@
         .items td { padding: 7px 8px; border-bottom: 1px solid #e9e1d3; }
         .num { text-align: right; white-space: nowrap; }
         .totals td { padding: 4px 8px; }
-        .grand td { font-size: 12pt; font-weight: bold; color: #1f3a33; border-top: 2px solid #1f3a33; padding-top: 8px; }
+        .grand td { font-size: 12pt; font-weight: bold; color: #082047; border-top: 2px solid #082047; padding-top: 8px; }
         .box { background: #f4efe6; border-radius: 6px; padding: 10px 14px; margin-top: 14px; }
         .day { margin: 0 0 5px; }
-        .day b { color: #1f3a33; }
+        .day b { color: #082047; }
         .terms { font-size: 8.5pt; color: #4a4843; }
     </style>
 </head>

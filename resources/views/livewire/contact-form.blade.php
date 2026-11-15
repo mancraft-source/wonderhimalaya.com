@@ -1,9 +1,9 @@
 <div>
     @if ($reference)
         <div class="card-surface p-10 text-center" data-reveal>
-            <x-heroicon-o-check-circle class="mx-auto size-12 text-juniper-500" />
+            <x-heroicon-o-check-circle class="mx-auto size-12 text-navy-500" />
             <h3 class="mt-5 font-display text-3xl">Message received — dhanyabad!</h3>
-            <p class="mt-3 text-ink-soft">A trip specialist will reply within 24 hours. Your reference is <span class="data text-juniper-800">{{ $reference }}</span>.</p>
+            <p class="mt-3 text-ink-soft">A trip specialist will reply within 24 hours. Your reference is <span class="data text-navy-800">{{ $reference }}</span>.</p>
         </div>
     @else
         <form wire:submit="submit" class="card-surface grid gap-5 p-6 sm:grid-cols-2 sm:p-10" novalidate>

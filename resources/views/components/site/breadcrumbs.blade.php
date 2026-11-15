@@ -16,9 +16,9 @@
             <li class="flex items-center gap-2">
                 @if (! $loop->first)<span aria-hidden="true" class="opacity-50">/</span>@endif
                 @if (! $loop->last && ! empty($item['url']))
-                    <a href="{{ $item['url'] }}" @class(['hover:text-white' => $light, 'hover:text-juniper-800' => ! $light])>{{ $item['label'] }}</a>
+                    <a href="{{ $item['url'] }}" @class(['hover:text-white' => $light, 'hover:text-navy-800' => ! $light])>{{ $item['label'] }}</a>
                 @else
-                    <span aria-current="page" @class(['text-white' => $light, 'text-juniper-800' => ! $light])>{{ $item['label'] }}</span>
+                    <span aria-current="page" @class(['text-white' => $light, 'text-navy-800' => ! $light])>{{ $item['label'] }}</span>
                 @endif
             </li>
         @endforeach

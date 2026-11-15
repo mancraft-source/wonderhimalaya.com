@@ -4,7 +4,7 @@
     $socialIcons = ['facebook' => 'Facebook', 'instagram' => 'Instagram', 'tripadvisor' => 'Tripadvisor', 'tiktok' => 'TikTok', 'youtube' => 'YouTube', 'twitter' => 'X'];
 @endphp
 <x-site.mountain-divider class="mt-16 -mb-px lg:mt-24" />
-<footer class="relative overflow-hidden bg-juniper-900 text-stone-200">
+<footer class="relative overflow-hidden bg-navy-900 text-stone-200">
     <div class="topo pointer-events-none absolute inset-0 opacity-[0.35] invert" aria-hidden="true"></div>
 
     {{-- Closing call to action (hidden on transactional pages) --}}
@@ -91,7 +91,7 @@
                     <li><a class="hover:text-white" href="{{ $item['url'] }}">{{ $item['name'] }}</a></li>
                 @endforeach
             </ul>
-            <div class="prayer-flags hidden md:flex" aria-hidden="true"><span class="bg-glacier-300"></span><span class="bg-stone-100"></span><span class="bg-terracotta-500"></span><span class="bg-juniper-500"></span><span class="bg-saffron-500"></span></div>
+            <div class="prayer-flags hidden md:flex" aria-hidden="true"><span class="bg-glacier-300"></span><span class="bg-stone-100"></span><span class="bg-terracotta-500"></span><span class="bg-navy-500"></span><span class="bg-saffron-500"></span></div>
         </div>
     </div>
 </footer>

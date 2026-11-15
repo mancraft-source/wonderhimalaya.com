@@ -17,7 +17,7 @@
             @if ($member->highlights)
                 <ul class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
                     @foreach ($member->highlights as $h)
-                        <li class="rounded-2xl bg-juniper-800 px-4 py-5 text-center text-sm font-semibold text-stone-100"><x-heroicon-s-check-badge class="mx-auto mb-2 size-5 text-saffron-300" />{{ $h }}</li>
+                        <li class="rounded-2xl bg-navy-800 px-4 py-5 text-center text-sm font-semibold text-stone-100"><x-heroicon-s-check-badge class="mx-auto mb-2 size-5 text-saffron-300" />{{ $h }}</li>
                     @endforeach
                 </ul>
             @endif
@@ -49,7 +49,7 @@
                 @foreach ($others as $m)
                     <a href="{{ url($m->publicPath()) }}" class="group">
                         <div class="aspect-square overflow-hidden rounded-[1.5rem] bg-stone-200"><x-site.picture :model="$m" collection="photo" sizes="25vw" class="h-full w-full transition duration-700 group-hover:scale-[1.03]" /></div>
-                        <p class="mt-4 font-display text-xl text-juniper-800">{{ $m->name }}</p>
+                        <p class="mt-4 font-display text-xl text-navy-800">{{ $m->name }}</p>
                         <p class="text-sm text-ink-soft">{{ $m->role }}</p>
                     </a>
                 @endforeach

@@ -6,16 +6,16 @@
 
 /*
  | Wonder Himalaya admin — the site's palette and type in Filament:
- | paper background, Juniper sidebar, Saffron/Terracotta accents, Fraunces headings.
+ | paper background, navy sidebar, Saffron/Terracotta accents, Fraunces headings.
  | Primary/gray colour scales are set in AdminPanelProvider; this file styles the chrome.
 */
 @theme {
     --font-display: 'Fraunces', Georgia, serif;
     --color-wh-paper: #f4efe6;
     --color-wh-card: #fbf9f5;
-    --color-wh-juniper-950: #0f1d19;
-    --color-wh-juniper-900: #162b26;
-    --color-wh-juniper-800: #1f3a33;
+    --color-wh-navy-950: #01091e;
+    --color-wh-navy-900: #021131;
+    --color-wh-navy-800: #082047;
     --color-wh-saffron: #ecc77e;
     --color-wh-terracotta: #b5532e;
     --color-wh-glacier: #9db8c2;
@@ -28,7 +28,7 @@
 
 .fi-topbar {
     @apply bg-wh-paper/85 shadow-none ring-0 backdrop-blur-xl dark:bg-gray-950/85;
-    border-bottom: 1px solid rgb(31 58 51 / 0.1);
+    border-bottom: 1px solid rgb(8 32 71 / 0.1);
 }
 
 .dark .fi-topbar {
@@ -53,7 +53,7 @@
 .fi-header-heading,
 .fi-simple-header-heading,
 .fi-modal-heading {
-    @apply font-display font-medium tracking-[-0.01em] text-wh-juniper-900 dark:text-white;
+    @apply font-display font-medium tracking-[-0.01em] text-wh-navy-900 dark:text-white;
 }
 
 .fi-header-heading {
@@ -75,11 +75,17 @@
 }
 
 .fi-brand-name {
-    @apply font-display text-lg leading-none font-medium whitespace-nowrap text-wh-juniper-900 dark:text-white;
+    @apply font-display text-lg leading-none font-medium whitespace-nowrap text-wh-navy-900 dark:text-white;
 }
 
 .fi-brand-tagline {
     @apply mt-1 block font-sans text-[0.6rem] font-semibold tracking-[0.2em] text-wh-terracotta uppercase;
+}
+
+/* Terracotta is too weak as small text on navy (≈ 3.6:1): saffron on the dark sidebar and in dark mode. */
+.fi-sidebar .fi-brand-tagline,
+.dark .fi-brand-tagline {
+    @apply text-wh-saffron;
 }
 
 /* In dark mode the sidebar sits one step darker than the page so it still reads as its own column. */
@@ -88,22 +94,22 @@
     box-shadow: inset -1px 0 0 rgb(255 255 255 / 0.06);
 }
 
-/* ---------- Sidebar: Juniper ---------- */
+/* ---------- Sidebar: navy ---------- */
 @media (min-width: 64rem) {
     .fi-sidebar {
-        @apply bg-wh-juniper-900;
+        @apply bg-wh-navy-900;
         background-image:
             radial-gradient(120% 60% at 0% 0%, rgb(236 199 126 / 0.07), transparent 60%),
-            linear-gradient(to bottom, var(--color-wh-juniper-900), var(--color-wh-juniper-950));
+            linear-gradient(to bottom, var(--color-wh-navy-900), var(--color-wh-navy-950));
     }
 }
 
 .fi-sidebar.fi-sidebar-open {
-    @apply bg-wh-juniper-900 ring-0;
+    @apply bg-wh-navy-900 ring-0;
 }
 
 .fi-sidebar .fi-sidebar-header {
-    @apply bg-wh-juniper-900 ring-0;
+    @apply bg-wh-navy-900 ring-0;
 }
 
 .fi-sidebar .fi-brand-name {
@@ -189,7 +195,7 @@
 
 /* ---------- Login, password reset, MFA (simple layout) ---------- */
 .fi-simple-layout {
-    @apply relative isolate bg-wh-juniper-900;
+    @apply relative isolate bg-wh-navy-900;
     background-image:
         radial-gradient(80% 60% at 50% 0%, rgb(236 199 126 / 0.12), transparent 70%),
         url('/images/topo.svg');
@@ -200,7 +206,7 @@
 .fi-simple-layout::after {
     content: '';
     @apply pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[32vh];
-    background: var(--color-wh-juniper-950);
+    background: var(--color-wh-navy-950);
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 200' preserveAspectRatio='none'%3E%3Cpath d='M0 140 120 92l90 34 140-96 120 70 90-40 160 110 110-62 120 44 150-118 140 96 110-44 130 86 120-38V200H0Z'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat;
 }
 

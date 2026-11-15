@@ -51,7 +51,7 @@
                 <div class="wh-today-panel flex flex-col rounded-xl border border-gray-950/5 bg-white/60 p-4 dark:border-white/10 dark:bg-white/5" data-panel="{{ $key }}">
                     <div class="mb-3 flex items-center gap-2">
                         <x-filament::icon :icon="$panel['icon']" class="size-5 text-wh-terracotta" />
-                        <h3 class="text-sm font-semibold text-wh-juniper-900 dark:text-white">{{ $panel['heading'] }}</h3>
+                        <h3 class="text-sm font-semibold text-wh-navy-900 dark:text-white">{{ $panel['heading'] }}</h3>
                         @if ($panel['data']['count'] > 0)
                             <x-filament::badge
                                 class="ms-auto"

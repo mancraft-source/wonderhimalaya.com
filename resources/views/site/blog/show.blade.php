@@ -5,7 +5,7 @@
             <x-site.breadcrumbs class="flex justify-center" :items="array_values(array_filter([['label' => 'Journal', 'url' => route('blog.index')], $post->category ? ['label' => $post->category->name, 'url' => route('blog.category', $post->category->slug)] : null, ['label' => str($post->title)->limit(40)->toString()]]))" />
             <h1 class="mt-8 font-display text-display-md">{{ $post->title }}</h1>
             <p class="mt-6 text-sm text-stone-500">
-                @if ($post->author)By <a class="font-semibold text-juniper-800 hover:underline" href="{{ url($post->author->publicPath()) }}">{{ $post->author->name }}</a> · @endif
+                @if ($post->author)By <a class="font-semibold text-navy-800 hover:underline" href="{{ url($post->author->publicPath()) }}">{{ $post->author->name }}</a> · @endif
                 <time datetime="{{ $post->published_at?->toDateString() }}">{{ $post->published_at?->format('j F Y') }}</time>
                 @if ($post->reading_minutes) · {{ $post->reading_minutes }} min read @endif
             </p>

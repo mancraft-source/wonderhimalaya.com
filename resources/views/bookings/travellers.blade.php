@@ -13,7 +13,7 @@
         </p>
 
         @if (session('status'))
-            <div class="mt-8 rounded-2xl bg-juniper-50 p-5 text-juniper-800 ring-1 ring-juniper-100" role="status">{{ session('status') }}</div>
+            <div class="mt-8 rounded-2xl bg-navy-50 p-5 text-navy-800 ring-1 ring-navy-100" role="status">{{ session('status') }}</div>
         @endif
         @if ($errors->any())
             <div class="mt-8 rounded-2xl bg-terracotta-500/10 p-5 text-terracotta-600 ring-1 ring-terracotta-500/30" role="alert">Please check the highlighted fields.</div>
@@ -24,7 +24,7 @@
             @foreach ($travellers as $i => $t)
                 @php $p = "travellers.$i"; $n = "travellers[$i]"; @endphp
                 <fieldset class="card-surface p-6 sm:p-8">
-                    <legend class="px-2 font-display text-2xl text-juniper-800">Traveller {{ $i + 1 }}@if ($i === 0) <span class="text-base text-ink-soft">(lead)</span>@endif</legend>
+                    <legend class="px-2 font-display text-2xl text-navy-800">Traveller {{ $i + 1 }}@if ($i === 0) <span class="text-base text-ink-soft">(lead)</span>@endif</legend>
                     <div class="grid gap-5 sm:grid-cols-2">
                         @foreach ([
                             'first_name' => ['First name (as in passport)', 'text', true],

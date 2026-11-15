@@ -20,8 +20,8 @@
     <img src="{{ $src }}" @if ($srcset) srcset="{{ $srcset }}" sizes="{{ $sizes }}" @endif alt="{{ $alt }}"
          {{ $attributes->class($imgClass) }} loading="{{ $eager ? 'eager' : 'lazy' }}" decoding="async" @if ($eager) fetchpriority="high" @endif>
 @else
-    <div {{ $attributes->class('relative overflow-hidden bg-gradient-to-br from-juniper-700 via-juniper-800 to-juniper-950') }} role="img" aria-label="{{ $alt }}">
+    <div {{ $attributes->class('relative overflow-hidden bg-gradient-to-br from-navy-700 via-navy-800 to-navy-950') }} role="img" aria-label="{{ $alt }}">
         <div class="topo absolute inset-0 opacity-40 invert"></div>
-        <svg class="absolute inset-x-0 bottom-0 w-full text-juniper-950/70" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 120V82l48-30 34 18 58-52 40 34 30-16 52 44 36-22 50 30 52-28v60Z"/><path fill="#f4efe6" fill-opacity=".85" d="m140 18 17 14-9-2-8 7-6-5-10 4Zm-58 34 9 8-6-1-3 3-4-3-6 2Z"/></svg>
+        <svg class="absolute inset-x-0 bottom-0 w-full text-navy-950/70" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 120V82l48-30 34 18 58-52 40 34 30-16 52 44 36-22 50 30 52-28v60Z"/><path fill="#f4efe6" fill-opacity=".85" d="m140 18 17 14-9-2-8 7-6-5-10 4Zm-58 34 9 8-6-1-3 3-4-3-6 2Z"/></svg>
     </div>
 @endif

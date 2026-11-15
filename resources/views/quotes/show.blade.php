@@ -19,11 +19,11 @@
 
 <x-layouts.site :seo="$seo">
     {{-- Hero --}}
-    <section class="relative overflow-hidden bg-juniper-800 text-stone-100">
+    <section class="relative overflow-hidden bg-navy-800 text-stone-100">
         @if ($hero)
             <img src="{{ $hero }}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-30" loading="eager">
         @endif
-        <div class="absolute inset-0 bg-gradient-to-t from-juniper-950/90 via-juniper-900/60 to-juniper-900/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-900/60 to-navy-900/30"></div>
 
         <div class="container-page relative py-16 lg:py-24">
             <p class="eyebrow eyebrow-light">Proposal {{ $quote->number }}</p>
@@ -54,7 +54,7 @@
         <div class="space-y-10">
             {{-- Flash + state banners --}}
             @if (session('status'))
-                <div class="rounded-2xl bg-juniper-50 p-5 text-juniper-800 ring-1 ring-juniper-100" role="status">{{ session('status') }}</div>
+                <div class="rounded-2xl bg-navy-50 p-5 text-navy-800 ring-1 ring-navy-100" role="status">{{ session('status') }}</div>
             @endif
             @if (session('error'))
                 <div class="rounded-2xl bg-terracotta-500/10 p-5 text-terracotta-600 ring-1 ring-terracotta-500/30" role="alert">{{ session('error') }}</div>
@@ -71,7 +71,7 @@
                     <p class="mt-2 text-ink-soft">Changed your mind, or want something different? Just get in touch — we love designing journeys.</p>
                 </div>
             @elseif ($accepted)
-                <div class="rounded-2xl bg-juniper-50 p-6 ring-1 ring-juniper-100">
+                <div class="rounded-2xl bg-navy-50 p-6 ring-1 ring-navy-100">
                     <h2 class="text-2xl">Quote accepted — thank you!</h2>
                     @if ($quote->booking)
                         <p class="mt-2 text-ink-soft">Your booking reference is <strong class="data text-ink">{{ $quote->booking->number }}</strong>.</p>
@@ -109,9 +109,9 @@
                         <ol class="mt-6 space-y-3">
                             @foreach ($trip->days as $day)
                                 <li class="flex gap-4 rounded-2xl bg-stone-50 p-4 ring-1 ring-stone-300/50">
-                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-juniper-800 text-sm font-semibold text-stone-100">{{ $day->day_number }}</span>
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-800 text-sm font-semibold text-stone-100">{{ $day->day_number }}</span>
                                     <div>
-                                        <p class="font-semibold text-juniper-800">{{ $day->title }}</p>
+                                        <p class="font-semibold text-navy-800">{{ $day->title }}</p>
                                         <p class="mt-1 text-sm text-ink-soft">
                                             @if ($day->altitude_m) {{ number_format($day->altitude_m) }} m @endif
                                             @if ($day->duration) · {{ $day->duration }} @endif
@@ -156,7 +156,7 @@
                             @if ((float) $quote->tax > 0)
                                 <tr><td colspan="3" class="hidden px-4 pt-2 text-right sm:table-cell">Tax</td><td class="px-4 pt-2 text-right sm:hidden">Tax</td><td class="px-4 pt-2 text-right data">{{ Money::format($quote->tax, $quote->currency) }}</td></tr>
                             @endif
-                            <tr class="text-base font-semibold text-juniper-800"><td colspan="3" class="hidden px-4 pt-3 pb-4 text-right sm:table-cell">Total</td><td class="px-4 pt-3 pb-4 text-right sm:hidden">Total</td><td class="px-4 pt-3 pb-4 text-right data text-base">{{ Money::format($quote->total, $quote->currency) }}</td></tr>
+                            <tr class="text-base font-semibold text-navy-800"><td colspan="3" class="hidden px-4 pt-3 pb-4 text-right sm:table-cell">Total</td><td class="px-4 pt-3 pb-4 text-right sm:hidden">Total</td><td class="px-4 pt-3 pb-4 text-right data text-base">{{ Money::format($quote->total, $quote->currency) }}</td></tr>
                         </tfoot>
                     </table>
                 </div>
@@ -174,7 +174,7 @@
         <aside class="lg:sticky lg:top-28 lg:self-start">
             <div class="card-surface p-6 sm:p-8">
                 <p class="text-sm text-ink-soft">Total for {{ $quote->pax }} {{ str('traveller')->plural($quote->pax) }}</p>
-                <p class="mt-1 font-display text-4xl text-juniper-800">{{ Money::format($quote->total, $quote->currency) }}</p>
+                <p class="mt-1 font-display text-4xl text-navy-800">{{ Money::format($quote->total, $quote->currency) }}</p>
 
                 @if ((float) $quote->deposit_amount > 0 && (float) $quote->deposit_amount < (float) $quote->total)
                     <p class="mt-4 rounded-xl bg-stone-200/60 px-4 py-3 text-sm">
@@ -193,7 +193,7 @@
                     <form method="POST" action="{{ route('quotes.accept', $quote->uuid) }}" class="mt-6 space-y-4">
                         @csrf
                         <label class="flex items-start gap-3 text-sm">
-                            <input type="checkbox" name="accept_terms" value="1" required class="mt-1 h-4 w-4 rounded border-stone-300 text-juniper-800 focus:ring-juniper-500" @checked(old('accept_terms'))>
+                            <input type="checkbox" name="accept_terms" value="1" required class="mt-1 h-4 w-4 rounded border-stone-300 text-navy-800 focus:ring-navy-500" @checked(old('accept_terms'))>
                             <span>I have read and accept the {{ $quote->terms ? '' : 'booking ' }}<a href="{{ $quote->terms ? '#terms' : url('/terms-and-conditions') }}" class="underline decoration-terracotta-500/50 underline-offset-4">terms &amp; conditions</a>.</span>
                         </label>
                         @error('accept_terms')<p class="field-error">{{ $message }}</p>@enderror

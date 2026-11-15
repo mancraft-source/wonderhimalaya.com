@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow">
     <title>Redirecting to secure payment…</title>
     <style>
-        body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f4efe6; color: #1f3a33; font-family: system-ui, sans-serif; text-align: center; }
+        body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f4efe6; color: #082047; font-family: system-ui, sans-serif; text-align: center; }
         button { margin-top: 1rem; border: 0; border-radius: 999px; background: #b5532e; color: #fff; padding: .9rem 1.6rem; font-weight: 600; cursor: pointer; }
     </style>
 </head>

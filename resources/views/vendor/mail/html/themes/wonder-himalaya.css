@@ -3,7 +3,7 @@
  * Inlined into each email by Laravel; keep to simple selectors and
  * email-safe properties. Dark-mode overrides live in html/layout.blade.php.
  *
- * Paper #f4efe6 · Card #fbf9f5 · Juniper #1f3a33 · Dark Juniper #162b26
+ * Paper #f4efe6 · Card #fbf9f5 · Navy #082047 · Logo navy #021131
  * Saffron #ecc77e · Terracotta #b5532e
  */
 
@@ -19,7 +19,7 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 body {
     -webkit-text-size-adjust: none;
     background-color: #f4efe6;
-    color: #3d4f4a;
+    color: #434b58;
     height: 100%;
     line-height: 1.5;
     margin: 0;
@@ -48,7 +48,7 @@ a img {
 .inner-body h1,
 .inner-body h2,
 .inner-body h3 {
-    color: #1f3a33;
+    color: #082047;
     font-family: 'Georgia', 'Times New Roman', serif;
     font-weight: normal;
     margin-top: 0;
@@ -69,7 +69,7 @@ a img {
 }
 
 p {
-    color: #3d4f4a;
+    color: #434b58;
     font-size: 16px;
     line-height: 1.6em;
     margin-top: 0;
@@ -77,7 +77,7 @@ p {
 }
 
 .inner-body strong {
-    color: #1f3a33;
+    color: #082047;
 }
 
 p.sub {
@@ -117,7 +117,7 @@ img {
 }
 
 .header a {
-    color: #1f3a33;
+    color: #082047;
     text-decoration: none;
 }
 
@@ -138,7 +138,7 @@ img {
 }
 
 .header .wordmark {
-    color: #1f3a33;
+    color: #082047;
     font-family: 'Georgia', 'Times New Roman', serif;
     font-size: 22px;
     font-weight: normal;
@@ -204,7 +204,7 @@ img {
 }
 
 .subcopy p {
-    color: #6b7a75;
+    color: #5d646f;
     font-size: 13px;
 }
 
@@ -221,7 +221,7 @@ img {
 }
 
 .footer p {
-    color: #6b7a75;
+    color: #5d646f;
     font-size: 12px;
     line-height: 1.6;
     margin: 0 0 6px;
@@ -229,7 +229,7 @@ img {
 }
 
 .footer .footer-name {
-    color: #1f3a33;
+    color: #082047;
     font-family: 'Georgia', 'Times New Roman', serif;
     font-size: 15px;
 }
@@ -239,13 +239,13 @@ img {
 }
 
 .footer .footer-legal p {
-    color: #8a958f;
+    color: #626975;
     font-size: 11px;
     margin-top: 10px;
 }
 
 .footer a {
-    color: #1f3a33;
+    color: #082047;
     text-decoration: underline;
 }
 
@@ -261,13 +261,13 @@ img {
 
 .table th {
     border-bottom: 1px solid #e6dccb;
-    color: #1f3a33;
+    color: #082047;
     margin: 0;
     padding-bottom: 8px;
 }
 
 .table td {
-    color: #3d4f4a;
+    color: #434b58;
     font-size: 15px;
     line-height: 18px;
     margin: 0;
@@ -306,11 +306,11 @@ img {
 .button-primary,
 .button-green,
 .button-success {
-    background-color: #1f3a33;
-    border-bottom: 12px solid #1f3a33;
-    border-left: 26px solid #1f3a33;
-    border-right: 26px solid #1f3a33;
-    border-top: 12px solid #1f3a33;
+    background-color: #082047;
+    border-bottom: 12px solid #082047;
+    border-left: 26px solid #082047;
+    border-right: 26px solid #082047;
+    border-top: 12px solid #082047;
     color: #f4efe6;
 }
 
@@ -333,12 +333,12 @@ img {
 
 .panel-content {
     background-color: #f4efe6;
-    color: #3d4f4a;
+    color: #434b58;
     padding: 16px;
 }
 
 .panel-content p {
-    color: #3d4f4a;
+    color: #434b58;
 }
 
 .panel-item {

@@ -18,19 +18,19 @@
             <p class="mt-3 text-ink-soft">{{ $payment->description }}</p>
 
             <div class="mt-8 flex items-baseline gap-3">
-                <span class="font-display text-5xl text-juniper-800">{{ Money::format($payment->amount, $payment->currency) }}</span>
+                <span class="font-display text-5xl text-navy-800">{{ Money::format($payment->amount, $payment->currency) }}</span>
                 <span class="chip">{{ $payment->status->getLabel() }}</span>
             </div>
 
             @if (session('status'))
-                <div class="mt-8 rounded-2xl bg-juniper-50 p-5 text-juniper-800 ring-1 ring-juniper-100" role="status">{{ session('status') }}</div>
+                <div class="mt-8 rounded-2xl bg-navy-50 p-5 text-navy-800 ring-1 ring-navy-100" role="status">{{ session('status') }}</div>
             @endif
             @if (session('error'))
                 <div class="mt-8 rounded-2xl bg-terracotta-500/10 p-5 text-terracotta-600 ring-1 ring-terracotta-500/30" role="alert">{{ session('error') }}</div>
             @endif
 
             @if ($payment->status === PaymentStatus::Paid)
-                <div class="mt-10 rounded-2xl bg-juniper-50 p-6 ring-1 ring-juniper-100">
+                <div class="mt-10 rounded-2xl bg-navy-50 p-6 ring-1 ring-navy-100">
                     <h2 class="text-2xl">Paid — thank you!</h2>
                     <p class="mt-2 text-ink-soft">Received on {{ $payment->paid_at?->format('j F Y') }}. A receipt has been sent by e-mail.</p>
                     <a href="{{ route('pay.success', $payment) }}" class="link-arrow mt-4">What happens next</a>
@@ -52,8 +52,8 @@
                         @forelse ($gateways as $key => $gateway)
                             <form method="POST" action="{{ route('pay.start', [$payment, $key]) }}">
                                 @csrf
-                                <button type="submit" class="group flex h-full w-full flex-col items-start rounded-2xl bg-white p-6 text-left ring-1 ring-stone-300 transition hover:-translate-y-0.5 hover:ring-2 hover:ring-juniper-500 focus-visible:ring-2">
-                                    <span class="text-lg font-semibold text-juniper-800">{{ $gateway->label() }}</span>
+                                <button type="submit" class="group flex h-full w-full flex-col items-start rounded-2xl bg-white p-6 text-left ring-1 ring-stone-300 transition hover:-translate-y-0.5 hover:ring-2 hover:ring-navy-500 focus-visible:ring-2">
+                                    <span class="text-lg font-semibold text-navy-800">{{ $gateway->label() }}</span>
                                     <span class="mt-1 text-sm text-ink-soft">{{ $icons[$key] ?? '' }}</span>
                                     <span class="mt-4 text-sm font-semibold text-terracotta-500 group-hover:underline">Continue →</span>
                                 </button>
@@ -66,7 +66,7 @@
                         @unless (app()->isProduction())
                             @foreach (array_diff_key(config('payments.gateways', []), $gateways) as $key => $class)
                                 <div class="flex h-full flex-col items-start rounded-2xl border border-dashed border-stone-300 bg-white/60 p-6 text-left">
-                                    <span class="text-lg font-semibold text-juniper-800/70">{{ app(\App\Payments\PaymentManager::class)->gateway($key)->label() }}</span>
+                                    <span class="text-lg font-semibold text-navy-800/70">{{ app(\App\Payments\PaymentManager::class)->gateway($key)->label() }}</span>
                                     <span class="mt-1 text-sm text-ink-soft">{{ $icons[$key] ?? '' }}</span>
                                     <span class="mt-4 rounded-full bg-saffron-300/40 px-3 py-1 text-xs font-semibold text-ink">Preview · awaiting merchant credentials</span>
                                 </div>

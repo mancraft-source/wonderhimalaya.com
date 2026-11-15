@@ -1,9 +1,9 @@
 <div>
     @if ($reference)
-        <div class="rounded-[2rem] bg-stone-100 p-10 text-juniper-900" data-reveal>
+        <div class="rounded-[2rem] bg-stone-100 p-10 text-navy-900" data-reveal>
             <x-heroicon-o-hand-raised class="size-12 text-terracotta-500" />
             <h3 class="mt-5 font-display text-3xl">Namaste, partner.</h3>
-            <p class="mt-3 text-ink-soft">Our partnerships desk will be in touch within one business day with our B2B rate sheet and sample programmes. Reference <span class="data text-juniper-800">{{ $reference }}</span>.</p>
+            <p class="mt-3 text-ink-soft">Our partnerships desk will be in touch within one business day with our B2B rate sheet and sample programmes. Reference <span class="data text-navy-800">{{ $reference }}</span>.</p>
         </div>
     @else
         <form wire:submit="submit" class="grid gap-5 rounded-[2rem] bg-stone-100 p-6 text-ink sm:grid-cols-2 sm:p-10" novalidate>
@@ -27,7 +27,7 @@
                     @foreach (\App\Livewire\PartnerForm::SERVICES as $service)
                         <label wire:key="s-{{ md5($service) }}" class="cursor-pointer">
                             <input type="checkbox" class="peer sr-only" wire:model.live="interests" value="{{ $service }}">
-                            <span class="inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium text-juniper-800 ring-1 ring-stone-300 transition peer-checked:bg-juniper-800 peer-checked:text-stone-100 peer-checked:ring-juniper-800 peer-focus-visible:outline-2 peer-focus-visible:outline-terracotta-500">{{ $service }}</span>
+                            <span class="inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium text-navy-800 ring-1 ring-stone-300 transition peer-checked:bg-navy-800 peer-checked:text-stone-100 peer-checked:ring-navy-800 peer-focus-visible:outline-2 peer-focus-visible:outline-terracotta-500">{{ $service }}</span>
                         </label>
                     @endforeach
                 </div>

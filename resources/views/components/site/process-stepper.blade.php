@@ -25,7 +25,7 @@
     <nav {{ $attributes }} aria-label="{{ $eyebrow }}" data-stepper>
         <p class="eyebrow">{{ $eyebrow }}</p>
         @if ($heading)
-            <p class="mt-3 font-display text-[1.75rem] leading-tight text-juniper-800 [@media(max-height:52rem)]:hidden">{{ $heading }}</p>
+            <p class="mt-3 font-display text-[1.75rem] leading-tight text-navy-800 [@media(max-height:52rem)]:hidden">{{ $heading }}</p>
         @endif
         <div class="relative mt-7">
             <span class="stepper-rail" aria-hidden="true"><span class="stepper-rail__fill" data-stepper-fill></span></span>

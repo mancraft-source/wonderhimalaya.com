@@ -1,16 +1,16 @@
 <div class="rounded-[1.75rem] bg-stone-200/50 p-6 sm:p-8">
     @if ($submitted)
         <div class="flex items-start gap-4">
-            <x-heroicon-o-check-badge class="size-8 shrink-0 text-juniper-500" />
+            <x-heroicon-o-check-badge class="size-8 shrink-0 text-navy-500" />
             <div>
-                <p class="font-display text-xl text-juniper-800">Dhanyabad for your review!</p>
+                <p class="font-display text-xl text-navy-800">Dhanyabad for your review!</p>
                 <p class="mt-1 text-sm text-ink-soft">We check every review before it appears — usually within a day or two.</p>
             </div>
         </div>
     @elseif (! $open)
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <p class="font-display text-xl text-juniper-800">Travelled this route with us?</p>
+                <p class="font-display text-xl text-navy-800">Travelled this route with us?</p>
                 <p class="text-sm text-ink-soft">Your story helps the next traveller decide.</p>
             </div>
             <button type="button" wire:click="$set('open', true)" class="btn-dark">Write a review</button>
@@ -39,13 +39,13 @@
             </x-site.field>
             <x-site.field label="When did you travel?" name="travelled_on" type="month" wire:model="travelled_on" max="{{ now()->format('Y-m') }}" optional prefix="rv" />
             <label class="flex items-start gap-3 text-sm text-ink-soft sm:col-span-2">
-                <input type="checkbox" wire:model="consent" class="mt-0.5 size-5 rounded border-stone-300 text-juniper-800 focus:ring-juniper-500">
+                <input type="checkbox" wire:model="consent" class="mt-0.5 size-5 rounded border-stone-300 text-navy-800 focus:ring-navy-500">
                 <span>I travelled with Wonder Himalaya and agree to my review and first name being published.</span>
             </label>
             @error('consent')<p class="field-error -mt-3 sm:col-span-2">{{ $message }}</p>@enderror
             <div class="flex items-center gap-4 sm:col-span-2">
                 <button type="submit" class="btn-primary" wire:loading.attr="disabled"><span wire:loading.remove wire:target="submit">Submit review</span><span wire:loading wire:target="submit">Sending…</span></button>
-                <button type="button" wire:click="$set('open', false)" class="text-sm font-semibold text-stone-500 hover:text-juniper-800">Cancel</button>
+                <button type="button" wire:click="$set('open', false)" class="text-sm font-semibold text-stone-500 hover:text-navy-800">Cancel</button>
             </div>
         </form>
     @endif

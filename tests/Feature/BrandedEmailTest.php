@@ -34,7 +34,7 @@ it('renders customer emails with the Wonder Himalaya theme, header and footer', 
         ->toContain('src="https://wonderhimalaya.com/images/brand/logo-badge-160.png"')
         ->toContain('href="https://wonderhimalaya.com"')
         ->toContain('background-color: #f4efe6')
-        ->toContain('background-color: #1f3a33')
+        ->toContain('background-color: #082047')
         ->toContain("font-family: 'Georgia'")
         ->toContain('Namaste Ana,')
         ->toContain('Thamel, Kathmandu, Nepal')

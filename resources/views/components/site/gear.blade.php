@@ -1,5 +1,5 @@
 {{-- Hand-drawn hiking-gear line art (original SVG). Decorative only.
-     <x-site.gear icon="compass" class="absolute right-10 top-20 w-28 text-juniper-800/15" data-parallax="-0.08" /> --}}
+     <x-site.gear icon="compass" class="absolute right-10 top-20 w-28 text-navy-800/15" data-parallax="-0.08" /> --}}
 @props(['icon' => 'compass'])
 <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" {{ $attributes->class('pointer-events-none') }}>
     @switch($icon)

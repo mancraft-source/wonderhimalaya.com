@@ -7,7 +7,7 @@
                 <figure class="rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60" data-reveal>
                     <div class="flex gap-0.5 text-saffron-500">@for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-4" />@endfor</div>
                     <blockquote class="mt-4 text-ink-soft">“{{ str($t->body)->limit(300) }}”</blockquote>
-                    <figcaption class="mt-5 text-sm font-semibold text-juniper-800">{{ $t->author_name }}</figcaption>
+                    <figcaption class="mt-5 text-sm font-semibold text-navy-800">{{ $t->author_name }}</figcaption>
                 </figure>
             @endforeach
         </div>

@@ -8,7 +8,7 @@
 @endphp
 <x-layouts.site :seo="$seo" transparent>
     {{-- Hero --}}
-    <section class="relative isolate flex h-[78svh] min-h-[36rem] max-h-[52rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
+    <section class="relative isolate flex h-[78svh] min-h-[36rem] max-h-[52rem] flex-col justify-end overflow-hidden bg-navy-950 text-white">
         <div class="absolute inset-0 -z-10" data-parallax>
             <img src="{{ \App\Support\Content::image($c['hero_image'], \App\Support\BrandImage::url('annapurna-base-camp-min-scaled.jpg', $up('2026/04/IMG_1124-scaled.jpeg'))) }}" alt="Trekkers on a Himalayan trail with Wonder Himalaya" class="h-full w-full animate-slow-zoom object-cover" fetchpriority="high">
         </div>
@@ -30,7 +30,7 @@
                     <div class="aspect-[4/5] overflow-hidden img-organic">
                         <img src="{{ \App\Support\Content::image($c['story_image'], $up('2025/02/about-wonder-himalaya-in-nepal-scaled.jpg')) }}" alt="The Wonder Himalaya office in Thamel, Kathmandu" class="h-full w-full object-cover" loading="lazy">
                     </div>
-                    <div class="absolute -right-6 -bottom-8 hidden rounded-[1.75rem] bg-juniper-800 p-6 text-stone-100 shadow-2xl sm:block">
+                    <div class="absolute -right-6 -bottom-8 hidden rounded-[1.75rem] bg-navy-800 p-6 text-stone-100 shadow-2xl sm:block">
                         <p class="font-display text-4xl text-saffron-300">{{ $c['story_badge_title'] }}</p>
                         <p class="text-sm text-stone-300">{{ $c['story_badge_text'] }}</p>
                     </div>
@@ -49,10 +49,10 @@
     </section>
 
     {{-- Vision & mission --}}
-    <section class="bg-juniper-900 py-24 text-stone-100 lg:py-32">
+    <section class="bg-navy-900 py-24 text-stone-100 lg:py-32">
         <div class="container-page"><div class="grid gap-px overflow-hidden rounded-[2.5rem] bg-white/10 lg:grid-cols-2">
             @foreach ([['Our vision', $c['vision_lead'], $c['vision_body']], ['Our mission', $c['mission_lead'], $c['mission_body']]] as [$label, $lead, $body])
-                <div class="relative bg-juniper-900 p-10 lg:p-16" data-reveal>
+                <div class="relative bg-navy-900 p-10 lg:p-16" data-reveal>
                     <p class="eyebrow eyebrow-light">{{ $label }}</p>
                     <p class="mt-6 font-display text-3xl leading-snug text-white lg:text-4xl">{{ $lead }}</p>
                     <p class="mt-6 text-stone-300">{{ $body }}</p>
@@ -84,7 +84,7 @@
         <section class="container-page pb-24">
             <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4" data-reveal>
                 @foreach ($stats as $s)
-                    <div class="bg-stone-100 p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $s['label'] }}</dt><dd class="mt-3 font-display text-5xl text-juniper-800 lg:text-6xl">{{ $s['value'] }}</dd></div>
+                    <div class="bg-stone-100 p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $s['label'] }}</dt><dd class="mt-3 font-display text-5xl text-navy-800 lg:text-6xl">{{ $s['value'] }}</dd></div>
                 @endforeach
             </dl>
         </section>
@@ -102,7 +102,7 @@
                     @foreach ($founders as $m)
                         <a href="{{ url($m->publicPath()) }}" class="group" data-reveal>
                             <div class="aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-stone-200"><x-site.picture :model="$m" collection="photo" sizes="25vw" class="h-full w-full transition duration-700 group-hover:scale-[1.03]" /></div>
-                            <h3 class="mt-5 font-display text-2xl text-juniper-800">{{ $m->name }}</h3>
+                            <h3 class="mt-5 font-display text-2xl text-navy-800">{{ $m->name }}</h3>
                             <p class="text-sm text-ink-soft">{{ $m->role }}</p>
                         </a>
                     @endforeach

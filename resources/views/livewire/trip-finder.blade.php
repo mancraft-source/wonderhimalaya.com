@@ -48,7 +48,7 @@
                     @foreach ($o['tiers'] as $t)<option value="{{ $t['slug'] }}">{{ $t['name'] }}</option>@endforeach
                 </select>
                 <label class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm ring-1 ring-stone-300">
-                    <input type="checkbox" wire:model.live="fixed" class="rounded border-stone-300 text-juniper-800 focus:ring-juniper-500"> Group departures only
+                    <input type="checkbox" wire:model.live="fixed" class="rounded border-stone-300 text-navy-800 focus:ring-navy-500"> Group departures only
                 </label>
                 @if ($this->activeCount())
                     <button type="button" wire:click="clear" class="text-sm font-semibold text-terracotta-500 underline underline-offset-4">Clear all</button>
@@ -58,7 +58,7 @@
     </div>
 
     <div class="mt-10 flex items-baseline justify-between">
-        <p class="text-sm text-ink-soft" aria-live="polite"><span class="font-display text-2xl text-juniper-800">{{ $this->trips->total() }}</span> {{ str('journey')->plural($this->trips->total()) }}</p>
+        <p class="text-sm text-ink-soft" aria-live="polite"><span class="font-display text-2xl text-navy-800">{{ $this->trips->total() }}</span> {{ str('journey')->plural($this->trips->total()) }}</p>
         <div wire:loading.delay class="text-sm text-stone-500">Updating…</div>
     </div>
 

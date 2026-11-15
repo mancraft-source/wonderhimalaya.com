@@ -17,7 +17,7 @@ class LeadsBySourceChart extends ChartWidget
 
     protected ?string $maxHeight = '260px';
 
-    private const PALETTE = ['#1F3A33', '#3F7D6B', '#D97706', '#0EA5E9', '#A855F7', '#E11D48', '#64748B', '#84CC16'];
+    private const PALETTE = ['#2A549B', '#3F7D6B', '#D97706', '#0EA5E9', '#A855F7', '#E11D48', '#64748B', '#84CC16'];
 
     public static function canView(): bool
     {

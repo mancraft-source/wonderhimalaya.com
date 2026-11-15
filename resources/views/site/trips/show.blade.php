@@ -59,7 +59,7 @@
 @endphp
 <x-layouts.site :seo="$seo" transparent>
     {{-- ============================== HERO ============================== --}}
-    <section class="relative isolate flex h-[86svh] min-h-[38rem] max-h-[58rem] flex-col justify-end overflow-hidden bg-juniper-950 text-white">
+    <section class="relative isolate flex h-[86svh] min-h-[38rem] max-h-[58rem] flex-col justify-end overflow-hidden bg-navy-950 text-white">
         <div class="absolute inset-0 -z-10" data-parallax>
             <x-site.picture :model="$trip" collection="hero" sizes="100vw" eager class="h-full w-full animate-slow-zoom" />
         </div>
@@ -101,7 +101,7 @@
                         <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-stone-200/70 text-terracotta-500"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span>
                         <div class="min-w-0">
                             <dt class="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-stone-500">{{ $label }}</dt>
-                            <dd class="mt-0.5 text-[0.95rem] leading-snug font-medium text-juniper-800">{{ $value }}</dd>
+                            <dd class="mt-0.5 text-[0.95rem] leading-snug font-medium text-navy-800">{{ $value }}</dd>
                         </div>
                     </div>
                 @endforeach
@@ -115,8 +115,8 @@
          x-init="const els = [...document.querySelectorAll('[data-section]')]; const o = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && (active = e.target.id)), { rootMargin: '-40% 0px -55% 0px' }); els.forEach(el => o.observe(el))">
         <div class="container-page no-scrollbar flex gap-7 overflow-x-auto">
             @foreach ($sections as $id => $label)
-                <a href="#{{ $id }}" class="relative shrink-0 py-4 text-sm font-semibold whitespace-nowrap text-stone-500 transition hover:text-juniper-800"
-                   x-bind:class="active === '{{ $id }}' && '!text-juniper-800'">
+                <a href="#{{ $id }}" class="relative shrink-0 py-4 text-sm font-semibold whitespace-nowrap text-stone-500 transition hover:text-navy-800"
+                   x-bind:class="active === '{{ $id }}' && '!text-navy-800'">
                     {{ $label }}
                     <span class="absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-terracotta-500 transition-transform" x-bind:class="active === '{{ $id }}' && '!scale-x-100'"></span>
                 </a>
@@ -129,7 +129,7 @@
             {{-- ============================== OVERVIEW & HIGHLIGHTS ============================== --}}
             <section id="overview" data-section class="scroll-mt-44">
                 @if ($trip->highlights)
-                    <div class="rounded-[2rem] bg-juniper-800 p-8 text-stone-100 sm:p-10">
+                    <div class="rounded-[2rem] bg-navy-800 p-8 text-stone-100 sm:p-10">
                         <p class="eyebrow eyebrow-light">Trip highlights</p>
                         <ul class="mt-6 grid gap-x-10 gap-y-4 sm:grid-cols-2">
                             @foreach ($trip->highlights as $highlight)
@@ -166,8 +166,8 @@
                             <h2 class="mt-4 font-display text-display-sm">Itinerary</h2>
                         </div>
                         <div class="inline-flex rounded-full bg-stone-200/70 p-1 text-sm font-semibold" role="tablist">
-                            <button type="button" role="tab" class="rounded-full px-4 py-2 transition" x-bind:class="view === 'glance' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="view = 'glance'">At a glance</button>
-                            <button type="button" role="tab" class="rounded-full px-4 py-2 transition" x-bind:class="view === 'detail' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="view = 'detail'">Detailed</button>
+                            <button type="button" role="tab" class="rounded-full px-4 py-2 transition" x-bind:class="view === 'glance' ? 'bg-navy-800 text-stone-100' : 'text-navy-800'" x-on:click="view = 'glance'">At a glance</button>
+                            <button type="button" role="tab" class="rounded-full px-4 py-2 transition" x-bind:class="view === 'detail' ? 'bg-navy-800 text-stone-100' : 'text-navy-800'" x-on:click="view = 'detail'">Detailed</button>
                         </div>
                     </div>
 
@@ -185,33 +185,33 @@
                     {{-- Detailed itinerary --}}
                     <div x-show="view === 'detail'" x-cloak class="mt-8">
                         <div class="mb-4 flex justify-end">
-                            <button type="button" class="text-sm font-semibold text-juniper-800 underline underline-offset-4"
+                            <button type="button" class="text-sm font-semibold text-navy-800 underline underline-offset-4"
                                     x-on:click="all = !all; open = all ? @js($trip->days->pluck('day_number')) : []" x-text="all ? 'Collapse all' : 'Expand all'"></button>
                         </div>
                         <ol class="relative">
                             <span class="absolute top-4 bottom-4 left-[1.18rem] w-px border-l border-dashed border-terracotta-500/50" aria-hidden="true"></span>
                             @foreach ($trip->days as $day)
                                 <li class="relative pl-14">
-                                    <span class="absolute top-4 left-0 flex size-10 items-center justify-center rounded-full bg-stone-100 font-display text-lg text-juniper-800 ring-1 ring-terracotta-500/40"
-                                          x-bind:class="open.includes({{ $day->day_number }}) && '!bg-juniper-800 !text-stone-100 !ring-juniper-800'">{{ $day->day_number }}</span>
+                                    <span class="absolute top-4 left-0 flex size-10 items-center justify-center rounded-full bg-stone-100 font-display text-lg text-navy-800 ring-1 ring-terracotta-500/40"
+                                          x-bind:class="open.includes({{ $day->day_number }}) && '!bg-navy-800 !text-stone-100 !ring-navy-800'">{{ $day->day_number }}</span>
                                     <div class="border-b border-stone-300/70">
                                         <button type="button" class="flex w-full items-start justify-between gap-6 py-5 text-left"
                                                 x-on:click="open.includes({{ $day->day_number }}) ? open = open.filter(d => d !== {{ $day->day_number }}) : open.push({{ $day->day_number }})"
                                                 x-bind:aria-expanded="open.includes({{ $day->day_number }})">
                                             <span>
                                                 <span class="block text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Day {{ $day->day_number }}</span>
-                                                <span class="mt-1 block font-display text-xl leading-snug text-juniper-800">{{ strip_tags($day->title) }}</span>
+                                                <span class="mt-1 block font-display text-xl leading-snug text-navy-800">{{ strip_tags($day->title) }}</span>
                                             </span>
                                             <x-heroicon-m-chevron-down class="mt-6 size-5 shrink-0 text-stone-400 transition" x-bind:class="open.includes({{ $day->day_number }}) && 'rotate-180'" />
                                         </button>
                                         <div x-show="open.includes({{ $day->day_number }})" x-collapse @unless ($loop->first) x-cloak @endunless>
                                             <div class="pb-8">
                                                 <dl class="grid gap-3 rounded-2xl bg-stone-200/50 p-4 text-sm sm:grid-cols-2">
-                                                    @if ($day->altitude_m)<div class="flex gap-2"><x-heroicon-o-arrow-trending-up class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Max. altitude</dt><dd class="data ml-auto text-juniper-800 sm:ml-0">{{ number_format($day->altitude_m) }} m / {{ number_format($day->altitude_m * 3.28084) }} ft</dd></div>@endif
-                                                    @if ($day->distance_km)<div class="flex gap-2"><x-heroicon-o-map class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Distance</dt><dd class="data ml-auto text-juniper-800 sm:ml-0">{{ rtrim(rtrim((string) $day->distance_km, '0'), '.') }} km</dd></div>@endif
-                                                    @if ($day->durationLabel())<div class="flex gap-2"><x-heroicon-o-clock class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Duration</dt><dd class="ml-auto text-juniper-800 sm:ml-0">{{ $day->durationLabel() }}</dd></div>@endif
-                                                    @if ($day->accommodation)<div class="flex gap-2"><x-heroicon-o-home-modern class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Overnight</dt><dd class="ml-auto text-juniper-800 sm:ml-0">{{ $day->accommodation }}</dd></div>@endif
-                                                    @if ($day->meals)<div class="flex gap-2"><x-heroicon-o-cake class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Meals</dt><dd class="ml-auto text-juniper-800 sm:ml-0">{{ collect($day->meals)->map(fn ($m) => ucfirst($m))->implode(', ') }}</dd></div>@endif
+                                                    @if ($day->altitude_m)<div class="flex gap-2"><x-heroicon-o-arrow-trending-up class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Max. altitude</dt><dd class="data ml-auto text-navy-800 sm:ml-0">{{ number_format($day->altitude_m) }} m / {{ number_format($day->altitude_m * 3.28084) }} ft</dd></div>@endif
+                                                    @if ($day->distance_km)<div class="flex gap-2"><x-heroicon-o-map class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Distance</dt><dd class="data ml-auto text-navy-800 sm:ml-0">{{ rtrim(rtrim((string) $day->distance_km, '0'), '.') }} km</dd></div>@endif
+                                                    @if ($day->durationLabel())<div class="flex gap-2"><x-heroicon-o-clock class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Duration</dt><dd class="ml-auto text-navy-800 sm:ml-0">{{ $day->durationLabel() }}</dd></div>@endif
+                                                    @if ($day->accommodation)<div class="flex gap-2"><x-heroicon-o-home-modern class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Overnight</dt><dd class="ml-auto text-navy-800 sm:ml-0">{{ $day->accommodation }}</dd></div>@endif
+                                                    @if ($day->meals)<div class="flex gap-2"><x-heroicon-o-cake class="size-4 shrink-0 text-terracotta-500" /><dt class="text-stone-500">Meals</dt><dd class="ml-auto text-navy-800 sm:ml-0">{{ collect($day->meals)->map(fn ($m) => ucfirst($m))->implode(', ') }}</dd></div>@endif
                                                 </dl>
                                                 @if ($day->description)
                                                     <div class="prose prose-wh mt-5">{!! $day->description !!}</div>
@@ -223,7 +223,7 @@
                             @endforeach
                         </ol>
                     </div>
-                    <p class="mt-6 rounded-2xl border border-saffron-500/40 bg-saffron-300/20 p-4 text-sm text-ink-soft"><strong class="text-juniper-800">Note:</strong> {{ $trip->itinerary_note ?: $tripContent['itinerary_note'] }}</p>
+                    <p class="mt-6 rounded-2xl border border-saffron-500/40 bg-saffron-300/20 p-4 text-sm text-ink-soft"><strong class="text-navy-800">Note:</strong> {{ $trip->itinerary_note ?: $tripContent['itinerary_note'] }}</p>
                 </section>
             @endif
 
@@ -236,15 +236,15 @@
                     </div>
                     @if ($hasGroup)
                         <div class="inline-flex rounded-full bg-stone-200/70 p-1 text-sm font-semibold" role="tablist">
-                            <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'group' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="tab = 'group'">Group departures</button>
-                            <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'private' ? 'bg-juniper-800 text-stone-100' : 'text-juniper-800'" x-on:click="tab = 'private'">Private trip</button>
+                            <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'group' ? 'bg-navy-800 text-stone-100' : 'text-navy-800'" x-on:click="tab = 'group'">Group departures</button>
+                            <button type="button" role="tab" class="rounded-full px-5 py-2.5 transition" x-bind:class="tab === 'private' ? 'bg-navy-800 text-stone-100' : 'text-navy-800'" x-on:click="tab = 'private'">Private trip</button>
                         </div>
                     @endif
                 </div>
 
                 <div x-show="tab === 'group'" @unless ($hasGroup) x-cloak @endunless class="mt-8">
                     @if ($joinsDaily)
-                        <div class="overflow-hidden rounded-[1.75rem] bg-juniper-800 text-stone-100" x-data="{ date: '{{ $trip->earliestStartDate()->toDateString() }}' }">
+                        <div class="overflow-hidden rounded-[1.75rem] bg-navy-800 text-stone-100" x-data="{ date: '{{ $trip->earliestStartDate()->toDateString() }}' }">
                             <div class="grid gap-8 p-7 sm:p-9 md:grid-cols-[1fr_auto] md:items-end">
                                 <div>
                                     <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-saffron-300"><x-heroicon-o-calendar-days class="size-4" /> Departs every day</p>
@@ -255,7 +255,7 @@
                                     <p class="text-right"><span class="block text-sm text-stone-400">per person from</span><span class="font-display text-4xl text-white">US${{ number_format($groupPrice) }}</span></p>
                                 @endif
                             </div>
-                            <div class="flex flex-col gap-3 border-t border-white/10 bg-juniper-900/50 p-5 sm:flex-row sm:items-center sm:px-9">
+                            <div class="flex flex-col gap-3 border-t border-white/10 bg-navy-900/50 p-5 sm:flex-row sm:items-center sm:px-9">
                                 <label for="daily-start" class="text-sm text-stone-300">Start date</label>
                                 <input id="daily-start" type="date" x-model="date" min="{{ $trip->earliestStartDate()->toDateString() }}" class="rounded-xl border-0 bg-white px-4 py-2.5 text-ink focus:ring-2 focus:ring-saffron-300">
                                 <span class="text-sm text-stone-300" x-show="date" x-text="'Returns ' + new Date(new Date(date).getTime() + {{ max(0, ($trip->duration_days ?? 1) - 1) }} * 864e5).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })"></span>
@@ -268,7 +268,7 @@
                     @if ($joinsDaily)
                     @elseif ($groupDepartures->isEmpty())
                         <div class="rounded-[1.75rem] bg-stone-200/50 p-8">
-                            <p class="font-display text-2xl text-juniper-800">No fixed dates published yet.</p>
+                            <p class="font-display text-2xl text-navy-800">No fixed dates published yet.</p>
                             <p class="mt-2 text-ink-soft">We run this journey privately on any date you choose — and can often match you with other travellers.</p>
                             <button type="button" class="btn-dark mt-6" x-on:click="tab = 'private'; $dispatch('pick-departure', { id: 0 })">Choose my own dates</button>
                         </div>
@@ -281,11 +281,11 @@
                                 <tbody class="divide-y divide-stone-300/60 bg-stone-50">
                                     @foreach ($groupDepartures as $d)
                                         <tr class="transition hover:bg-white">
-                                            <td class="px-5 py-4"><span class="font-semibold text-juniper-800">{{ $d->start_date->format('D, j M Y') }}</span>@if ($d->tier)<span class="block text-xs text-stone-500">{{ $d->tier->name }}</span>@endif</td>
+                                            <td class="px-5 py-4"><span class="font-semibold text-navy-800">{{ $d->start_date->format('D, j M Y') }}</span>@if ($d->tier)<span class="block text-xs text-stone-500">{{ $d->tier->name }}</span>@endif</td>
                                             <td class="hidden px-5 py-4 text-ink-soft sm:table-cell">{{ ($d->end_date ?? ($trip->duration_days ? $d->start_date->copy()->addDays($trip->duration_days - 1) : null))?->format('j M Y') ?? '—' }}</td>
                                             <td class="px-5 py-4">
                                                 <span @class(['inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold',
-                                                    'bg-juniper-100 text-juniper-800' => $d->status === \App\Enums\DepartureStatus::Guaranteed,
+                                                    'bg-navy-100 text-navy-800' => $d->status === \App\Enums\DepartureStatus::Guaranteed,
                                                     'bg-saffron-300/50 text-ink' => $d->status === \App\Enums\DepartureStatus::Limited || $d->seatsLeft() <= 3,
                                                     'bg-stone-200 text-ink-soft' => ! in_array($d->status, [\App\Enums\DepartureStatus::Guaranteed, \App\Enums\DepartureStatus::Limited]) && $d->seatsLeft() > 3])>
                                                     <span class="size-1.5 rounded-full bg-current"></span>{{ $d->status->getLabel() }} · {{ $d->seatsLeft() }} left
@@ -293,7 +293,7 @@
                                             </td>
                                             <td class="px-5 py-4 text-right">
                                                 @if ($d->sale_price && $d->price && $d->sale_price < $d->price)<s class="block text-xs text-stone-400">US${{ number_format((float) $d->price) }}</s>@endif
-                                                <span class="font-display text-xl text-juniper-800">{{ $d->effectivePrice() ? 'US$'.number_format($d->effectivePrice()) : 'On request' }}</span>
+                                                <span class="font-display text-xl text-navy-800">{{ $d->effectivePrice() ? 'US$'.number_format($d->effectivePrice()) : 'On request' }}</span>
                                             </td>
                                             <td class="px-5 py-4 text-right"><button type="button" class="btn-primary !px-4 !py-2 !text-xs" x-on:click="$dispatch('pick-departure', { id: {{ $d->id }} })">Join</button></td>
                                         </tr>
@@ -310,7 +310,7 @@
                         <div @class(['grid gap-4', 'sm:grid-cols-2' => $pricing->count() >= 2, 'xl:grid-cols-3' => $pricing->count() >= 3])>
                             @foreach ($pricing as $i => $pkg)
                                 @php $hl = $pricing->count() === 1 || ($pricing->count() >= 3 && $i === 1); @endphp
-                                <div @class(['relative flex flex-col self-start rounded-[1.75rem] p-7 ring-1', 'bg-juniper-800 text-stone-100 ring-juniper-800' => $hl, 'bg-stone-50 ring-stone-300/60' => ! $hl])>
+                                <div @class(['relative flex flex-col self-start rounded-[1.75rem] p-7 ring-1', 'bg-navy-800 text-stone-100 ring-navy-800' => $hl, 'bg-stone-50 ring-stone-300/60' => ! $hl])>
                                     <p @class(['font-display text-2xl', 'text-white' => $hl])>{{ $pkg['name'] }}</p>
                                     <p class="mt-4 text-sm opacity-70">from</p>
                                     <p><span class="font-display text-4xl">US${{ number_format($pkg['from']) }}</span> <span class="text-sm opacity-70">/ adult</span></p>
@@ -335,14 +335,14 @@
                                             </tbody>
                                         </table>
                                     @endif
-                                    <button type="button" @class(['btn mt-auto w-full !py-3 [margin-top:max(1.5rem,auto)]', 'bg-white text-juniper-900 hover:bg-saffron-300' => $hl, 'bg-juniper-800 text-white hover:bg-juniper-950' => ! $hl]) x-on:click="$dispatch('prefill-enquiry', { adults: 2, tier: @js($pkg['tier_id']) })">Request this package</button>
+                                    <button type="button" @class(['btn mt-auto w-full !py-3 [margin-top:max(1.5rem,auto)]', 'bg-white text-navy-900 hover:bg-saffron-300' => $hl, 'bg-navy-800 text-white hover:bg-navy-950' => ! $hl]) x-on:click="$dispatch('prefill-enquiry', { adults: 2, tier: @js($pkg['tier_id']) })">Request this package</button>
                                 </div>
                             @endforeach
                         </div>
                         <p class="mt-4 flex items-center gap-2 text-sm text-stone-500"><x-heroicon-o-user-group class="size-4" /> {{ $tripContent['group_discount_note'] }}</p>
                     @else
                         <div class="rounded-[1.75rem] bg-stone-200/50 p-8">
-                            <p class="font-display text-2xl text-juniper-800">{{ $price ? 'From US$'.number_format($price).' per person' : 'Priced to your group' }}</p>
+                            <p class="font-display text-2xl text-navy-800">{{ $price ? 'From US$'.number_format($price).' per person' : 'Priced to your group' }}</p>
                             <button type="button" class="btn-dark mt-6" x-on:click="$dispatch('pick-departure', { id: 0 })">Request a private-trip quote</button>
                         </div>
                     @endif
@@ -355,7 +355,7 @@
                     <p class="eyebrow">The fine print, made clear</p>
                     <h2 class="mt-4 font-display text-display-sm">Price includes & excludes</h2>
                     <div class="mt-10 grid gap-6 md:grid-cols-2">
-                        @foreach ([['Price includes', $includes, 'check', 'text-juniper-500', 'bg-juniper-50'], ['Price excludes', $excludes, 'x-mark', 'text-terracotta-500', 'bg-terracotta-500/10']] as [$title, $groups, $mark, $color, $bubble])
+                        @foreach ([['Price includes', $includes, 'check', 'text-navy-500', 'bg-navy-50'], ['Price excludes', $excludes, 'x-mark', 'text-terracotta-500', 'bg-terracotta-500/10']] as [$title, $groups, $mark, $color, $bubble])
                             @if ($groups)
                                 <div class="rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60">
                                     <h3 class="flex items-center gap-3 font-display text-2xl"><span class="flex size-9 items-center justify-center rounded-full {{ $bubble }}"><x-dynamic-component :component="'heroicon-m-'.$mark" class="size-5 {{ $color }}" /></span>{{ $title }}</h3>
@@ -389,8 +389,8 @@
                         <div class="flex items-center gap-3">
                             @if ($profile)
                                 <div class="inline-flex rounded-full bg-stone-200/70 p-1 text-xs font-semibold" role="group" aria-label="Units">
-                                    <button type="button" class="rounded-full px-3 py-1.5" x-bind:class="unit === 'm' ? 'bg-juniper-800 text-white' : 'text-juniper-800'" x-on:click="unit = 'm'">Metres</button>
-                                    <button type="button" class="rounded-full px-3 py-1.5" x-bind:class="unit === 'ft' ? 'bg-juniper-800 text-white' : 'text-juniper-800'" x-on:click="unit = 'ft'">Feet</button>
+                                    <button type="button" class="rounded-full px-3 py-1.5" x-bind:class="unit === 'm' ? 'bg-navy-800 text-white' : 'text-navy-800'" x-on:click="unit = 'm'">Metres</button>
+                                    <button type="button" class="rounded-full px-3 py-1.5" x-bind:class="unit === 'ft' ? 'bg-navy-800 text-white' : 'text-navy-800'" x-on:click="unit = 'ft'">Feet</button>
                                 </div>
                             @endif
                             @if ($map)<a href="{{ $map->getUrl() }}" download class="btn-outline !px-4 !py-2 !text-xs"><x-heroicon-o-arrow-down-tray class="size-4" /> Download map</a>@endif
@@ -398,7 +398,7 @@
                     </div>
 
                     @if ($profile)
-                        <figure class="mt-8 rounded-[1.75rem] bg-juniper-900 p-6 text-stone-200 sm:p-8">
+                        <figure class="mt-8 rounded-[1.75rem] bg-navy-900 p-6 text-stone-200 sm:p-8">
                             <figcaption class="flex items-baseline justify-between text-sm">
                                 <span class="font-semibold text-stone-100">Altitude profile</span>
                                 <span class="data text-saffron-300">high point <span x-text="unit === 'm' ? @js(number_format($profile['max']).' m') : @js(number_format($profile['max'] * 3.28084).' ft')">{{ number_format($profile['max']) }} m</span></span>
@@ -413,7 +413,7 @@
                                 <path d="{{ $profile['line'] }}" fill="none" stroke="#ecc77e" stroke-width="2.5" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" class="[animation:draw_2.4s_var(--ease-mountain)_forwards]" />
                                 @foreach ($profile['dots'] as $dot)
                                     <g>
-                                        <circle cx="{{ $dot['x'] }}" cy="{{ $dot['y'] }}" r="5" fill="#162b26" stroke="#ecc77e" stroke-width="2" />
+                                        <circle cx="{{ $dot['x'] }}" cy="{{ $dot['y'] }}" r="5" fill="#021131" stroke="#ecc77e" stroke-width="2" />
                                         <circle cx="{{ $dot['x'] }}" cy="{{ $dot['y'] }}" r="16" fill="transparent"><title>Day {{ $dot['day'] }} · {{ number_format($dot['alt']) }} m — {{ strip_tags($dot['title']) }}</title></circle>
                                         @if ($dot['alt'] === $profile['max'])
                                             <text x="{{ $dot['x'] }}" y="{{ $dot['y'] - 14 }}" text-anchor="middle" fill="#ecc77e" font-size="14" font-family="var(--font-mono)">▲</text>
@@ -444,12 +444,12 @@
                         @foreach ($photos->take(7) as $k => $media)
                             <button type="button" x-on:click="open = true; i = {{ $k }}" @class(['group relative overflow-hidden rounded-2xl', 'col-span-2 row-span-2' => $mosaic && $k === 0, 'md:col-span-2' => $mosaic && $k === 3, 'aspect-[4/3]' => ! $mosaic, 'col-span-2 sm:col-span-1' => ! $mosaic && $k === 0 && $photos->count() === 3])>
                                 <x-site.picture :media="$media" sizes="(min-width: 768px) 25vw, 50vw" class="h-full w-full transition duration-700 group-hover:scale-105" />
-                                @if ($loop->last && $photos->count() > 7)<span class="absolute inset-0 flex items-center justify-center bg-juniper-950/60 font-display text-2xl text-white">+{{ $photos->count() - 7 }}</span>@endif
+                                @if ($loop->last && $photos->count() > 7)<span class="absolute inset-0 flex items-center justify-center bg-navy-950/60 font-display text-2xl text-white">+{{ $photos->count() - 7 }}</span>@endif
                             </button>
                         @endforeach
                     </div>
                     <template x-teleport="body">
-                        <div x-show="open" x-cloak x-transition.opacity class="fixed inset-0 z-[90] flex items-center justify-center bg-juniper-950/95 p-4" role="dialog" aria-modal="true" aria-label="Photo gallery">
+                        <div x-show="open" x-cloak x-transition.opacity class="fixed inset-0 z-[90] flex items-center justify-center bg-navy-950/95 p-4" role="dialog" aria-modal="true" aria-label="Photo gallery">
                             <button type="button" class="absolute top-5 right-5 flex size-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20" x-on:click="open = false" aria-label="Close"><x-heroicon-o-x-mark class="size-6" /></button>
                             <button type="button" class="absolute left-4 flex size-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20" x-on:click="i = (i - 1 + n) % n" aria-label="Previous"><x-heroicon-m-arrow-left class="size-5" /></button>
                             @foreach ($photos as $k => $media)
@@ -480,9 +480,9 @@
                             <div class="grid gap-3">
                                 @foreach ($column as $i)
                                     @php ['group' => $group, 'items' => $items] = $packing[$i]; @endphp
-                                    <div class="rounded-[1.5rem] bg-stone-50 ring-1 ring-stone-300/60 transition hover:ring-juniper-800/25" x-bind:class="open === {{ $i }} && '!ring-terracotta-500/40 shadow-[0_18px_40px_-28px_rgba(15,29,25,0.5)]'">
+                                    <div class="rounded-[1.5rem] bg-stone-50 ring-1 ring-stone-300/60 transition hover:ring-navy-800/25" x-bind:class="open === {{ $i }} && '!ring-terracotta-500/40 shadow-[0_18px_40px_-28px_rgba(1,9,30,0.5)]'">
                                         <button type="button" class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" x-on:click="open = open === {{ $i }} ? -1 : {{ $i }}" x-bind:aria-expanded="open === {{ $i }}">
-                                            <span class="font-display text-xl text-juniper-800">{{ $group }}</span>
+                                            <span class="font-display text-xl text-navy-800">{{ $group }}</span>
                                             <span class="flex items-center gap-3"><span class="data text-stone-400">{{ count($items) }}</span><x-heroicon-m-chevron-down class="size-5 text-stone-400 transition duration-500" x-bind:class="open === {{ $i }} && 'rotate-180'" /></span>
                                         </button>
                                         <ul x-show="open === {{ $i }}" x-collapse @unless ($i === 0) x-cloak @endunless class="space-y-2 px-6 pb-6">
@@ -506,7 +506,7 @@
                     <h2 class="mt-4 font-display text-display-sm">See the trail</h2>
                     <div class="mt-8 grid gap-4 @if ($videos->count() > 1) sm:grid-cols-2 @endif">
                         @foreach ($videos as $video)
-                            <div class="relative aspect-video overflow-hidden rounded-[1.75rem] bg-juniper-950" x-data="{ play: false }">
+                            <div class="relative aspect-video overflow-hidden rounded-[1.75rem] bg-navy-950" x-data="{ play: false }">
                                 <template x-if="play"><iframe class="absolute inset-0 h-full w-full" src="{{ $video['embed'] }}" title="{{ $trip->title }} video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></template>
                                 <button type="button" x-show="!play" x-on:click="play = true" class="group absolute inset-0" aria-label="Play video">
                                     @if ($video['thumb'])<img src="{{ $video['thumb'] }}" alt="" loading="lazy" class="h-full w-full object-cover opacity-80 transition group-hover:opacity-100">@else<x-site.picture :model="$trip" collection="hero" class="h-full w-full opacity-60" />@endif
@@ -526,7 +526,7 @@
                             <p class="eyebrow">Good to know</p>
                             <h2 class="mt-4 font-display text-display-sm">FAQs for {{ $trip->title }}</h2>
                         </div>
-                        <button type="button" class="text-sm font-semibold text-juniper-800 underline underline-offset-4"
+                        <button type="button" class="text-sm font-semibold text-navy-800 underline underline-offset-4"
                                 x-on:click="all = !all; $root.querySelectorAll('details').forEach(d => d.open = all)" x-text="all ? 'Collapse all' : 'Expand all'"></button>
                     </div>
                     <div class="mt-8 divide-y divide-stone-300/70 border-y border-stone-300/70">
@@ -547,13 +547,13 @@
                     </div>
                     <div class="flex flex-wrap items-center gap-3">
                         @if ($avg)
-                            <span class="flex items-center gap-2 rounded-full bg-juniper-800 py-2 pr-5 pl-3 text-sm text-white">
+                            <span class="flex items-center gap-2 rounded-full bg-navy-800 py-2 pr-5 pl-3 text-sm text-white">
                                 <span class="flex gap-0.5 text-saffron-300">@for ($i = 1; $i <= 5; $i++)<x-heroicon-s-star @class(['size-4', 'opacity-30' => $i > round($avg)]) />@endfor</span>
                                 <span class="font-semibold">{{ number_format($avg, 1) }}</span> · {{ $tripReviews->count() }} {{ str('review')->plural($tripReviews->count()) }}
                             </span>
                         @endif
-                        <a href="{{ route('reviews') }}" class="flex items-center gap-2 rounded-full bg-stone-50 py-2 pr-5 pl-3 text-sm ring-1 ring-stone-300/60 hover:ring-juniper-500">
-                            <x-heroicon-s-star class="size-4 text-saffron-500" /><span><span class="font-semibold text-juniper-800">{{ $reviews['google_label'] ?? 'Excellent' }}</span> · {{ $reviews['google_count'] ?? 78 }} Google reviews</span>
+                        <a href="{{ route('reviews') }}" class="flex items-center gap-2 rounded-full bg-stone-50 py-2 pr-5 pl-3 text-sm ring-1 ring-stone-300/60 hover:ring-navy-500">
+                            <x-heroicon-s-star class="size-4 text-saffron-500" /><span><span class="font-semibold text-navy-800">{{ $reviews['google_label'] ?? 'Excellent' }}</span> · {{ $reviews['google_count'] ?? 78 }} Google reviews</span>
                         </a>
                     </div>
                 </div>
@@ -568,12 +568,12 @@
                                         <div class="flex gap-0.5 text-saffron-500" aria-label="{{ $t->rating }} out of 5">@for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-4" />@endfor</div>
                                         <span class="text-[0.65rem] uppercase tracking-[0.16em] text-stone-400">{{ $t->source === 'website' ? 'Verified traveller' : $t->source }}</span>
                                     </div>
-                                    @if ($t->title)<p class="mt-4 font-display text-xl text-juniper-800">{{ $t->title }}</p>@endif
+                                    @if ($t->title)<p class="mt-4 font-display text-xl text-navy-800">{{ $t->title }}</p>@endif
                                     <blockquote class="mt-3 text-ink-soft" x-bind:class="! more && 'line-clamp-5'">“{{ $t->body }}”</blockquote>
                                     @if (strlen($t->body) > 280)<button type="button" class="mt-2 self-start text-xs font-semibold text-terracotta-500" x-on:click="more = ! more" x-text="more ? 'Show less' : 'Read more'"></button>@endif
                                     <figcaption class="mt-auto flex items-center gap-3 pt-5">
-                                        <span class="flex size-9 items-center justify-center rounded-full bg-juniper-800 font-display text-sm text-stone-100">{{ str($t->author_name)->substr(0, 1)->upper() }}</span>
-                                        <span class="text-sm font-semibold text-juniper-800">{{ $t->author_name }}<span class="block text-xs font-normal text-stone-500">{{ collect([$t->author_country, $t->travelled_on ? 'Travelled '.$t->travelled_on->format('M Y') : $t->reviewed_at?->format('M Y')])->filter()->implode(' · ') }}</span></span>
+                                        <span class="flex size-9 items-center justify-center rounded-full bg-navy-800 font-display text-sm text-stone-100">{{ str($t->author_name)->substr(0, 1)->upper() }}</span>
+                                        <span class="text-sm font-semibold text-navy-800">{{ $t->author_name }}<span class="block text-xs font-normal text-stone-500">{{ collect([$t->author_country, $t->travelled_on ? 'Travelled '.$t->travelled_on->format('M Y') : $t->reviewed_at?->format('M Y')])->filter()->implode(' · ') }}</span></span>
                                     </figcaption>
                                 </figure>
                             @endforeach
@@ -618,7 +618,7 @@
         {{-- ============================== SIDEBAR ============================== --}}
         <aside class="lg:col-span-4">
             <div class="space-y-5 lg:sticky lg:top-40">
-                <div class="overflow-hidden rounded-[2rem] bg-juniper-800 text-stone-100 shadow-[0_30px_60px_-30px_rgba(15,29,25,0.7)]">
+                <div class="overflow-hidden rounded-[2rem] bg-navy-800 text-stone-100 shadow-[0_30px_60px_-30px_rgba(1,9,30,0.7)]">
                     <div class="p-7">
                         <div class="flex items-start justify-between gap-4">
                             <div>
@@ -636,7 +636,7 @@
                         </div>
 
                         @if ($pricing->isNotEmpty())
-                            <div class="mt-6 rounded-2xl bg-juniper-950/40 p-5"
+                            <div class="mt-6 rounded-2xl bg-navy-950/40 p-5"
                                  x-data="{
                                     pkgs: @js($pricing->map(fn ($p) => ['key' => $p['key'], 'name' => $p['name'], 'tier' => $p['tier_id'], 'bands' => $p['bands']])->values()),
                                     pkg: 0, pax: 2,
@@ -651,7 +651,7 @@
                                     <div class="mt-3 flex flex-wrap gap-1.5">
                                         <template x-for="(p, i) in pkgs" :key="p.key">
                                             <button type="button" x-on:click="pkg = i" class="rounded-full px-3 py-1.5 text-xs font-semibold ring-1 transition"
-                                                    x-bind:class="pkg === i ? 'bg-white text-juniper-900 ring-white' : 'text-stone-200 ring-white/25 hover:ring-white/60'" x-text="p.name"></button>
+                                                    x-bind:class="pkg === i ? 'bg-white text-navy-900 ring-white' : 'text-stone-200 ring-white/25 hover:ring-white/60'" x-text="p.name"></button>
                                         </template>
                                     </div>
                                 </template>
@@ -680,7 +680,7 @@
                                         </tbody>
                                     </table>
                                 </template>
-                                <button type="button" class="btn mt-4 w-full bg-white !py-2.5 text-xs text-juniper-900 hover:bg-saffron-300" x-on:click="$dispatch('prefill-enquiry', { adults: pax, tier: pkgs[pkg]?.tier })">Request a quote for <span x-text="pax"></span></button>
+                                <button type="button" class="btn mt-4 w-full bg-white !py-2.5 text-xs text-navy-900 hover:bg-saffron-300" x-on:click="$dispatch('prefill-enquiry', { adults: pax, tier: pkgs[pkg]?.tier })">Request a quote for <span x-text="pax"></span></button>
                             </div>
                         @endif
 
@@ -692,7 +692,7 @@
                             </div>
                         </div>
                     </div>
-                    <ul class="space-y-3 border-t border-white/10 bg-juniper-900/60 px-7 py-6 text-sm text-stone-300">
+                    <ul class="space-y-3 border-t border-white/10 bg-navy-900/60 px-7 py-6 text-sm text-stone-300">
                         <li class="flex gap-3"><x-heroicon-o-shield-check class="size-5 shrink-0 text-saffron-300" /> {{ $booking['deposit_percent'] ?? 20 }}% deposit secures your place</li>
                         <li class="flex gap-3"><x-heroicon-o-arrow-path class="size-5 shrink-0 text-saffron-300" /> <a class="underline-offset-2 hover:underline" href="{{ url('/risk-free-booking') }}">Risk-free booking</a></li>
                         <li class="flex gap-3"><x-heroicon-o-chat-bubble-left-right class="size-5 shrink-0 text-saffron-300" /> Personal reply within 24 hours</li>
@@ -701,13 +701,13 @@
 
                 {{-- Need help? --}}
                 <div class="rounded-[2rem] bg-stone-50 p-7 ring-1 ring-stone-300/60">
-                    <p class="font-display text-xl text-juniper-800">Need help booking?</p>
+                    <p class="font-display text-xl text-navy-800">Need help booking?</p>
                     <p class="mt-1 text-sm text-ink-soft">Talk to a trip specialist in Kathmandu.</p>
                     <div class="mt-5 space-y-2.5 text-sm">
-                        @if ($wa)<a href="https://wa.me/{{ $wa }}?text={{ rawurlencode('Namaste! I have a question about '.$trip->title.' ('.$trip->url().')') }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl bg-[#25D366]/10 px-4 py-3 font-semibold text-juniper-800 hover:bg-[#25D366]/20"><x-heroicon-o-chat-bubble-oval-left-ellipsis class="size-5 text-[#1a9e4b]" /> WhatsApp us</a>@endif
-                        @if ($phone)<a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="flex items-center gap-3 rounded-xl bg-stone-200/60 px-4 py-3 font-semibold text-juniper-800 hover:bg-stone-200"><x-heroicon-o-phone class="size-5 text-terracotta-500" /> {{ $phone }}</a>@endif
-                        @if ($email)<a href="mailto:{{ $email }}?subject={{ rawurlencode('Enquiry: '.$trip->title) }}" class="flex items-center gap-3 rounded-xl bg-stone-200/60 px-4 py-3 font-semibold text-juniper-800 hover:bg-stone-200"><x-heroicon-o-envelope class="size-5 text-terracotta-500" /> {{ $email }}</a>@endif
-                        <a href="{{ route('trips.pdf', $trip->slug) }}" class="flex items-center gap-3 rounded-xl bg-stone-200/60 px-4 py-3 font-semibold text-juniper-800 hover:bg-stone-200"><x-heroicon-o-arrow-down-tray class="size-5 text-terracotta-500" /> Download itinerary (PDF)</a>
+                        @if ($wa)<a href="https://wa.me/{{ $wa }}?text={{ rawurlencode('Namaste! I have a question about '.$trip->title.' ('.$trip->url().')') }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl bg-[#25D366]/10 px-4 py-3 font-semibold text-navy-800 hover:bg-[#25D366]/20"><x-heroicon-o-chat-bubble-oval-left-ellipsis class="size-5 text-[#1a9e4b]" /> WhatsApp us</a>@endif
+                        @if ($phone)<a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="flex items-center gap-3 rounded-xl bg-stone-200/60 px-4 py-3 font-semibold text-navy-800 hover:bg-stone-200"><x-heroicon-o-phone class="size-5 text-terracotta-500" /> {{ $phone }}</a>@endif
+                        @if ($email)<a href="mailto:{{ $email }}?subject={{ rawurlencode('Enquiry: '.$trip->title) }}" class="flex items-center gap-3 rounded-xl bg-stone-200/60 px-4 py-3 font-semibold text-navy-800 hover:bg-stone-200"><x-heroicon-o-envelope class="size-5 text-terracotta-500" /> {{ $email }}</a>@endif
+                        <a href="{{ route('trips.pdf', $trip->slug) }}" class="flex items-center gap-3 rounded-xl bg-stone-200/60 px-4 py-3 font-semibold text-navy-800 hover:bg-stone-200"><x-heroicon-o-arrow-down-tray class="size-5 text-terracotta-500" /> Download itinerary (PDF)</a>
                     </div>
                     @if ($trip->trip_code)<p class="mt-5 text-xs text-stone-500">Trip code <span class="data">{{ $trip->trip_code }}</span></p>@endif
                 </div>
@@ -732,7 +732,7 @@
     {{-- Mobile sticky CTA --}}
     <div class="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-stone-300/70 bg-stone-100/95 px-5 py-3 backdrop-blur-xl lg:hidden">
         <div>
-            @if ($price)<p class="text-xs text-stone-500">from</p><p class="font-display text-xl leading-none text-juniper-800">US${{ number_format($price) }}</p>@else<p class="font-display text-lg text-juniper-800">{{ $trip->durationLabel() }}</p>@endif
+            @if ($price)<p class="text-xs text-stone-500">from</p><p class="font-display text-xl leading-none text-navy-800">US${{ number_format($price) }}</p>@else<p class="font-display text-lg text-navy-800">{{ $trip->durationLabel() }}</p>@endif
         </div>
         <div class="flex gap-2">
             @if ($wa)<a href="https://wa.me/{{ $wa }}" target="_blank" rel="noopener" class="btn-outline !px-4 !py-3" aria-label="WhatsApp"><x-heroicon-o-chat-bubble-oval-left-ellipsis class="size-5" /></a>@endif

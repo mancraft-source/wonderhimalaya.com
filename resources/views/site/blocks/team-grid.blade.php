@@ -5,7 +5,7 @@
         @foreach ($members as $m)
             <a href="{{ url($m->publicPath()) }}" class="group" data-reveal>
                 <div class="aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-stone-200"><x-site.picture :model="$m" collection="photo" sizes="25vw" class="h-full w-full transition duration-700 group-hover:scale-[1.03]" /></div>
-                <p class="mt-4 font-display text-xl text-juniper-800">{{ $m->name }}</p><p class="text-sm text-ink-soft">{{ $m->role }}</p>
+                <p class="mt-4 font-display text-xl text-navy-800">{{ $m->name }}</p><p class="text-sm text-ink-soft">{{ $m->role }}</p>
             </a>
         @endforeach
     </div>

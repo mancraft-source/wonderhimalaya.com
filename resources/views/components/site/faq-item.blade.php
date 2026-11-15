@@ -7,8 +7,8 @@
         @if ($number)
             <span class="data w-6 shrink-0 text-xs text-stone-400 transition-colors duration-500 group-open/faq:text-terracotta-500">{{ str_pad($number, 2, '0', STR_PAD_LEFT) }}</span>
         @endif
-        <span class="flex-1 font-display text-xl leading-snug text-juniper-800 transition-colors duration-300 group-hover/faq:text-terracotta-600">{{ $question }}</span>
-        <span class="grid size-9 shrink-0 place-items-center rounded-full text-terracotta-500 ring-1 ring-juniper-800/15 transition duration-500 ease-(--ease-mountain) group-hover/faq:ring-terracotta-500/60 group-open/faq:rotate-[135deg] group-open/faq:bg-terracotta-500 group-open/faq:text-white group-open/faq:ring-terracotta-500">
+        <span class="flex-1 font-display text-xl leading-snug text-navy-800 transition-colors duration-300 group-hover/faq:text-terracotta-600">{{ $question }}</span>
+        <span class="grid size-9 shrink-0 place-items-center rounded-full text-terracotta-500 ring-1 ring-navy-800/15 transition duration-500 ease-(--ease-mountain) group-hover/faq:ring-terracotta-500/60 group-open/faq:rotate-[135deg] group-open/faq:bg-terracotta-500 group-open/faq:text-white group-open/faq:ring-terracotta-500">
             <x-heroicon-m-plus class="size-4" />
         </span>
     </summary>

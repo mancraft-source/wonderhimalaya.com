@@ -32,12 +32,12 @@ text-align: center !important;
 body,
 .wrapper,
 .body {
-background-color: #162b26 !important;
+background-color: #021131 !important;
 }
 
 .inner-body {
-background-color: #1f3a33 !important;
-border-color: #2c4c43 !important;
+background-color: #082047 !important;
+border-color: #0e2e62 !important;
 border-top-color: #ecc77e !important;
 }
 
@@ -67,15 +67,15 @@ color: #ecc77e !important;
 .inner-body a.button-success {
 background-color: #ecc77e !important;
 border-color: #ecc77e !important;
-color: #162b26 !important;
+color: #021131 !important;
 }
 
 .panel-content {
-background-color: #162b26 !important;
+background-color: #021131 !important;
 }
 
 .subcopy {
-border-top-color: #2c4c43 !important;
+border-top-color: #0e2e62 !important;
 }
 }
 </style>
