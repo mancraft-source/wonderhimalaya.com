@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Difficulties;
 use App\Filament\Resources\Difficulties\Pages\CreateDifficulty;
 use App\Filament\Resources\Difficulties\Pages\EditDifficulty;
 use App\Filament\Resources\Difficulties\Pages\ListDifficulties;
+use App\Filament\Resources\Difficulties\Pages\ViewDifficulty;
 use App\Filament\Resources\Difficulties\Schemas\DifficultyForm;
 use App\Filament\Resources\Difficulties\Tables\DifficultiesTable;
 use App\Models\Difficulty;
@@ -47,6 +48,7 @@ class DifficultyResource extends Resource
         return [
             'index' => ListDifficulties::route('/'),
             'create' => CreateDifficulty::route('/create'),
+            'view' => ViewDifficulty::route('/{record}'),
             'edit' => EditDifficulty::route('/{record}/edit'),
         ];
     }

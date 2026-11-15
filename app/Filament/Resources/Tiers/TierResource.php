@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Tiers;
 use App\Filament\Resources\Tiers\Pages\CreateTier;
 use App\Filament\Resources\Tiers\Pages\EditTier;
 use App\Filament\Resources\Tiers\Pages\ListTiers;
+use App\Filament\Resources\Tiers\Pages\ViewTier;
 use App\Filament\Resources\Tiers\Schemas\TierForm;
 use App\Filament\Resources\Tiers\Tables\TiersTable;
 use App\Models\Tier;
@@ -47,6 +48,7 @@ class TierResource extends Resource
         return [
             'index' => ListTiers::route('/'),
             'create' => CreateTier::route('/create'),
+            'view' => ViewTier::route('/{record}'),
             'edit' => EditTier::route('/{record}/edit'),
         ];
     }

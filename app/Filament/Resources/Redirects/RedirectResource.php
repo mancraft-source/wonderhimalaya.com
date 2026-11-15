@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Redirects;
 use App\Filament\Resources\Redirects\Pages\CreateRedirect;
 use App\Filament\Resources\Redirects\Pages\EditRedirect;
 use App\Filament\Resources\Redirects\Pages\ListRedirects;
+use App\Filament\Resources\Redirects\Pages\ViewRedirect;
 use App\Filament\Resources\Redirects\Schemas\RedirectForm;
 use App\Filament\Resources\Redirects\Tables\RedirectsTable;
 use App\Models\Redirect;
@@ -49,6 +50,7 @@ class RedirectResource extends Resource
         return [
             'index' => ListRedirects::route('/'),
             'create' => CreateRedirect::route('/create'),
+            'view' => ViewRedirect::route('/{record}'),
             'edit' => EditRedirect::route('/{record}/edit'),
         ];
     }

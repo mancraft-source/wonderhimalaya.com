@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Enums\DepartureStatus;
 use App\Filament\Resources\TripDepartures\TripDepartureResource;
+use App\Filament\Support\RecordLinks;
 use App\Models\TripDeparture;
 use App\Support\Permissions;
 use Filament\Support\Icons\Heroicon;
@@ -29,7 +30,7 @@ class UpcomingDepartures extends TableWidget
     {
         $user = auth()->user();
 
-        return (bool) ($user?->can(Permissions::CATALOGUE) || $user?->can(Permissions::CRM_VIEW));
+        return (bool) ($user?->can(Permissions::for('departures', Permissions::VIEW)) || $user?->can(Permissions::for('bookings', Permissions::VIEW)));
     }
 
     public function table(Table $table): Table
@@ -54,9 +55,7 @@ class UpcomingDepartures extends TableWidget
             ->defaultSort('start_date')
             ->paginated([5, 10, 25, 50])
             ->defaultPaginationPageOption(10)
-            ->recordUrl(fn (TripDeparture $record): ?string => auth()->user()->can('update', $record)
-                ? TripDepartureResource::getUrl('edit', ['record' => $record])
-                : null)
+            ->recordUrl(fn (TripDeparture $record): ?string => RecordLinks::to(TripDepartureResource::class, $record))
             ->emptyStateIcon(Heroicon::OutlinedCalendarDays)
             ->emptyStateHeading('No departures in this period')
             ->emptyStateDescription('Fixed group departures you schedule on a trip appear here. Try a longer range.')

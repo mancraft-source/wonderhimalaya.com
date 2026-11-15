@@ -45,7 +45,7 @@ class ListLeads extends ListRecords
 
         return [
             'all' => Tab::make('All'),
-            ...(auth()->user()?->can(Permissions::CRM_MANAGE) ? [
+            ...(auth()->user()?->can(Permissions::for('leads', Permissions::UPDATE)) ? [
                 'mine' => ListTabs::counted('My open leads', $leads, fn (Builder $query): Builder => $query
                     ->where('owner_id', auth()->id())
                     ->whereNotIn('status', self::CLOSED), 'primary'),

@@ -21,7 +21,7 @@ class LeadsBySourceChart extends ChartWidget
 
     public static function canView(): bool
     {
-        return (bool) auth()->user()?->can(Permissions::CRM_VIEW);
+        return (bool) auth()->user()?->can(Permissions::for('leads', Permissions::VIEW));
     }
 
     protected function getData(): array

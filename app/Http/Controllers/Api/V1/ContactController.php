@@ -47,7 +47,7 @@ class ContactController extends ApiController
         $user = $request->user();
         $contact->load([
             'company',
-            'leads' => fn ($q) => $user->can(Permissions::CRM_VIEW_ALL) ? $q : $q->where(fn ($w) => $w->whereNull('owner_id')->orWhere('owner_id', $user->id)),
+            'leads' => fn ($q) => $user->can(Permissions::LEADS_VIEW_ALL) ? $q : $q->where(fn ($w) => $w->whereNull('owner_id')->orWhere('owner_id', $user->id)),
             'bookings.trip',
         ]);
 

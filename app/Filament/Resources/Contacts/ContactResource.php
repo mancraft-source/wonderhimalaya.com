@@ -6,6 +6,7 @@ use App\Filament\RelationManagers\NotesRelationManager;
 use App\Filament\Resources\Contacts\Pages\CreateContact;
 use App\Filament\Resources\Contacts\Pages\EditContact;
 use App\Filament\Resources\Contacts\Pages\ListContacts;
+use App\Filament\Resources\Contacts\Pages\ViewContact;
 use App\Filament\Resources\Contacts\RelationManagers\BookingsRelationManager;
 use App\Filament\Resources\Contacts\RelationManagers\LeadsRelationManager;
 use App\Filament\Resources\Contacts\Schemas\ContactForm;
@@ -63,6 +64,7 @@ class ContactResource extends Resource
         return [
             'index' => ListContacts::route('/'),
             'create' => CreateContact::route('/create'),
+            'view' => ViewContact::route('/{record}'),
             'edit' => EditContact::route('/{record}/edit'),
         ];
     }

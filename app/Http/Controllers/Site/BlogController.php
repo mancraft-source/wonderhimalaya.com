@@ -7,7 +7,6 @@ use App\Http\Controllers\Site\Concerns\FindsPublished;
 use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\Trip;
-use App\Support\Permissions;
 use App\Support\Seo;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -49,7 +48,7 @@ class BlogController extends Controller
 
     public function show(string $slug): View
     {
-        $post = $this->scopeVisible(Post::query(), Permissions::CONTENT)->where('slug', $slug)->with(['media', 'category', 'author.media', 'tags'])->firstOrFail();
+        $post = $this->scopeVisible(Post::query())->where('slug', $slug)->with(['media', 'category', 'author.media', 'tags'])->firstOrFail();
 
         $hero = $post->getFirstMedia('hero');
         $seo = Seo::for($post, $post->title, $post->excerpt ?: strip_tags((string) $post->body), $hero?->getUrl())->type('article')

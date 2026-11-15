@@ -39,7 +39,7 @@ abstract class ContentSettingsPage extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->can(Permissions::CONTENT) ?? false;
+        return auth()->user()?->can(Permissions::for('pages', Permissions::UPDATE)) ?? false;
     }
 
     public function mount(): void

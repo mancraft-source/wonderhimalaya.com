@@ -48,7 +48,7 @@ class SystemStatus extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->can(Permissions::SETTINGS) ?? false;
+        return auth()->user()?->can(Permissions::SYSTEM) ?? false;
     }
 
     /** @return array<string, mixed> */

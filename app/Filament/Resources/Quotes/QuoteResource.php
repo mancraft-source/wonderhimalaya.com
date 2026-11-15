@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Quotes;
 use App\Filament\Resources\Quotes\Pages\CreateQuote;
 use App\Filament\Resources\Quotes\Pages\EditQuote;
 use App\Filament\Resources\Quotes\Pages\ListQuotes;
+use App\Filament\Resources\Quotes\Pages\ViewQuote;
 use App\Filament\Resources\Quotes\Schemas\QuoteForm;
 use App\Filament\Resources\Quotes\Tables\QuotesTable;
 use App\Filament\Support\GlobalSearch;
@@ -92,6 +93,7 @@ class QuoteResource extends Resource
         return [
             'index' => ListQuotes::route('/'),
             'create' => CreateQuote::route('/create'),
+            'view' => ViewQuote::route('/{record}'),
             'edit' => EditQuote::route('/{record}/edit'),
         ];
     }

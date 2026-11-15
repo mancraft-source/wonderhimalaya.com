@@ -26,7 +26,7 @@ class BookingsRelationManager extends RelationManager
             ->recordTitleAttribute('number')
             ->modifyQueryUsing(fn ($query) => $query->with('trip'))
             ->defaultSort('start_date', 'desc')
-            ->recordUrl(fn (Booking $record): string => BookingResource::getUrl('edit', ['record' => $record]))
+            ->recordUrl(fn (Booking $record): string => BookingResource::getUrl(BookingResource::canEdit($record) ? 'edit' : 'view', ['record' => $record]))
             ->columns([
                 TextColumn::make('number')->weight('medium'),
                 TextColumn::make('trip.title')->label('Trip')->limit(40),

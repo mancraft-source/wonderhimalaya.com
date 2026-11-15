@@ -12,7 +12,10 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 
 /** Internal notes on any "notable" CRM record (lead, contact, company, booking). */
 class NotesRelationManager extends RelationManager
@@ -24,6 +27,22 @@ class NotesRelationManager extends RelationManager
     public function isReadOnly(): bool
     {
         return false;
+    }
+
+    /** Notes are written by people who may edit the record they are added to. */
+    protected function getCreateAuthorizationResponse(): Response
+    {
+        return Gate::inspect('update', $this->getOwnerRecord());
+    }
+
+    protected function getEditAuthorizationResponse(Model $record): Response
+    {
+        return Gate::inspect('update', $this->getOwnerRecord());
+    }
+
+    protected function getDeleteAuthorizationResponse(Model $record): Response
+    {
+        return Gate::inspect('update', $this->getOwnerRecord());
     }
 
     public function form(Schema $schema): Schema

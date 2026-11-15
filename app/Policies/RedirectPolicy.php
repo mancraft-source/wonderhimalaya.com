@@ -2,12 +2,10 @@
 
 namespace App\Policies;
 
-use App\Support\Permissions;
-
 class RedirectPolicy extends PermissionPolicy
 {
-    protected function permission(): string
+    protected function section(): string
     {
-        return Permissions::CONTENT;
+        return 'redirects';
     }
 }

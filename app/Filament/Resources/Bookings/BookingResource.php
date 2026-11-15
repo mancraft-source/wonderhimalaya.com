@@ -6,6 +6,7 @@ use App\Filament\RelationManagers\NotesRelationManager;
 use App\Filament\Resources\Bookings\Pages\CreateBooking;
 use App\Filament\Resources\Bookings\Pages\EditBooking;
 use App\Filament\Resources\Bookings\Pages\ListBookings;
+use App\Filament\Resources\Bookings\Pages\ViewBooking;
 use App\Filament\Resources\Bookings\RelationManagers\PaymentsRelationManager;
 use App\Filament\Resources\Bookings\RelationManagers\TravellersRelationManager;
 use App\Filament\Resources\Bookings\Schemas\BookingForm;
@@ -100,6 +101,7 @@ class BookingResource extends Resource
         return [
             'index' => ListBookings::route('/'),
             'create' => CreateBooking::route('/create'),
+            'view' => ViewBooking::route('/{record}'),
             'edit' => EditBooking::route('/{record}/edit'),
         ];
     }

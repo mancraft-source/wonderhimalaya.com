@@ -59,7 +59,7 @@ class EditBooking extends EditRecord
         return Action::make('create_payment_link')
             ->label('Create payment link')
             ->icon(Heroicon::OutlinedLink)
-            ->authorize(fn (): bool => (bool) auth()->user()?->can(Permissions::PAYMENTS))
+            ->authorize(fn (): bool => (bool) auth()->user()?->can(Permissions::for('payments', Permissions::CREATE)))
             ->fillForm(fn (Booking $record): array => [
                 'type' => $record->amount_paid > 0 ? PaymentType::Balance->value : PaymentType::Deposit->value,
                 'amount' => $creator->suggestedAmount($record, $record->amount_paid > 0 ? PaymentType::Balance : PaymentType::Deposit),

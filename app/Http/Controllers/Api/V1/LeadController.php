@@ -101,7 +101,7 @@ class LeadController extends ApiController
 
         // Only managers may hand leads to someone else; sales may claim/release their own.
         if (array_key_exists('owner_id', $data) && $data['owner_id'] !== null && (int) $data['owner_id'] !== $user->id) {
-            abort_unless($user->can(Permissions::CRM_VIEW_ALL), 403, 'You may only assign leads to yourself.');
+            abort_unless($user->can(Permissions::LEADS_VIEW_ALL), 403, 'You may only assign leads to yourself.');
         }
 
         $lead->update($data);
@@ -123,7 +123,7 @@ class LeadController extends ApiController
 
     public static function scopeVisible(Builder $query, User $user): void
     {
-        if (! $user->can(Permissions::CRM_VIEW_ALL)) {
+        if (! $user->can(Permissions::LEADS_VIEW_ALL)) {
             $query->where(fn (Builder $q) => $q->whereNull('owner_id')->orWhere('owner_id', $user->id));
         }
     }

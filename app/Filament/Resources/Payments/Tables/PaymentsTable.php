@@ -9,6 +9,7 @@ use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\Payments\PaymentResource;
 use App\Filament\Resources\Quotes\QuoteResource;
 use App\Filament\Support\ExportActions;
+use App\Filament\Support\RecordLinks;
 use App\Filament\Support\TableEmptyState;
 use App\Models\Booking;
 use App\Models\Payment;
@@ -90,7 +91,7 @@ class PaymentsTable
                         ->color('danger')
                         ->requiresConfirmation()
                         ->visible(fn (Payment $record): bool => $record->status === PaymentStatus::Pending)
-                        ->authorize(fn (): bool => (bool) auth()->user()?->can(Permissions::PAYMENTS))
+                        ->authorize(fn (): bool => (bool) auth()->user()?->can(Permissions::for('payments', Permissions::UPDATE)))
                         ->action(fn (Payment $record) => $record->update(['status' => PaymentStatus::Cancelled])),
                 ]),
             ])
@@ -107,7 +108,7 @@ class PaymentsTable
             ->icon(Heroicon::OutlinedBanknotes)
             ->color('success')
             ->visible(fn (Payment $record): bool => in_array($record->status, [PaymentStatus::Pending, PaymentStatus::Failed, PaymentStatus::Cancelled], true))
-            ->authorize(fn (): bool => (bool) auth()->user()?->can(Permissions::PAYMENTS))
+            ->authorize(fn (): bool => (bool) auth()->user()?->can(Permissions::for('payments', Permissions::UPDATE)))
             ->modalDescription('Use for bank transfers or cash received outside the online gateways.')
             ->fillForm(fn (Payment $record): array => ['amount' => $record->amount, 'paid_at' => now(), 'method' => 'bank_transfer'])
             ->schema([
@@ -154,8 +155,8 @@ class PaymentsTable
     public static function payableUrl(Payment $payment): ?string
     {
         return match (true) {
-            $payment->payable instanceof Booking => BookingResource::getUrl('edit', ['record' => $payment->payable]),
-            $payment->payable instanceof Quote => QuoteResource::getUrl('edit', ['record' => $payment->payable]),
+            $payment->payable instanceof Booking => RecordLinks::to(BookingResource::class, $payment->payable),
+            $payment->payable instanceof Quote => RecordLinks::to(QuoteResource::class, $payment->payable),
             default => null,
         };
     }

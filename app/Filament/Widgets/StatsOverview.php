@@ -23,7 +23,7 @@ class StatsOverview extends StatsOverviewWidget
 
     public static function canView(): bool
     {
-        return (bool) auth()->user()?->can(Permissions::CRM_VIEW);
+        return (bool) auth()->user()?->can(Permissions::for('leads', Permissions::VIEW));
     }
 
     protected function getStats(): array
@@ -38,9 +38,7 @@ class StatsOverview extends StatsOverviewWidget
         $pipeline = (float) $leads()->whereIn('status', self::OPEN)->sum('estimated_value');
         $openCount = $leads()->whereIn('status', self::OPEN)->count();
 
-        $confirmed = Booking::query()->whereBetween('confirmed_at', [now()->startOfMonth(), now()->endOfMonth()])->count();
-
-        return [
+        $stats = [
             Stat::make('New leads this week', (string) $thisWeek)
                 ->description(($delta >= 0 ? '+' : '').$delta.' vs last week ('.$lastWeek.')')
                 ->descriptionIcon($delta >= 0 ? Heroicon::ArrowTrendingUp : Heroicon::ArrowTrendingDown)
@@ -50,11 +48,18 @@ class StatsOverview extends StatsOverviewWidget
                 ->description($openCount.' open '.str('lead')->plural($openCount))
                 ->descriptionIcon(Heroicon::Funnel)
                 ->color('primary'),
-            Stat::make('Bookings confirmed this month', (string) $confirmed)
+        ];
+
+        if (auth()->user()?->can(Permissions::for('bookings', Permissions::VIEW))) {
+            $confirmed = Booking::query()->whereBetween('confirmed_at', [now()->startOfMonth(), now()->endOfMonth()])->count();
+
+            $stats[] = Stat::make('Bookings confirmed this month', (string) $confirmed)
                 ->descriptionIcon(Heroicon::Ticket)
                 ->description(now()->format('F Y'))
-                ->color('success'),
-        ];
+                ->color('success');
+        }
+
+        return $stats;
 
     }
 

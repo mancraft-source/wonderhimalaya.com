@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Models\Quote;
 use App\Models\Trip;
 use App\Models\User;
+use App\Support\Permissions;
 use BackedEnum;
 use Carbon\CarbonImmutable;
 use Filament\Actions\Action;
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
 use Throwable;
 
 /**
@@ -43,6 +45,8 @@ final class ActivityHistory
         'booking' => 'Booking',
         'payment' => 'Payment',
         'trip' => 'Trip',
+        'role' => 'Role',
+        'user' => 'User',
     ];
 
     public const EVENTS = [
@@ -179,6 +183,7 @@ final class ActivityHistory
             $subject instanceof Company => $subject->name,
             $subject instanceof Trip => $subject->title,
             $subject instanceof Payment => GlobalSearch::money($subject->amount, $subject->currency),
+            $subject instanceof Role, $subject instanceof User => $subject->name,
             default => '#'.$subject->getKey(),
         };
 
@@ -280,6 +285,14 @@ final class ActivityHistory
 
         if (in_array($attribute, ['owner_id', 'user_id', 'assignee_id', 'created_by_id'], true) && is_numeric($value)) {
             return $userNames[(int) $value] ?? 'User #'.$value;
+        }
+
+        if ($attribute === 'permissions' && is_array($value)) {
+            return Permissions::summarize($value);
+        }
+
+        if ($attribute === 'roles' && is_array($value)) {
+            return $value === [] ? 'No roles' : implode(', ', $value);
         }
 
         if (is_array($value)) {

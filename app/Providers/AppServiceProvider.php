@@ -18,6 +18,8 @@ use App\Models\TeamMember;
 use App\Models\Trip;
 use App\Models\User;
 use App\Policies\ActivityLogPolicy;
+use App\Policies\RolePolicy;
+use App\Support\Permissions;
 use App\View\Composers\SiteComposer;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +32,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Activitylog\Models\Activity as ActivityLogEntry;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -59,10 +62,12 @@ class AppServiceProvider extends ServiceProvider
             'payment' => Payment::class,
             'crm_task' => CrmTask::class,
             'note' => Note::class,
+            'role' => Role::class,
         ]);
 
-        Gate::before(fn (User $user) => $user->hasRole('admin') ? true : null);
+        Gate::before(fn (User $user, string $ability, array $arguments) => $user->hasRole(Permissions::ADMIN_ROLE) && ! self::isGuardedForAdmins($ability, $arguments) ? true : null);
         Gate::policy(ActivityLogEntry::class, ActivityLogPolicy::class);
+        Gate::policy(Role::class, RolePolicy::class);
 
         Password::defaults(fn () => $this->app->isProduction()
             ? Password::min(12)->mixedCase()->numbers()->symbols()->uncompromised()
@@ -75,6 +80,20 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         View::composer(['components.layouts.site', 'site.*', 'errors.*', 'errors::*'], SiteComposer::class);
+    }
+
+    /**
+     * Admins pass every check except the safety rails their policies enforce:
+     * the locked admin role, roles still in use and the last active admin.
+     *
+     * @param  array<int, mixed>  $arguments
+     */
+    private static function isGuardedForAdmins(string $ability, array $arguments): bool
+    {
+        $subject = $arguments[0] ?? null;
+
+        return in_array($ability, ['update', 'delete', 'forceDelete'], true) && $subject instanceof Role
+            || in_array($ability, ['delete', 'forceDelete'], true) && $subject instanceof User;
     }
 
     private function configureRateLimiting(): void

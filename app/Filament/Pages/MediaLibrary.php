@@ -50,7 +50,12 @@ class MediaLibrary extends Page implements HasTable
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->can(Permissions::CONTENT) ?? false;
+        return self::userCan(Permissions::VIEW);
+    }
+
+    private static function userCan(string $ability): bool
+    {
+        return (bool) auth()->user()?->can(Permissions::for('media', $ability));
     }
 
     public function content(Schema $schema): Schema
@@ -143,6 +148,7 @@ class MediaLibrary extends Page implements HasTable
             ->recordActions([
                 Action::make('editAlt')
                     ->label('Alt text')
+                    ->authorize(fn (): bool => self::userCan(Permissions::UPDATE))
                     ->icon(Heroicon::OutlinedPencilSquare)
                     ->color('gray')
                     ->modalHeading('Edit alt text')
@@ -155,6 +161,7 @@ class MediaLibrary extends Page implements HasTable
                     }),
                 Action::make('delete')
                     ->label('Delete')
+                    ->authorize(fn (): bool => self::userCan(Permissions::DELETE))
                     ->icon(Heroicon::OutlinedTrash)
                     ->color('danger')
                     ->visible(fn (Media $record): bool => ! MediaUsage::isUsed($record))
@@ -175,6 +182,7 @@ class MediaLibrary extends Page implements HasTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     BulkAction::make('editAltText')
+                        ->authorize(fn (): bool => self::userCan(Permissions::UPDATE))
                         ->label('Set alt text')
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->modalHeading('Set alt text for the selected images')
@@ -186,6 +194,7 @@ class MediaLibrary extends Page implements HasTable
                         })
                         ->deselectRecordsAfterCompletion(),
                     BulkAction::make('deleteUnused')
+                        ->authorize(fn (): bool => self::userCan(Permissions::DELETE))
                         ->label('Delete unused')
                         ->icon(Heroicon::OutlinedTrash)
                         ->color('danger')

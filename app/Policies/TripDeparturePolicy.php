@@ -2,12 +2,10 @@
 
 namespace App\Policies;
 
-use App\Support\Permissions;
-
 class TripDeparturePolicy extends PermissionPolicy
 {
-    protected function permission(): string
+    protected function section(): string
     {
-        return Permissions::CATALOGUE;
+        return 'departures';
     }
 }

@@ -35,9 +35,12 @@ class SeoOverview extends Page
 
     protected string $view = 'filament.pages.seo-overview';
 
+    /** SEO managers, and content editors who look after page SEO fields. */
     public static function canAccess(): bool
     {
-        return auth()->user()?->can(Permissions::CONTENT) ?? false;
+        $user = auth()->user();
+
+        return (bool) ($user?->can(Permissions::SEO) || $user?->can(Permissions::for('pages', Permissions::UPDATE)));
     }
 
     protected function getHeaderActions(): array

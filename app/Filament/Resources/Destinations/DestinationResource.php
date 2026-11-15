@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Destinations;
 use App\Filament\Resources\Destinations\Pages\CreateDestination;
 use App\Filament\Resources\Destinations\Pages\EditDestination;
 use App\Filament\Resources\Destinations\Pages\ListDestinations;
+use App\Filament\Resources\Destinations\Pages\ViewDestination;
 use App\Filament\Resources\Destinations\Schemas\DestinationForm;
 use App\Filament\Resources\Destinations\Tables\DestinationsTable;
 use App\Filament\Support\GlobalSearch;
@@ -72,6 +73,7 @@ class DestinationResource extends Resource
         return [
             'index' => ListDestinations::route('/'),
             'create' => CreateDestination::route('/create'),
+            'view' => ViewDestination::route('/{record}'),
             'edit' => EditDestination::route('/{record}/edit'),
         ];
     }

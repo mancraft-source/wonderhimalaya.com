@@ -21,7 +21,7 @@ use Filament\Tables\Table;
 
 /**
  * Travellers on a booking. Passport, insurance and medical fields are encrypted
- * at rest and only visible to staff who can manage payments (or admins).
+ * at rest and only visible to staff who can view payments (or admins).
  */
 class TravellersRelationManager extends RelationManager
 {
@@ -36,7 +36,7 @@ class TravellersRelationManager extends RelationManager
 
     public static function canSeeSensitive(): bool
     {
-        return (bool) auth()->user()?->can(Permissions::PAYMENTS);
+        return (bool) auth()->user()?->can(Permissions::for('payments', Permissions::VIEW));
     }
 
     public function form(Schema $schema): Schema

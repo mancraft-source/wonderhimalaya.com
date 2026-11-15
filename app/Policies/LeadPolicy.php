@@ -7,17 +7,12 @@ use App\Models\User;
 use App\Support\Permissions;
 use Illuminate\Database\Eloquent\Model;
 
-/** Sales staff see unassigned leads and their own; managers see everything. */
+/** Staff without leads.view_all see unassigned leads and their own; with it, everything. */
 class LeadPolicy extends PermissionPolicy
 {
-    protected function permission(): string
+    protected function section(): string
     {
-        return Permissions::CRM_MANAGE;
-    }
-
-    protected function viewPermission(): string
-    {
-        return Permissions::CRM_VIEW;
+        return 'leads';
     }
 
     public function view(User $user, Model $model): bool
@@ -29,16 +24,23 @@ class LeadPolicy extends PermissionPolicy
     public function update(User $user, Model $model): bool
     {
         /** @var Lead $model */
-        return $user->can($this->permission()) && $this->canSee($user, $model);
+        return parent::update($user, $model) && $this->canSee($user, $model);
     }
 
     public function delete(User $user, Model $model): bool
     {
-        return $user->can(Permissions::CRM_VIEW_ALL) && $user->can($this->permission());
+        /** @var Lead $model */
+        return parent::delete($user, $model) && $this->canSee($user, $model);
+    }
+
+    public function restore(User $user, Model $model): bool
+    {
+        /** @var Lead $model */
+        return parent::restore($user, $model) && $this->canSee($user, $model);
     }
 
     private function canSee(User $user, Lead $lead): bool
     {
-        return $user->can(Permissions::CRM_VIEW_ALL) || $lead->owner_id === null || $lead->owner_id === $user->id;
+        return $user->can(Permissions::LEADS_VIEW_ALL) || $lead->owner_id === null || $lead->owner_id === $user->id;
     }
 }

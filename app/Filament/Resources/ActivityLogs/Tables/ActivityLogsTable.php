@@ -21,6 +21,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
 
 class ActivityLogsTable
 {
@@ -33,6 +34,8 @@ class ActivityLogsTable
         Booking::class => ['number'],
         Payment::class => ['gateway_reference'],
         Trip::class => ['title', 'trip_code'],
+        Role::class => ['name'],
+        User::class => ['name', 'email'],
     ];
 
     public static function configure(Table $table): Table

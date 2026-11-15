@@ -2,14 +2,15 @@
 
 namespace App\Filament\Support;
 
+use App\Support\Permissions;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Actions\Exports\Exporter;
 
 /**
  * CSV / XLSX export for CRM tables. Exports run on the queue and land in the
- * admin bell with a download link. Only users who may list the resource
- * (its policy's viewAny, e.g. payments.manage for payments) can export.
+ * admin bell with a download link. Only users with exports.run who may also list
+ * the resource (its policy's viewAny, e.g. payments.view for payments) can export.
  */
 final class ExportActions
 {
@@ -33,6 +34,8 @@ final class ExportActions
     /** @param  class-string<Exporter>  $exporter */
     public static function canExport(string $exporter): bool
     {
-        return (bool) auth()->user()?->can('viewAny', $exporter::getModel());
+        $user = auth()->user();
+
+        return (bool) ($user?->can(Permissions::EXPORTS) && $user->can('viewAny', $exporter::getModel()));
     }
 }

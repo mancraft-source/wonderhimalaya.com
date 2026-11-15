@@ -32,7 +32,7 @@ class ContactsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('email')
-            ->recordUrl(fn (Contact $record): string => ContactResource::getUrl('edit', ['record' => $record]))
+            ->recordUrl(fn (Contact $record): string => ContactResource::getUrl(ContactResource::canEdit($record) ? 'edit' : 'view', ['record' => $record]))
             ->columns([
                 TextColumn::make('first_name')->label('Name')->formatStateUsing(fn (Contact $record): string => $record->name),
                 TextColumn::make('email')->copyable(),

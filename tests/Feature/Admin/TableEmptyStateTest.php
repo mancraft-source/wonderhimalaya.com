@@ -24,7 +24,7 @@ it('renders the branded empty state with a create action on an empty table', fun
 });
 
 it('hides the empty state create action from users who cannot create', function () {
-    $this->actingAs(User::factory()->create()->givePermissionTo(Permissions::CRM_VIEW));
+    $this->actingAs(User::factory()->create()->givePermissionTo(Permissions::for('leads', Permissions::VIEW)));
 
     Livewire::test(ListLeads::class)
         ->assertSee('No enquiries yet')

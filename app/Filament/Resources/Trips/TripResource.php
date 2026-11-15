@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Trips;
 use App\Filament\Resources\Trips\Pages\CreateTrip;
 use App\Filament\Resources\Trips\Pages\EditTrip;
 use App\Filament\Resources\Trips\Pages\ListTrips;
+use App\Filament\Resources\Trips\Pages\ViewTrip;
 use App\Filament\Resources\Trips\RelationManagers\DeparturesRelationManager;
 use App\Filament\Resources\Trips\RelationManagers\TestimonialsRelationManager;
 use App\Filament\Resources\Trips\Schemas\TripForm;
@@ -58,6 +59,7 @@ class TripResource extends Resource
         return [
             'index' => ListTrips::route('/'),
             'create' => CreateTrip::route('/create'),
+            'view' => ViewTrip::route('/{record}'),
             'edit' => EditTrip::route('/{record}/edit'),
         ];
     }

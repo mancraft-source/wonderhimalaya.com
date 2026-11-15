@@ -22,7 +22,7 @@ class PaymentsRelationManager extends RelationManager
 
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
-        return (bool) auth()->user()?->can(Permissions::PAYMENTS);
+        return (bool) auth()->user()?->can(Permissions::for('payments', Permissions::VIEW));
     }
 
     public function isReadOnly(): bool

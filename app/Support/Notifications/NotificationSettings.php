@@ -158,7 +158,7 @@ final class NotificationSettings
         $settings = self::event($key);
 
         if ($settings['all_staff']) {
-            return User::query()->where('is_active', true)->get()->filter(fn (User $user) => $user->can(Permissions::CRM_VIEW))->values();
+            return User::query()->where('is_active', true)->get()->filter(fn (User $user) => $user->can(Permissions::for('leads', Permissions::VIEW)))->values();
         }
 
         return User::query()->where('is_active', true)->whereKey($settings['user_ids'])->get();
@@ -193,7 +193,7 @@ final class NotificationSettings
         $settings = self::event($key);
 
         if (($settings['all_staff'] ?? false) || (self::EVENTS[$key]['assignee_only'] ?? false)) {
-            return $user->can(Permissions::CRM_VIEW);
+            return $user->can(Permissions::for('leads', Permissions::VIEW));
         }
 
         return in_array($user->getKey(), array_map('intval', (array) $settings['user_ids']), true);

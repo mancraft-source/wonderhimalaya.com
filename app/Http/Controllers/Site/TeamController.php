@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Site\Concerns\FindsPublished;
 use App\Models\TeamMember;
-use App\Support\Permissions;
 use App\Support\Seo;
 use Illuminate\Contracts\View\View;
 
@@ -26,7 +25,7 @@ class TeamController extends Controller
 
     public function show(string $slug): View
     {
-        $member = $this->scopeVisible(TeamMember::query(), Permissions::CONTENT)->where('slug', $slug)->with('media')->firstOrFail();
+        $member = $this->scopeVisible(TeamMember::query())->where('slug', $slug)->with('media')->firstOrFail();
 
         return view('site.team.show', [
             'member' => $member,

@@ -73,7 +73,7 @@ final class StaffAlerts
                 'Reference: '.($payment->gateway_reference ?: $payment->uuid),
             ])),
             $booking ? 'Open booking' : 'Open payments',
-            $booking ? BookingResource::getUrl('edit', ['record' => $booking], panel: 'admin') : url('/admin/payments'),
+            $booking ? BookingResource::getUrl('view', ['record' => $booking], panel: 'admin') : url('/admin/payments'),
         );
     }
 
@@ -91,7 +91,7 @@ final class StaffAlerts
                 'Paid '.Money::format($booking->amount_paid, $booking->currency).' of '.Money::format($booking->total, $booking->currency),
             ])),
             'Open booking',
-            BookingResource::getUrl('edit', ['record' => $booking], panel: 'admin'),
+            BookingResource::getUrl('view', ['record' => $booking], panel: 'admin'),
         );
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Pages;
 use App\Filament\Resources\Pages\Pages\CreatePage;
 use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Pages\Pages\ListPages;
+use App\Filament\Resources\Pages\Pages\ViewPage;
 use App\Filament\Resources\Pages\Schemas\PageForm;
 use App\Filament\Resources\Pages\Tables\PagesTable;
 use App\Filament\Support\GlobalSearch;
@@ -68,6 +69,7 @@ class PageResource extends Resource
         return [
             'index' => ListPages::route('/'),
             'create' => CreatePage::route('/create'),
+            'view' => ViewPage::route('/{record}'),
             'edit' => EditPage::route('/{record}/edit'),
         ];
     }

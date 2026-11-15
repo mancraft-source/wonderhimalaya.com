@@ -71,7 +71,7 @@ it('counts only the leads a sales user may see in the tab badges', function () {
 });
 
 it('hides the my open leads tab from users who cannot work leads', function () {
-    $viewer = User::factory()->create()->givePermissionTo(Permissions::CRM_VIEW);
+    $viewer = User::factory()->create()->givePermissionTo(Permissions::for('leads', Permissions::VIEW));
     $this->actingAs($viewer);
 
     expect(tabBadges(ListLeads::class))->not->toHaveKey('mine')->toHaveKey('new');

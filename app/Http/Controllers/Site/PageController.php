@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Site\Concerns\FindsPublished;
 use App\Models\Page;
-use App\Support\Permissions;
 use App\Support\Seo;
 use Illuminate\Contracts\View\View;
 
@@ -18,7 +17,7 @@ class PageController extends Controller
 
     public function show(string $path): View
     {
-        $page = $this->scopeVisible(Page::query(), Permissions::CONTENT)->where('path', $path)->with(['parent', 'media'])->firstOrFail();
+        $page = $this->scopeVisible(Page::query())->where('path', $path)->with(['parent', 'media'])->firstOrFail();
 
         $siblings = match (true) {
             (bool) $page->parent_id => Page::published()->where('parent_id', $page->parent_id)->orderBy('sort')->orderBy('title')->get(['id', 'title', 'path', 'slug']),

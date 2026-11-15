@@ -94,7 +94,7 @@ it('lets payment managers export payments', function () {
 });
 
 it('keeps payment exports from CRM staff without payments access', function () {
-    Role::create(['name' => 'viewer'])->givePermissionTo(Permissions::CRM_VIEW);
+    Role::create(['name' => 'viewer'])->givePermissionTo(Permissions::for('leads', Permissions::VIEW), Permissions::EXPORTS);
     $viewer = User::factory()->role('viewer')->create();
     $this->actingAs($viewer);
 

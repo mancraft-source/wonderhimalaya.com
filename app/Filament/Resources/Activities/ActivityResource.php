@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Activities;
 use App\Filament\Resources\Activities\Pages\CreateActivity;
 use App\Filament\Resources\Activities\Pages\EditActivity;
 use App\Filament\Resources\Activities\Pages\ListActivities;
+use App\Filament\Resources\Activities\Pages\ViewActivity;
 use App\Filament\Resources\Activities\Schemas\ActivityForm;
 use App\Filament\Resources\Activities\Tables\ActivitiesTable;
 use App\Filament\Support\GlobalSearch;
@@ -72,6 +73,7 @@ class ActivityResource extends Resource
         return [
             'index' => ListActivities::route('/'),
             'create' => CreateActivity::route('/create'),
+            'view' => ViewActivity::route('/{record}'),
             'edit' => EditActivity::route('/{record}/edit'),
         ];
     }

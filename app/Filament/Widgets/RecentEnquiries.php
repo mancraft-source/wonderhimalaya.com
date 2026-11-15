@@ -18,7 +18,7 @@ class RecentEnquiries extends TableWidget
 
     public static function canView(): bool
     {
-        return (bool) auth()->user()?->can(Permissions::CRM_VIEW);
+        return (bool) auth()->user()?->can(Permissions::for('leads', Permissions::VIEW));
     }
 
     public function table(Table $table): Table

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\CrmTasks;
 use App\Filament\Resources\CrmTasks\Pages\CreateCrmTask;
 use App\Filament\Resources\CrmTasks\Pages\EditCrmTask;
 use App\Filament\Resources\CrmTasks\Pages\ListCrmTasks;
+use App\Filament\Resources\CrmTasks\Pages\ViewCrmTask;
 use App\Filament\Resources\CrmTasks\Schemas\CrmTaskForm;
 use App\Filament\Resources\CrmTasks\Tables\CrmTasksTable;
 use App\Models\CrmTask;
@@ -74,6 +75,7 @@ class CrmTaskResource extends Resource
         return [
             'index' => ListCrmTasks::route('/'),
             'create' => CreateCrmTask::route('/create'),
+            'view' => ViewCrmTask::route('/{record}'),
             'edit' => EditCrmTask::route('/{record}/edit'),
         ];
     }

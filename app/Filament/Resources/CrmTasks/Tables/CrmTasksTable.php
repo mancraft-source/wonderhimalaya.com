@@ -7,6 +7,7 @@ use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\Contacts\ContactResource;
 use App\Filament\Resources\Leads\LeadResource;
 use App\Filament\Support\CrmFields;
+use App\Filament\Support\RecordLinks;
 use App\Filament\Support\TableEmptyState;
 use App\Models\Booking;
 use App\Models\Contact;
@@ -132,8 +133,8 @@ class CrmTasksTable
     {
         return match (true) {
             $task->taskable instanceof Lead => LeadResource::getUrl('view', ['record' => $task->taskable]),
-            $task->taskable instanceof Contact => ContactResource::getUrl('edit', ['record' => $task->taskable]),
-            $task->taskable instanceof Booking => BookingResource::getUrl('edit', ['record' => $task->taskable]),
+            $task->taskable instanceof Contact => RecordLinks::to(ContactResource::class, $task->taskable),
+            $task->taskable instanceof Booking => RecordLinks::to(BookingResource::class, $task->taskable),
             default => null,
         };
     }

@@ -60,7 +60,7 @@ class LeadResource extends Resource
     }
 
     /**
-     * Sales staff without crm.view_all only see unassigned leads and their own.
+     * Staff without leads.view_all only see unassigned leads and their own.
      */
     public static function getEloquentQuery(): Builder
     {
@@ -73,7 +73,7 @@ class LeadResource extends Resource
             return $query->whereRaw('1 = 0');
         }
 
-        if ($user->can(Permissions::CRM_VIEW_ALL)) {
+        if ($user->can(Permissions::LEADS_VIEW_ALL)) {
             return $query;
         }
 

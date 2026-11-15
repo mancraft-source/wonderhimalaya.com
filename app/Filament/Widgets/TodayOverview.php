@@ -11,6 +11,7 @@ use App\Filament\Resources\CrmTasks\CrmTaskResource;
 use App\Filament\Resources\CrmTasks\Tables\CrmTasksTable;
 use App\Filament\Resources\Leads\LeadResource;
 use App\Filament\Resources\TripDepartures\TripDepartureResource;
+use App\Filament\Support\RecordLinks;
 use App\Models\Booking;
 use App\Models\CrmTask;
 use App\Models\Lead;
@@ -46,7 +47,8 @@ class TodayOverview extends Widget
     {
         $user = auth()->user();
 
-        return (bool) ($user?->can(Permissions::CRM_VIEW) || $user?->can(Permissions::CATALOGUE));
+        return (bool) collect(['leads', 'tasks', 'bookings', 'departures'])
+            ->contains(fn (string $section): bool => (bool) $user?->can(Permissions::for($section, Permissions::VIEW)));
     }
 
     public function completeTask(int $taskId): void
@@ -65,16 +67,16 @@ class TodayOverview extends Widget
     {
         /** @var User $user */
         $user = auth()->user();
-        $canSeeCrm = $user->can(Permissions::CRM_VIEW);
+        $can = fn (string $section): bool => $user->can(Permissions::for($section, Permissions::VIEW));
         $now = now(Dashboard::TIMEZONE);
 
         return [
             'now' => $now,
-            'seesEveryone' => $user->can(Permissions::CRM_VIEW_ALL),
-            'followUps' => $canSeeCrm ? $this->followUps($user, $now) : null,
-            'tasks' => $canSeeCrm ? $this->tasks($user, $now) : null,
-            'departures' => $this->departures($user, $now),
-            'balances' => $canSeeCrm ? $this->balances($now) : null,
+            'seesEveryone' => $user->can(Permissions::LEADS_VIEW_ALL),
+            'followUps' => $can('leads') ? $this->followUps($user, $now) : null,
+            'tasks' => $can('tasks') ? $this->tasks($user, $now) : null,
+            'departures' => $can('departures') || $can('bookings') ? $this->departures($user, $now) : null,
+            'balances' => $can('bookings') ? $this->balances($now) : null,
         ];
     }
 
@@ -86,7 +88,7 @@ class TodayOverview extends Widget
             ->whereNotNull('next_follow_up_at')
             ->where('next_follow_up_at', '<=', $now->copy()->endOfDay()->utc())
             ->whereNotIn('status', [LeadStatus::Lost, LeadStatus::Travelled])
-            ->when(! $user->can(Permissions::CRM_VIEW_ALL), fn (Builder $query) => $query->where('owner_id', $user->id));
+            ->when(! $user->can(Permissions::LEADS_VIEW_ALL), fn (Builder $query) => $query->where('owner_id', $user->id));
 
         return [
             'count' => (clone $query)->count(),
@@ -110,7 +112,7 @@ class TodayOverview extends Widget
             ->with(['taskable', 'assignee'])
             ->whereNotNull('due_at')
             ->where('due_at', '<=', $now->copy()->endOfDay()->utc())
-            ->when(! $user->can(Permissions::CRM_VIEW_ALL), fn (Builder $query) => $query->where('assignee_id', $user->id));
+            ->when(! $user->can(Permissions::LEADS_VIEW_ALL), fn (Builder $query) => $query->where('assignee_id', $user->id));
 
         return [
             'count' => (clone $query)->count(),
@@ -124,7 +126,7 @@ class TodayOverview extends Widget
                     ])->filter()->implode(' · ') ?: null,
                     'when' => $this->relative($task->due_at, $now),
                     'overdue' => $task->isOverdue(),
-                    'url' => CrmTasksTable::taskableUrl($task) ?? CrmTaskResource::getUrl('edit', ['record' => $task]),
+                    'url' => CrmTasksTable::taskableUrl($task) ?? RecordLinks::to(CrmTaskResource::class, $task),
                     'canComplete' => $user->can('update', $task),
                 ])->all(),
             'url' => CrmTaskResource::getUrl('index'),
@@ -148,7 +150,7 @@ class TodayOverview extends Widget
                     'meta' => collect([$departure->tier?->name, $departure->seats_booked.' of '.$departure->seats_total.' seats booked'])->filter()->implode(' · '),
                     'when' => $departure->start_date->toDateString() === $now->toDateString() ? 'Today' : $departure->start_date->format('D j M'),
                     'overdue' => false,
-                    'url' => $user->can('update', $departure) ? TripDepartureResource::getUrl('edit', ['record' => $departure]) : null,
+                    'url' => RecordLinks::to(TripDepartureResource::class, $departure),
                 ])->all(),
             'url' => TripDepartureResource::canViewAny() ? TripDepartureResource::getUrl('index') : null,
         ];
@@ -180,7 +182,7 @@ class TodayOverview extends Widget
                             default => 'Due '.$booking->balance_due_on->format('D j M'),
                         },
                         'overdue' => $isOverdue,
-                        'url' => BookingResource::getUrl('edit', ['record' => $booking]),
+                        'url' => RecordLinks::to(BookingResource::class, $booking),
                     ];
                 })->all(),
             'url' => BookingResource::getUrl('index'),

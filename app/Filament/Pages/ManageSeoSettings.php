@@ -54,7 +54,7 @@ class ManageSeoSettings extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->can(Permissions::SETTINGS) ?? false;
+        return auth()->user()?->can(Permissions::SEO) ?? false;
     }
 
     public function mount(): void

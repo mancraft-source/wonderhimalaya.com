@@ -5,6 +5,7 @@ namespace App\Filament\Resources\TripDepartures;
 use App\Filament\Resources\TripDepartures\Pages\CreateTripDeparture;
 use App\Filament\Resources\TripDepartures\Pages\EditTripDeparture;
 use App\Filament\Resources\TripDepartures\Pages\ListTripDepartures;
+use App\Filament\Resources\TripDepartures\Pages\ViewTripDeparture;
 use App\Filament\Resources\TripDepartures\Schemas\TripDepartureForm;
 use App\Filament\Resources\TripDepartures\Tables\TripDeparturesTable;
 use App\Models\TripDeparture;
@@ -51,6 +52,7 @@ class TripDepartureResource extends Resource
         return [
             'index' => ListTripDepartures::route('/'),
             'create' => CreateTripDeparture::route('/create'),
+            'view' => ViewTripDeparture::route('/{record}'),
             'edit' => EditTripDeparture::route('/{record}/edit'),
         ];
     }

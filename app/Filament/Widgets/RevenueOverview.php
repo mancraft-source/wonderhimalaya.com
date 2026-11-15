@@ -26,7 +26,7 @@ class RevenueOverview extends StatsOverviewWidget
 
     public static function canView(): bool
     {
-        return (bool) auth()->user()?->can(Permissions::PAYMENTS);
+        return (bool) auth()->user()?->can(Permissions::for('payments', Permissions::VIEW));
     }
 
     protected function getDescription(): ?string

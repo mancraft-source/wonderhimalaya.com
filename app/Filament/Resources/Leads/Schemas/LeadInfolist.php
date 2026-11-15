@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Leads\Schemas;
 
 use App\Filament\Resources\Contacts\ContactResource;
 use App\Filament\Resources\Trips\TripResource;
+use App\Filament\Support\RecordLinks;
 use App\Models\Lead;
 use App\Support\UserAgent;
 use Filament\Infolists\Components\KeyValueEntry;
@@ -30,7 +31,7 @@ class LeadInfolist
                             TextEntry::make('trip.title')
                                 ->label('Trip')
                                 ->placeholder('Tailor-made')
-                                ->url(fn (Lead $record): ?string => $record->trip ? TripResource::getUrl('edit', ['record' => $record->trip]) : null)
+                                ->url(fn (Lead $record): ?string => $record->trip ? RecordLinks::to(TripResource::class, $record->trip) : null)
                                 ->columnSpan(2),
                             TextEntry::make('tier.name')->label('Tier')->placeholder('—'),
                             TextEntry::make('departure.start_date')->label('Departure')->date('D j M Y')->placeholder('—'),
@@ -83,7 +84,7 @@ class LeadInfolist
                             TextEntry::make('contact.name')
                                 ->label('Name')
                                 ->weight('bold')
-                                ->url(fn (Lead $record): ?string => $record->contact ? ContactResource::getUrl('edit', ['record' => $record->contact]) : null),
+                                ->url(fn (Lead $record): ?string => $record->contact ? RecordLinks::to(ContactResource::class, $record->contact) : null),
                             TextEntry::make('contact.email')->label('Email')->copyable()->icon(Heroicon::OutlinedEnvelope),
                             TextEntry::make('contact.phone')->label('Phone')->copyable()->placeholder('—')->icon(Heroicon::OutlinedPhone),
                             TextEntry::make('contact.country')->label('Country')->placeholder('—'),

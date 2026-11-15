@@ -5,6 +5,7 @@ namespace App\Filament\Resources\TeamMembers;
 use App\Filament\Resources\TeamMembers\Pages\CreateTeamMember;
 use App\Filament\Resources\TeamMembers\Pages\EditTeamMember;
 use App\Filament\Resources\TeamMembers\Pages\ListTeamMembers;
+use App\Filament\Resources\TeamMembers\Pages\ViewTeamMember;
 use App\Filament\Resources\TeamMembers\Schemas\TeamMemberForm;
 use App\Filament\Resources\TeamMembers\Tables\TeamMembersTable;
 use App\Models\TeamMember;
@@ -49,6 +50,7 @@ class TeamMemberResource extends Resource
         return [
             'index' => ListTeamMembers::route('/'),
             'create' => CreateTeamMember::route('/create'),
+            'view' => ViewTeamMember::route('/{record}'),
             'edit' => EditTeamMember::route('/{record}/edit'),
         ];
     }

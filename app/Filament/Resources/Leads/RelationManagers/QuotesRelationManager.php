@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Leads\RelationManagers;
 
 use App\Filament\Resources\Quotes\QuoteResource;
+use App\Filament\Support\RecordLinks;
 use App\Models\Quote;
 use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -21,7 +22,7 @@ class QuotesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('number')
             ->defaultSort('created_at', 'desc')
-            ->recordUrl(fn (Quote $record): string => QuoteResource::getUrl('edit', ['record' => $record]))
+            ->recordUrl(fn (Quote $record): string => QuoteResource::getUrl(QuoteResource::canEdit($record) ? 'edit' : 'view', ['record' => $record]))
             ->columns([
                 TextColumn::make('number')->weight('medium'),
                 TextColumn::make('title')->wrap(),
@@ -34,7 +35,7 @@ class QuotesRelationManager extends RelationManager
             ->recordActions([
                 Action::make('open')
                     ->icon(Heroicon::OutlinedPencilSquare)
-                    ->url(fn (Quote $record): string => QuoteResource::getUrl('edit', ['record' => $record])),
+                    ->url(fn (Quote $record): ?string => RecordLinks::to(QuoteResource::class, $record)),
             ]);
     }
 }

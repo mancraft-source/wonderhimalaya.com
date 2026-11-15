@@ -16,13 +16,13 @@
             'empty' => 'Nothing due today. Enjoy the quiet.',
             'more' => 'All tasks',
         ] : null,
-        'departures' => [
+        'departures' => $departures ? [
             'heading' => 'Departing in the next '.\App\Filament\Widgets\TodayOverview::DEPARTURE_DAYS.' days',
             'icon' => Heroicon::OutlinedPaperAirplane,
             'data' => $departures,
             'empty' => 'No departures this week.',
             'more' => 'All departures',
-        ],
+        ] : null,
         'balances' => $balances ? [
             'heading' => 'Balances due',
             'icon' => Heroicon::OutlinedBanknotes,
