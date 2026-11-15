@@ -433,3 +433,8 @@
     .ticket:hover, .ticket:focus-visible, .ticket:hover .ticket__day, .ticket:focus-visible .ticket__day { transform: none; }
     .ticket__arrow { transform: none; }
 }
+
+/* A backdrop-filter on the header makes it the containing block for its position:fixed children, which shrank the
+   mobile menu (fixed, top-20) into the 80px header once the frosted header kicked in (scrolled, or any inner page).
+   While the menu is open the header is solid anyway, so drop the blur. */
+[data-site-header].is-menu-open { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }

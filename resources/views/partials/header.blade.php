@@ -9,7 +9,8 @@
         'data-[scrolled]:bg-stone-100/92 data-[scrolled]:backdrop-blur-xl' => $transparent,
         'bg-stone-100/92 backdrop-blur-xl' => ! $transparent,
     ])
-    x-bind:class="(open || mega) && '!bg-stone-100'"
+    x-bind:class="{ '!bg-stone-100': open || mega, 'is-menu-open': open }"
+    x-effect="document.documentElement.classList.toggle('overflow-hidden', open)"
 >
     <div class="container-page flex h-20 items-center justify-between gap-6 lg:h-24">
         <a href="{{ route('home') }}" class="relative z-10" aria-label="Wonder Himalaya — home">
