@@ -52,7 +52,11 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
-          composer test
+          if ! php -d memory_limit=1G vendor/bin/pest --colors=never 2>&1 | tee pest.log; then
+            # Surface the failing tests as annotations (readable without access to the full log).
+            grep -E '^\s*(FAILED|⨯|✕)|Tests\\Feature|Tests\\Unit|Failed asserting|Expected' pest.log | head -15 | while IFS= read -r line; do echo "::error title=Test failure::$line"; done
+            exit 1
+          fi
 
       - name: Configure SSH
         env:
