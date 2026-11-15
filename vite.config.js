@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/admin/theme.css'],
             refresh: true,
             fonts: [
                 bunny('Fraunces', { weights: [300, 400, 500, 600], styles: ['normal', 'italic'], fallbacks: ['Georgia', 'serif'], preload: [{ weight: 400 }] }),

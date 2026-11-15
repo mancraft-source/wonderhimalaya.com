@@ -28,17 +28,25 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->passwordReset()
-            ->profile()
+            // Profile (and two-factor setup) inside the normal layout, so the sidebar stays.
+            ->profile(isSimple: false)
             ->multiFactorAuthentication(
                 [AppAuthentication::make()->recoverable()],
                 isRequired: app()->isProduction(),
             )
             ->brandName('Wonder Himalaya')
+            ->brandLogo(fn () => view('filament.brand'))
+            ->brandLogoHeight('2.75rem')
+            ->favicon(asset('favicon.png'))
             ->colors([
                 'primary' => Color::hex('#1F3A33'),
                 'gray' => Color::Stone,
+                'warning' => Color::hex('#D9A441'),
+                'danger' => Color::hex('#B5532E'),
+                'info' => Color::hex('#5E8796'),
             ])
             ->font('Inter')
             ->spa()

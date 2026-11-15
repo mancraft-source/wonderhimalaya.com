@@ -158,3 +158,12 @@ it('renders the lead pipeline board', function () {
         ->assertOk()
         ->assertSee($lead->reference);
 });
+
+it('shows the profile page inside the main layout with the sidebar and brand mark', function () {
+    $this->actingAs($this->admin->fresh())
+        ->get(Filament::getPanel('admin')->getProfileUrl())
+        ->assertOk()
+        ->assertSee('fi-sidebar', false)
+        ->assertSee('fi-brand-name', false)
+        ->assertDontSee('fi-simple-layout', false);
+});
