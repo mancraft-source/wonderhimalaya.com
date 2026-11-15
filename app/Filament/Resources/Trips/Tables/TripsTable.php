@@ -6,10 +6,12 @@ use App\Enums\PublishStatus;
 use App\Filament\Resources\Trips\TripResource;
 use App\Filament\Support\SeoFields;
 use App\Filament\Support\SiteLinkActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Trip;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -33,6 +35,14 @@ class TripsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedMap))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No trips yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Create your first trip; drafts stay hidden from the website until you publish them.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['destination', 'difficulty', 'media']))
             ->defaultSort('sort')
             ->reorderable('sort')

@@ -29,6 +29,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return [
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
+            'previous_login_at' => 'datetime',
+            'notification_preferences' => 'array',
             'password' => 'hashed',
             'is_active' => 'boolean',
         ];
@@ -42,5 +44,14 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function isAdmin(): bool
     {
         return $this->hasRole('admin');
+    }
+
+    /**
+     * Whether this person still wants a staff alert on a channel (Profile → Notifications).
+     * Only ever narrows what Settings → Notifications allows; anything not chosen yet is on.
+     */
+    public function wantsStaffAlert(string $event, string $channel): bool
+    {
+        return (bool) (($this->notification_preferences ?? [])[$event][$channel] ?? true);
     }
 }

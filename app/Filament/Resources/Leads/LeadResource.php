@@ -13,6 +13,8 @@ use App\Filament\Resources\Leads\RelationManagers\QuotesRelationManager;
 use App\Filament\Resources\Leads\Schemas\LeadForm;
 use App\Filament\Resources\Leads\Schemas\LeadInfolist;
 use App\Filament\Resources\Leads\Tables\LeadsTable;
+use App\Filament\Support\GlobalSearch;
+use App\Filament\Support\SearchesPhoneNumbers;
 use App\Models\Lead;
 use App\Models\User;
 use App\Support\Permissions;
@@ -28,6 +30,8 @@ use UnitEnum;
 
 class LeadResource extends Resource
 {
+    use SearchesPhoneNumbers;
+
     protected static ?string $model = Lead::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxArrowDown;
@@ -37,6 +41,8 @@ class LeadResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'reference';
+
+    protected static int $globalSearchResultsLimit = GlobalSearch::RESULTS_LIMIT;
 
     public static function form(Schema $schema): Schema
     {
@@ -91,23 +97,33 @@ class LeadResource extends Resource
         return 'New leads';
     }
 
+    /** @return array<int, string> */
     public static function getGloballySearchableAttributes(): array
     {
-        return ['reference', 'contact.email', 'contact.first_name', 'contact.last_name', 'contact.phone'];
+        return ['reference', 'contact.email', 'contact.first_name', 'contact.last_name', 'contact.phone', 'contact.whatsapp'];
+    }
+
+    /** @return array<int, string> */
+    protected static function getGlobalSearchPhoneColumns(): array
+    {
+        return ['contact.phone', 'contact.whatsapp'];
     }
 
     public static function getGlobalSearchResultTitle(Model $record): string
     {
         /** @var Lead $record */
-        return $record->reference.' — '.($record->contact?->name ?? '');
+        return trim($record->reference.' — '.($record->contact?->name ?: $record->contact?->email), ' —');
     }
 
+    /** e.g. "Tailor-made · Everest Base Camp Trek · New · 2 days ago" */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /** @var Lead $record */
-        return array_filter([
-            'Status' => $record->status?->getLabel(),
-            'Trip' => $record->trip?->title,
+        return GlobalSearch::line([
+            $record->type?->getLabel(),
+            $record->trip?->title,
+            $record->status?->getLabel(),
+            $record->created_at?->diffForHumans(),
         ]);
     }
 
@@ -116,9 +132,10 @@ class LeadResource extends Resource
         return static::getUrl('view', ['record' => $record]);
     }
 
+    /** Scoped like the list: sales staff only find their own and unassigned leads. */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
-        return parent::getGlobalSearchEloquentQuery()->with(['contact', 'trip']);
+        return parent::getGlobalSearchEloquentQuery()->with(['contact', 'trip'])->latest();
     }
 
     public static function getRelations(): array

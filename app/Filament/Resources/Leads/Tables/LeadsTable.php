@@ -8,9 +8,11 @@ use App\Filament\Exports\LeadExporter;
 use App\Filament\Resources\Leads\LeadResource;
 use App\Filament\Support\CrmFields;
 use App\Filament\Support\ExportActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Lead;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
@@ -32,6 +34,14 @@ class LeadsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedInboxArrowDown))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No enquiries yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'New enquiries from the website, the tailor-made planner and the API land here automatically.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['contact', 'trip', 'owner']))
             ->defaultSort('created_at', 'desc')
             ->recordUrl(fn (Lead $record): string => LeadResource::getUrl('view', ['record' => $record]))

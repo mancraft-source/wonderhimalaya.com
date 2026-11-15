@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Trips\Pages;
 
 use App\Filament\Resources\Trips\Tables\TripsTable;
 use App\Filament\Resources\Trips\TripResource;
+use App\Filament\Support\ActivityHistory;
 use App\Filament\Support\SiteLinkActions;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -19,6 +20,7 @@ class EditTrip extends EditRecord
     {
         return [
             ...SiteLinkActions::header(),
+            ActivityHistory::action(),
             ActionGroup::make([
                 TripsTable::replicateAction(),
                 DeleteAction::make(),

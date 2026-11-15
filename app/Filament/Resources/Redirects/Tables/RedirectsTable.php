@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\Redirects\Tables;
 
 use App\Filament\Resources\Redirects\Schemas\RedirectForm;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Redirect;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -22,6 +24,14 @@ class RedirectsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedArrowUturnRight))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No redirects yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Changing the URL of a trip, page, post or other public record adds one automatically; you can also add redirects by hand, paste a list or import a CSV.'))
+            ->emptyStateActions([CreateAction::make()])
             ->defaultSort('updated_at', 'desc')
             ->columns([
                 TextColumn::make('from_path')

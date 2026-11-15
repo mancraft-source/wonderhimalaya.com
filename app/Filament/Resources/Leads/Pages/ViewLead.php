@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Leads\Pages;
 
 use App\Filament\Resources\Leads\LeadActions;
 use App\Filament\Resources\Leads\LeadResource;
+use App\Filament\Support\ActivityHistory;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
@@ -30,6 +31,7 @@ class ViewLead extends ViewRecord
             LeadActions::createQuote(),
             LeadActions::changeStatus(),
             LeadActions::assignToMe(),
+            ActivityHistory::action(),
             ActionGroup::make([
                 LeadActions::whatsapp(),
                 LeadActions::email(),

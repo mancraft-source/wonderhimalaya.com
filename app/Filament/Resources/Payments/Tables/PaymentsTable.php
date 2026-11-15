@@ -9,6 +9,7 @@ use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\Payments\PaymentResource;
 use App\Filament\Resources\Quotes\QuoteResource;
 use App\Filament\Support\ExportActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Models\Quote;
@@ -31,6 +32,13 @@ class PaymentsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedCreditCard))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No payments yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Payment links created from bookings and quotes appear here with their status.'))
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['payable', 'contact']))
             ->defaultSort('created_at', 'desc')
             ->columns([

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\NotFoundLogs\Tables;
 
 use App\Filament\Resources\Redirects\Schemas\RedirectForm;
+use App\Filament\Support\TableEmptyState;
 use App\Models\NotFoundLog;
 use App\Models\Redirect;
 use Filament\Actions\Action;
@@ -25,6 +26,13 @@ class NotFoundLogsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedCheckBadge))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No broken links logged'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Good news — nobody has hit a broken link yet.'))
             ->defaultSort('hits', 'desc')
             ->columns([
                 TextColumn::make('path')

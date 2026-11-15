@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Leads\Pages;
 
 use App\Filament\Resources\Leads\LeadActions;
 use App\Filament\Resources\Leads\LeadResource;
+use App\Filament\Support\ActivityHistory;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
@@ -20,6 +21,7 @@ class EditLead extends EditRecord
         return [
             ViewAction::make(),
             LeadActions::createQuote(),
+            ActivityHistory::action(),
             ActionGroup::make([
                 LeadActions::whatsapp(),
                 LeadActions::email(),

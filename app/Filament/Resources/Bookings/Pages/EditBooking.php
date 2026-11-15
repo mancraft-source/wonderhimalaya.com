@@ -6,6 +6,7 @@ use App\Actions\Bookings\CreatePaymentLink;
 use App\Enums\PaymentType;
 use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\Payments\PaymentResource;
+use App\Filament\Support\ActivityHistory;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Support\Permissions;
@@ -34,6 +35,7 @@ class EditBooking extends EditRecord
     {
         return [
             $this->createPaymentLinkAction(),
+            ActivityHistory::action(),
             ActionGroup::make([
                 DeleteAction::make(),
                 ForceDeleteAction::make(),

@@ -5,12 +5,15 @@ namespace App\Filament\Resources\Bookings\Tables;
 use App\Enums\BookingStatus;
 use App\Filament\Exports\BookingExporter;
 use App\Filament\Support\ExportActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Booking;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -25,6 +28,14 @@ class BookingsTable
         $money = fn (Booking $record): string => $record->currency ?: 'USD';
 
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedTicket))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No bookings yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'A booking is created automatically when a client accepts a quote online, and you can also add one by hand.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['contact', 'trip']))
             ->defaultSort('start_date')
             ->columns([
@@ -47,17 +58,6 @@ class BookingsTable
                 TextColumn::make('balance_due_on')->label('Balance due')->date('j M Y')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                TernaryFilter::make('when')
-                    ->label('When')
-                    ->placeholder('All')
-                    ->trueLabel('Upcoming')
-                    ->falseLabel('Past')
-                    ->default(true)
-                    ->queries(
-                        true: fn (Builder $q) => $q->where(fn (Builder $q) => $q->whereNull('start_date')->orWhereDate('start_date', '>=', today())),
-                        false: fn (Builder $q) => $q->whereDate('start_date', '<', today()),
-                        blank: fn (Builder $q) => $q,
-                    ),
                 SelectFilter::make('status')->options(BookingStatus::class)->multiple(),
                 SelectFilter::make('trip_id')->label('Trip')->relationship('trip', 'title')->searchable(),
                 TernaryFilter::make('balance_outstanding')

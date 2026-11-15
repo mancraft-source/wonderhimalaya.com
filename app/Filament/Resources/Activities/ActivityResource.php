@@ -7,12 +7,15 @@ use App\Filament\Resources\Activities\Pages\EditActivity;
 use App\Filament\Resources\Activities\Pages\ListActivities;
 use App\Filament\Resources\Activities\Schemas\ActivityForm;
 use App\Filament\Resources\Activities\Tables\ActivitiesTable;
+use App\Filament\Support\GlobalSearch;
 use App\Models\Activity;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
 class ActivityResource extends Resource
@@ -26,6 +29,8 @@ class ActivityResource extends Resource
     protected static ?int $navigationSort = 4;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static int $globalSearchResultsLimit = GlobalSearch::RESULTS_LIMIT;
 
     public static function form(Schema $schema): Schema
     {
@@ -42,6 +47,24 @@ class ActivityResource extends Resource
         return [
             //
         ];
+    }
+
+    /** @return array<int, string> */
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'slug'];
+    }
+
+    /** e.g. "Everest · 12 trips" */
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /** @var Activity $record */
+        return GlobalSearch::line([$record->trips_count.' '.str('trip')->plural((int) $record->trips_count)]);
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->withCount('trips')->orderBy('name');
     }
 
     public static function getPages(): array

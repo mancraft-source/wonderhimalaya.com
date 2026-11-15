@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use App\Support\Notifications\NotificationSettings;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -13,7 +14,8 @@ use Illuminate\Notifications\Notification;
 
 /**
  * A staff alert (new lead, payment, booking, assignment): email and/or the admin bell, as configured
- * under Settings → Notifications. Extra addresses (anonymous notifiables) always get email.
+ * under Settings → Notifications and narrowed by each person's profile preferences.
+ * Extra addresses (anonymous notifiables) always get email.
  */
 class StaffAlert extends Notification implements ShouldQueue
 {
@@ -35,7 +37,11 @@ class StaffAlert extends Notification implements ShouldQueue
     /** @return array<int, string> */
     public function via(object $notifiable): array
     {
-        return $notifiable instanceof AnonymousNotifiable ? ['mail'] : NotificationSettings::channels($this->event);
+        return match (true) {
+            $notifiable instanceof AnonymousNotifiable => ['mail'],
+            $notifiable instanceof User => NotificationSettings::channelsFor($this->event, $notifiable),
+            default => NotificationSettings::channels($this->event),
+        };
     }
 
     public function toMail(object $notifiable): MailMessage

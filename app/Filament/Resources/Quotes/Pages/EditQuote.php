@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Quotes\Pages;
 
 use App\Filament\Resources\Quotes\QuoteActions;
 use App\Filament\Resources\Quotes\QuoteResource;
+use App\Filament\Support\ActivityHistory;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
@@ -25,6 +26,7 @@ class EditQuote extends EditRecord
             QuoteActions::markAsSent(),
             QuoteActions::preview(),
             QuoteActions::downloadPdf(),
+            ActivityHistory::action(),
             ActionGroup::make([
                 DeleteAction::make(),
                 ForceDeleteAction::make(),

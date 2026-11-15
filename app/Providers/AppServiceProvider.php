@@ -17,6 +17,7 @@ use App\Models\Quote;
 use App\Models\TeamMember;
 use App\Models\Trip;
 use App\Models\User;
+use App\Policies\ActivityLogPolicy;
 use App\View\Composers\SiteComposer;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Activitylog\Models\Activity as ActivityLogEntry;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -60,6 +62,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Gate::before(fn (User $user) => $user->hasRole('admin') ? true : null);
+        Gate::policy(ActivityLogEntry::class, ActivityLogPolicy::class);
 
         Password::defaults(fn () => $this->app->isProduction()
             ? Password::min(12)->mixedCase()->numbers()->symbols()->uncompromised()

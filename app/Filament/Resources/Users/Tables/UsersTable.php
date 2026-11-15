@@ -3,10 +3,13 @@
 namespace App\Filament\Resources\Users\Tables;
 
 use App\Filament\Resources\Users\UserActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\User;
 use Filament\Actions\ActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -19,6 +22,14 @@ class UsersTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedUserCircle))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No staff accounts yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Staff accounts sign in to this admin, and each person\'s role decides what they can see and do.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with('roles')->withCount('tokens'))
             ->defaultSort('name')
             ->columns([

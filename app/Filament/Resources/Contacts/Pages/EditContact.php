@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Contacts\Pages;
 use App\Actions\Contacts\AnonymiseContact;
 use App\Actions\Contacts\ContactDataExport;
 use App\Filament\Resources\Contacts\ContactResource;
+use App\Filament\Support\ActivityHistory;
 use App\Filament\Support\CrmFields;
 use App\Models\Contact;
 use Filament\Actions\Action;
@@ -39,6 +40,7 @@ class EditContact extends EditRecord
                 ->icon(Heroicon::OutlinedEnvelope)
                 ->color('gray')
                 ->url(fn (Contact $record): string => 'mailto:'.$record->email),
+            ActivityHistory::action(),
             ActionGroup::make([
                 Action::make('export_data')
                     ->label('Export data (GDPR)')

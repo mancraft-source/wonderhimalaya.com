@@ -5,9 +5,11 @@ namespace App\Filament\Resources\Posts\Tables;
 use App\Enums\PublishStatus;
 use App\Filament\Support\SeoFields;
 use App\Filament\Support\SiteLinkActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Post;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,6 +17,7 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -29,6 +32,14 @@ class PostsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedNewspaper))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No posts yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Write the first blog post; drafts stay hidden from the website until you publish them.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['category', 'author', 'media']))
             ->defaultSort('published_at', 'desc')
             ->columns([

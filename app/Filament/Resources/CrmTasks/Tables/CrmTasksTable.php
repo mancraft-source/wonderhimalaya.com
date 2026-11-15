@@ -7,6 +7,7 @@ use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\Contacts\ContactResource;
 use App\Filament\Resources\Leads\LeadResource;
 use App\Filament\Support\CrmFields;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Booking;
 use App\Models\Contact;
 use App\Models\CrmTask;
@@ -14,6 +15,7 @@ use App\Models\Lead;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -30,6 +32,16 @@ class CrmTasksTable
     public static function configure(Table $table, bool $withTaskable = true): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedCheckCircle))
+            ->emptyStateHeading(TableEmptyState::heading($table, $withTaskable ? 'No tasks yet' : 'No tasks for this lead yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, $withTaskable
+                ? 'Calls, emails and follow-ups you schedule, on their own or against a lead, show up here with the soonest due first.'
+                : 'Add a task to schedule a call, email or meeting for this lead.'))
+            ->emptyStateActions($withTaskable ? [CreateAction::make()] : [])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['assignee', ...($withTaskable ? ['taskable'] : [])]))
             ->defaultSort('due_at')
             ->columns([

@@ -5,12 +5,15 @@ namespace App\Filament\Resources\Contacts\Tables;
 use App\Filament\Exports\ContactExporter;
 use App\Filament\Support\CrmFields;
 use App\Filament\Support\ExportActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Contact;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -24,6 +27,14 @@ class ContactsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedUsers))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No contacts yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Everyone who sends an enquiry or signs up for the newsletter is added here automatically.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['company', 'owner'])->withCount(['leads', 'bookings']))
             ->defaultSort('created_at', 'desc')
             ->columns([

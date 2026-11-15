@@ -7,6 +7,7 @@ use App\Filament\Resources\Posts\Pages\EditPost;
 use App\Filament\Resources\Posts\Pages\ListPosts;
 use App\Filament\Resources\Posts\Schemas\PostForm;
 use App\Filament\Resources\Posts\Tables\PostsTable;
+use App\Filament\Support\GlobalSearch;
 use App\Models\Post;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -14,6 +15,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 
@@ -28,6 +30,8 @@ class PostResource extends Resource
     protected static ?int $navigationSort = 20;
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    protected static int $globalSearchResultsLimit = GlobalSearch::RESULTS_LIMIT;
 
     public static function form(Schema $schema): Schema
     {
@@ -44,6 +48,28 @@ class PostResource extends Resource
         return [
             //
         ];
+    }
+
+    /** @return array<int, string> */
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'slug'];
+    }
+
+    /** e.g. "Trekking tips · Published · 3 Nov 2026" */
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /** @var Post $record */
+        return GlobalSearch::line([
+            $record->category?->name,
+            $record->status?->getLabel(),
+            $record->published_at?->format('j M Y'),
+        ]);
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with('category')->latest();
     }
 
     public static function getPages(): array

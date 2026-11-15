@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Leads\Pages;
 use App\Enums\LeadStatus;
 use App\Filament\Pages\LeadPipeline;
 use App\Filament\Resources\Leads\LeadResource;
+use App\Filament\Support\ListTabs;
+use App\Support\Permissions;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
@@ -21,6 +23,9 @@ class ListLeads extends ListRecords
 
     public const WON = [LeadStatus::DepositPaid, LeadStatus::Confirmed, LeadStatus::Travelled];
 
+    /** Statuses after which a lead needs no more chasing. */
+    public const CLOSED = [LeadStatus::Lost, LeadStatus::Travelled];
+
     protected function getHeaderActions(): array
     {
         return [
@@ -33,22 +38,25 @@ class ListLeads extends ListRecords
         ];
     }
 
+    /** @return array<string, Tab> */
     public function getTabs(): array
     {
-        $count = fn (array $statuses): int => LeadResource::getEloquentQuery()->whereIn('status', $statuses)->count();
+        $leads = LeadResource::getEloquentQuery();
 
         return [
             'all' => Tab::make('All'),
-            'new' => Tab::make('New')
-                ->badge($count([LeadStatus::New]) ?: null)
-                ->badgeColor('warning')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', LeadStatus::New)),
-            'active' => Tab::make('Active pipeline')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('status', self::ACTIVE)),
-            'won' => Tab::make('Won')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('status', self::WON)),
-            'lost' => Tab::make('Lost')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', LeadStatus::Lost)),
+            ...(auth()->user()?->can(Permissions::CRM_MANAGE) ? [
+                'mine' => ListTabs::counted('My open leads', $leads, fn (Builder $query): Builder => $query
+                    ->where('owner_id', auth()->id())
+                    ->whereNotIn('status', self::CLOSED), 'primary'),
+            ] : []),
+            'new' => ListTabs::counted('New', $leads, fn (Builder $query): Builder => $query->where('status', LeadStatus::New), 'warning'),
+            'follow_up' => ListTabs::counted('Follow-up due', $leads, fn (Builder $query): Builder => $query
+                ->where('next_follow_up_at', '<=', now())
+                ->whereNotIn('status', self::CLOSED), 'danger'),
+            'active' => ListTabs::counted('Active pipeline', $leads, fn (Builder $query): Builder => $query->whereIn('status', self::ACTIVE)),
+            'won' => ListTabs::counted('Won', $leads, fn (Builder $query): Builder => $query->whereIn('status', self::WON), 'success'),
+            'lost' => ListTabs::counted('Lost', $leads, fn (Builder $query): Builder => $query->where('status', LeadStatus::Lost)),
         ];
     }
 }

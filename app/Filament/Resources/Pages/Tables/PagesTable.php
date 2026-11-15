@@ -6,9 +6,11 @@ use App\Enums\PublishStatus;
 use App\Filament\Resources\Pages\Schemas\PageForm;
 use App\Filament\Support\SeoFields;
 use App\Filament\Support\SiteLinkActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Page;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -16,6 +18,7 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -28,6 +31,14 @@ class PagesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedDocumentDuplicate))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No pages yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Pages hold standalone website content outside trips and the blog; drafts stay hidden until you publish them.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with('parent'))
             ->defaultSort('path')
             ->columns([

@@ -3,12 +3,15 @@
 namespace App\Filament\Resources\TripDepartures\Tables;
 
 use App\Enums\DepartureStatus;
+use App\Filament\Support\TableEmptyState;
 use App\Models\TripDeparture;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -21,6 +24,16 @@ class TripDeparturesTable
     public static function configure(Table $table, bool $withTrip = true): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedCalendarDays))
+            ->emptyStateHeading(TableEmptyState::heading($table, $withTrip ? 'No departures yet' : 'No departures for this trip yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, $withTrip
+                ? 'Add dated group departures to trips so travellers can book a place on a fixed date.'
+                : 'Add dated group departures so travellers can book a place on this trip.'))
+            ->emptyStateActions($withTrip ? [CreateAction::make()] : [])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['trip', 'tier']))
             ->defaultSort('start_date')
             ->columns([

@@ -170,6 +170,35 @@ final class NotificationSettings
         return array_values(array_intersect((array) self::event($key)['channels'], [self::CHANNEL_MAIL, self::CHANNEL_BELL]));
     }
 
+    /**
+     * The channels this person actually gets: the admin-allowed channels, narrowed by their own profile preferences.
+     *
+     * @return array<int, string>
+     */
+    public static function channelsFor(string $key, User $user): array
+    {
+        return array_values(array_filter(self::channels($key), fn (string $channel): bool => $user->wantsStaffAlert($key, $channel)));
+    }
+
+    /**
+     * Whether the admin settings would send this staff alert to this person at all
+     * (assignment alerts go to whoever is assigned, so anyone who can see the CRM).
+     */
+    public static function isEligible(string $key, User $user): bool
+    {
+        if (! self::enabled($key) || self::channels($key) === [] || ! $user->is_active) {
+            return false;
+        }
+
+        $settings = self::event($key);
+
+        if (($settings['all_staff'] ?? false) || (self::EVENTS[$key]['assignee_only'] ?? false)) {
+            return $user->can(Permissions::CRM_VIEW);
+        }
+
+        return in_array($user->getKey(), array_map('intval', (array) $settings['user_ids']), true);
+    }
+
     /** @return array<string, array<string, mixed>> */
     public static function forAudience(string $audience): array
     {

@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\Testimonials\Tables;
 
 use App\Filament\Resources\Testimonials\Schemas\TestimonialForm;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Testimonial;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -23,6 +25,16 @@ class TestimonialsTable
     public static function configure(Table $table, bool $withTrip = true): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedChatBubbleLeftRight))
+            ->emptyStateHeading(TableEmptyState::heading($table, $withTrip ? 'No reviews yet' : 'No reviews for this trip yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, $withTrip
+                ? 'Reviews travellers submit on trip pages arrive here for approval, and you can add your own.'
+                : 'Reviews travellers submit on this trip\'s page arrive here for approval.'))
+            ->emptyStateActions($withTrip ? [CreateAction::make()] : [])
             ->modifyQueryUsing(fn (Builder $query) => $query->with('trip'))
             ->defaultSort('reviewed_at', 'desc')
             ->columns([

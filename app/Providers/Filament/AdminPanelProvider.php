@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Support\BrandColors;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
@@ -32,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             // Profile (and two-factor setup) inside the normal layout, so the sidebar stays.
-            ->profile(isSimple: false)
+            ->profile(EditProfile::class, isSimple: false)
             ->multiFactorAuthentication(
                 [AppAuthentication::make()->recoverable()],
                 isRequired: app()->isProduction(),

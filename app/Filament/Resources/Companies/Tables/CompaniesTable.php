@@ -4,11 +4,14 @@ namespace App\Filament\Resources\Companies\Tables;
 
 use App\Enums\CompanyType;
 use App\Filament\Resources\Companies\Schemas\CompanyForm;
+use App\Filament\Support\TableEmptyState;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -20,6 +23,14 @@ class CompaniesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedBuildingOffice2))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No partner companies yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Add the agencies, tour operators and corporate clients you work with, then link their contacts and leads.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with('owner')->withCount(['contacts', 'leads', 'bookings']))
             ->defaultSort('name')
             ->columns([

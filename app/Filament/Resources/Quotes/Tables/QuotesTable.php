@@ -4,13 +4,16 @@ namespace App\Filament\Resources\Quotes\Tables;
 
 use App\Enums\QuoteStatus;
 use App\Filament\Resources\Quotes\QuoteActions;
+use App\Filament\Support\TableEmptyState;
 use App\Models\Quote;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -22,6 +25,14 @@ class QuotesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedDocumentCurrencyDollar))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No quotes yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Create a quote from a lead with its Create quote action, or start one here.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['contact', 'lead', 'trip']))
             ->defaultSort('created_at', 'desc')
             ->columns([

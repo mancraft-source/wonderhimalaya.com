@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Bookings\RelationManagers;
 
 use App\Filament\Resources\Payments\PaymentResource;
 use App\Filament\Resources\Payments\Tables\PaymentsTable;
+use App\Filament\Support\ActivityHistory;
 use App\Models\Payment;
 use App\Support\Permissions;
 use Filament\Actions\Action;
@@ -50,6 +51,7 @@ class PaymentsRelationManager extends RelationManager
                     ->openUrlInNewTab()
                     ->visible(fn (Payment $record): bool => $record->isPayable()),
                 PaymentsTable::markAsPaidAction(),
+                ActivityHistory::action()->iconButton()->tooltip('History'),
             ]);
     }
 }

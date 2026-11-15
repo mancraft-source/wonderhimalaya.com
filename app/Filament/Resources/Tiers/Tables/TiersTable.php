@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Tiers\Tables;
 
+use App\Filament\Support\TableEmptyState;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,6 +17,14 @@ class TiersTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->emptyStateIcon(TableEmptyState::icon($table, Heroicon::OutlinedSparkles))
+            ->emptyStateHeading(TableEmptyState::heading($table, 'No tiers yet'))
+            ->emptyStateDescription(TableEmptyState::description($table, 'Tiers are the package levels a trip can be priced at.'))
+            ->emptyStateActions([CreateAction::make()])
             ->modifyQueryUsing(fn (Builder $query) => $query->withCount('trips'))
             ->defaultSort('sort')
             ->reorderable('sort')
