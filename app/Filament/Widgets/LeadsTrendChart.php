@@ -10,7 +10,7 @@ use Filament\Widgets\ChartWidget;
 
 class LeadsTrendChart extends ChartWidget
 {
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 5;
 
     protected ?string $heading = 'Leads per week';
 

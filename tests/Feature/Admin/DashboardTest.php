@@ -10,6 +10,7 @@ use App\Filament\Widgets\RecentEnquiries;
 use App\Filament\Widgets\RevenueOverview;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TodayOverview;
+use App\Filament\Widgets\UpcomingDepartures;
 use App\Models\User;
 use Database\Factories\BookingFactory;
 use Database\Factories\CrmTaskFactory;
@@ -184,4 +185,31 @@ it('lists recent enquiries linked to the lead', function () {
     Livewire::test(RecentEnquiries::class)
         ->assertCanSeeTableRecords([$lead])
         ->assertSee([$lead->reference, $lead->contact->name, $lead->trip->title, 'Google']);
+});
+
+it('lists upcoming departures for the next 60 days by default, switchable to 30 or 90', function () {
+    $admin = User::factory()->admin()->create();
+    $in10 = TripDepartureFactory::new()->create(['start_date' => today()->addDays(10), 'end_date' => today()->addDays(20)]);
+    $in45 = TripDepartureFactory::new()->create(['start_date' => today()->addDays(45), 'end_date' => today()->addDays(55)]);
+    $in80 = TripDepartureFactory::new()->create(['start_date' => today()->addDays(80), 'end_date' => today()->addDays(90)]);
+    $cancelled = TripDepartureFactory::new()->create(['start_date' => today()->addDays(12), 'end_date' => today()->addDays(22), 'status' => DepartureStatus::Cancelled]);
+    $past = TripDepartureFactory::new()->create(['start_date' => today()->subDays(3), 'end_date' => today()->addDays(7)]);
+
+    $this->actingAs($admin);
+
+    Livewire::test(UpcomingDepartures::class)
+        ->assertCanSeeTableRecords([$in10, $in45])
+        ->assertCanNotSeeTableRecords([$in80, $cancelled, $past])
+        ->filterTable('range', '30')
+        ->assertCanSeeTableRecords([$in10])
+        ->assertCanNotSeeTableRecords([$in45])
+        ->filterTable('range', '90')
+        ->assertCanSeeTableRecords([$in10, $in45, $in80]);
+});
+
+it('shows upcoming departures to content staff too', function () {
+    $this->actingAs(User::factory()->role('content')->create())
+        ->get(Dashboard::getUrl())
+        ->assertOk()
+        ->assertSeeLivewire(UpcomingDepartures::class);
 });

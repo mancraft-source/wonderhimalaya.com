@@ -11,6 +11,7 @@ use App\Filament\Widgets\RecentEnquiries;
 use App\Filament\Widgets\RevenueOverview;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TodayOverview;
+use App\Filament\Widgets\UpcomingDepartures;
 use Filament\Actions\Action;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Support\Icons\Heroicon;
@@ -60,6 +61,7 @@ class Dashboard extends BaseDashboard
             StatsOverview::class,
             RevenueOverview::class,
             RecentEnquiries::class,
+            UpcomingDepartures::class,
             LeadsTrendChart::class,
             LeadsBySourceChart::class,
         ];
