@@ -2,17 +2,17 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Dashboard;
+use App\Filament\Support\BrandColors;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -41,14 +41,18 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => view('filament.brand'))
             ->brandLogoHeight('2.75rem')
             ->favicon(asset('favicon.png'))
+            // Hand-tuned brand scales (Color::hex() would turn Juniper into a bright teal) — see BrandColors.
             ->colors([
-                'primary' => Color::hex('#1F3A33'),
-                'gray' => Color::Stone,
-                'warning' => Color::hex('#D9A441'),
-                'danger' => Color::hex('#B5532E'),
-                'info' => Color::hex('#5E8796'),
+                'primary' => BrandColors::JUNIPER,
+                'gray' => BrandColors::GRAY,
+                'warning' => BrandColors::SAFFRON,
+                'danger' => BrandColors::TERRACOTTA,
+                'info' => BrandColors::GLACIER,
             ])
             ->font('Inter')
+            // Light / Dark / System switch in the user menu; follows the device until someone picks one.
+            ->darkMode()
+            ->defaultThemeMode(ThemeMode::System)
             ->spa()
             ->sidebarCollapsibleOnDesktop()
             ->globalSearch()
@@ -70,9 +74,6 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

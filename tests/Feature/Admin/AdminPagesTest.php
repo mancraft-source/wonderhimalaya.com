@@ -18,11 +18,11 @@ use App\Filament\Resources\Trips\TripResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Filament\Widgets\LeadsBySourceChart;
 use App\Filament\Widgets\LeadsTrendChart;
-use App\Filament\Widgets\MyOpenTasks;
+use App\Filament\Widgets\RecentEnquiries;
+use App\Filament\Widgets\RevenueOverview;
 use App\Filament\Widgets\StatsOverview;
-use App\Filament\Widgets\UpcomingDepartures;
-use App\Models\CrmTask;
-use App\Models\TripDeparture;
+use App\Filament\Widgets\TodayOverview;
+use App\Models\Lead;
 use App\Models\User;
 use Database\Factories\ActivityFactory;
 use Database\Factories\BookingFactory;
@@ -143,11 +143,12 @@ it('renders the dashboard widgets with data', function () {
 
     $this->actingAs($this->admin)->get('/admin')->assertOk();
 
-    Livewire::test(StatsOverview::class)->assertSee('New leads this week')->assertSee('Open pipeline')->assertSee('Received this month');
+    Livewire::test(StatsOverview::class)->assertSee('New leads this week')->assertSee('Open pipeline');
+    Livewire::test(RevenueOverview::class)->assertSee('Received this month');
     Livewire::test(LeadsTrendChart::class)->assertOk();
     Livewire::test(LeadsBySourceChart::class)->assertOk();
-    Livewire::test(UpcomingDepartures::class)->assertCanSeeTableRecords(TripDeparture::all());
-    Livewire::test(MyOpenTasks::class)->assertCanSeeTableRecords(CrmTask::all());
+    Livewire::test(TodayOverview::class)->assertOk();
+    Livewire::test(RecentEnquiries::class)->assertCanSeeTableRecords(Lead::all());
 });
 
 it('renders the lead pipeline board', function () {

@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Trips\Tables;
 use App\Enums\PublishStatus;
 use App\Filament\Resources\Trips\TripResource;
 use App\Filament\Support\SeoFields;
+use App\Filament\Support\SiteLinkActions;
 use App\Models\Trip;
-use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -96,11 +96,7 @@ class TripsTable
             ->recordActions([
                 EditAction::make(),
                 ActionGroup::make([
-                    Action::make('view_on_site')
-                        ->label('View on site')
-                        ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
-                        ->url(fn (Trip $record): string => $record->url())
-                        ->openUrlInNewTab(),
+                    SiteLinkActions::viewOnSite(),
                     self::replicateAction(),
                     DeleteAction::make(),
                 ]),

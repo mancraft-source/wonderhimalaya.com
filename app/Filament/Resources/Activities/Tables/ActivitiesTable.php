@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Activities\Tables;
 
 use App\Filament\Support\SeoFields;
+use App\Filament\Support\SiteLinkActions;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -29,7 +30,7 @@ class ActivitiesTable
                 SeoFields::scoreColumn(),
             ])
             ->filters([SeoFields::scoreFilter()])
-            ->recordActions([EditAction::make()])
+            ->recordActions([SiteLinkActions::openOnSite(), EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 }

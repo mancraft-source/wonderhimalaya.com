@@ -4,8 +4,10 @@ namespace App\Filament\Resources\Leads\Tables;
 
 use App\Enums\LeadStatus;
 use App\Enums\LeadType;
+use App\Filament\Exports\LeadExporter;
 use App\Filament\Resources\Leads\LeadResource;
 use App\Filament\Support\CrmFields;
+use App\Filament\Support\ExportActions;
 use App\Models\Lead;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -118,12 +120,16 @@ class LeadsTable
                     ->query(fn (Builder $query) => $query->where('next_follow_up_at', '<', now())),
                 TrashedFilter::make(),
             ])
+            ->headerActions([
+                ExportActions::header(LeadExporter::class),
+            ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    ExportActions::bulk(LeadExporter::class),
                     BulkAction::make('assign_to_me')
                         ->label('Assign to me')
                         ->icon(Heroicon::OutlinedUserPlus)

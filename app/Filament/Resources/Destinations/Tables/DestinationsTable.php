@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Destinations\Tables;
 
 use App\Filament\Support\SeoFields;
+use App\Filament\Support\SiteLinkActions;
 use App\Models\Destination;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -46,7 +47,7 @@ class DestinationsTable
                         false: fn (Builder $q) => $q->whereNotNull('parent_id'),
                     ),
             ])
-            ->recordActions([EditAction::make()])
+            ->recordActions([SiteLinkActions::openOnSite(), EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 }

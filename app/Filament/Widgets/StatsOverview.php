@@ -3,11 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\LeadStatus;
-use App\Enums\PaymentStatus;
 use App\Filament\Resources\Leads\LeadResource;
 use App\Models\Booking;
 use App\Models\Lead;
-use App\Models\Payment;
 use App\Support\Permissions;
 use App\Support\QuoteDefaults;
 use Filament\Support\Icons\Heroicon;
@@ -17,6 +15,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class StatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
+
+    protected ?string $heading = 'Sales at a glance';
 
     /** Lead statuses that still represent an open opportunity. */
     public const OPEN = [LeadStatus::New, LeadStatus::Contacted, LeadStatus::Qualified, LeadStatus::Quoted];
@@ -40,7 +40,7 @@ class StatsOverview extends StatsOverviewWidget
 
         $confirmed = Booking::query()->whereBetween('confirmed_at', [now()->startOfMonth(), now()->endOfMonth()])->count();
 
-        $stats = [
+        return [
             Stat::make('New leads this week', (string) $thisWeek)
                 ->description(($delta >= 0 ? '+' : '').$delta.' vs last week ('.$lastWeek.')')
                 ->descriptionIcon($delta >= 0 ? Heroicon::ArrowTrendingUp : Heroicon::ArrowTrendingDown)
@@ -56,19 +56,6 @@ class StatsOverview extends StatsOverviewWidget
                 ->color('success'),
         ];
 
-        if (auth()->user()?->can(Permissions::PAYMENTS)) {
-            $revenue = (float) Payment::query()
-                ->where('status', PaymentStatus::Paid)
-                ->whereBetween('paid_at', [now()->startOfMonth(), now()->endOfMonth()])
-                ->sum('amount');
-
-            $stats[] = Stat::make('Received this month', $currency.' '.number_format($revenue, 0))
-                ->description('Paid payments, all gateways')
-                ->descriptionIcon(Heroicon::Banknotes)
-                ->color('success');
-        }
-
-        return $stats;
     }
 
     /** @return array<int, int> lead counts for the last 7 days (grouped in PHP for DB portability) */

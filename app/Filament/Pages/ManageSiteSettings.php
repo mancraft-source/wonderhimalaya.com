@@ -183,26 +183,7 @@ class ManageSiteSettings extends Page
                                     ->color(fn (): string => self::mailStatus()['ok'] ? 'success' : 'warning')
                                     ->icon(fn (): Heroicon => self::mailStatus()['ok'] ? Heroicon::OutlinedCheckCircle : Heroicon::OutlinedExclamationTriangle),
                                 Actions::make([
-                                    Action::make('sendTestEmail')
-                                        ->label('Send a test email')
-                                        ->icon(Heroicon::OutlinedPaperAirplane)
-                                        ->color('gray')
-                                        ->schema([
-                                            TextInput::make('to')->label('Send to')->email()->required()
-                                                ->default(fn (): ?string => Setting::get('notifications.sales_email') ?: auth()->user()?->email),
-                                        ])
-                                        ->action(function (array $data): void {
-                                            try {
-                                                Mail::raw('This is a test email from the Wonder Himalaya website. If you can read this, outgoing email works.', function ($message) use ($data): void {
-                                                    $message->to($data['to'])->subject('Test email from '.config('app.name'));
-                                                });
-                                                Notification::make()->title('Test email sent to '.$data['to'])
-                                                    ->body(config('mail.default') === 'log' ? 'The mailer is set to "log", so it was written to storage/logs instead of being delivered.' : 'Check the inbox (and spam folder).')
-                                                    ->success()->send();
-                                            } catch (\Throwable $e) {
-                                                Notification::make()->title('Email could not be sent')->body(str($e->getMessage())->limit(300)->toString())->danger()->persistent()->send();
-                                            }
-                                        }),
+                                    self::sendTestEmailAction(),
                                 ]),
                             ]),
                         Tab::make('Integrations')
@@ -260,6 +241,31 @@ class ManageSiteSettings extends Page
             ->title('Settings saved')
             ->success()
             ->send();
+    }
+
+    /** "Send a test email" — also offered on the System page. */
+    public static function sendTestEmailAction(): Action
+    {
+        return Action::make('sendTestEmail')
+            ->label('Send a test email')
+            ->icon(Heroicon::OutlinedPaperAirplane)
+            ->color('gray')
+            ->schema([
+                TextInput::make('to')->label('Send to')->email()->required()
+                    ->default(fn (): ?string => Setting::get('notifications.sales_email') ?: auth()->user()?->email),
+            ])
+            ->action(function (array $data): void {
+                try {
+                    Mail::raw('This is a test email from the Wonder Himalaya website. If you can read this, outgoing email works.', function ($message) use ($data): void {
+                        $message->to($data['to'])->subject('Test email from '.config('app.name'));
+                    });
+                    Notification::make()->title('Test email sent to '.$data['to'])
+                        ->body(config('mail.default') === 'log' ? 'The mailer is set to "log", so it was written to storage/logs instead of being delivered.' : 'Check the inbox (and spam folder).')
+                        ->success()->send();
+                } catch (\Throwable $e) {
+                    Notification::make()->title('Email could not be sent')->body(str($e->getMessage())->limit(300)->toString())->danger()->persistent()->send();
+                }
+            });
     }
 
     /**

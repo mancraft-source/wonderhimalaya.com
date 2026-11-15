@@ -9,7 +9,7 @@ use Filament\Widgets\ChartWidget;
 
 class LeadsBySourceChart extends ChartWidget
 {
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 5;
 
     protected ?string $heading = 'Leads by source';
 

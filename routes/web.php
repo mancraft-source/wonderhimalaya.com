@@ -6,10 +6,12 @@ use App\Http\Controllers\Site\DepartureController;
 use App\Http\Controllers\Site\DestinationController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\PageController;
+use App\Http\Controllers\Site\PreviewController;
 use App\Http\Controllers\Site\SeoController;
 use App\Http\Controllers\Site\StaticController;
 use App\Http\Controllers\Site\TeamController;
 use App\Http\Controllers\Site\TripController;
+use App\Support\Preview;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/payments.php';
@@ -39,6 +41,11 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+
+// Shareable draft previews from the admin (temporary signed links, see App\Support\Preview).
+Route::get('/preview/{type}/{id}', PreviewController::class)->name('preview')
+    ->middleware(['signed', 'throttle:60,1'])
+    ->where(['type' => implode('|', array_keys(Preview::TYPES)), 'id' => '[0-9]+']);
 
 // CMS pages last: /about-us, /travel-guide/nepal-visa, ...
 Route::get('/{path}', [PageController::class, 'show'])->name('pages.show')->where('path', '(?!(?:admin|api|livewire|storage|docs|up)(?:/|$))[a-z0-9-]+(?:/[a-z0-9-]+)*');

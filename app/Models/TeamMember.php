@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Concerns\HasSeo;
 use App\Models\Concerns\InteractsWithImages;
 use App\Models\Concerns\RecordsSlugRedirects;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 
@@ -35,6 +37,12 @@ class TeamMember extends Model implements HasMedia
     public function publicPath(): string
     {
         return '/our-team/'.$this->slug;
+    }
+
+    #[Scope]
+    protected function published(Builder $query): void
+    {
+        $query->where($this->qualifyColumn('is_published'), true);
     }
 
     /** @return array<string, string|int|float|null> */

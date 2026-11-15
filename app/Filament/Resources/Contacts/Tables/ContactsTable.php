@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Contacts\Tables;
 
+use App\Filament\Exports\ContactExporter;
 use App\Filament\Support\CrmFields;
+use App\Filament\Support\ExportActions;
 use App\Models\Contact;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -47,9 +49,13 @@ class ContactsTable
                 SelectFilter::make('owner_id')->label('Owner')->options(fn () => CrmFields::staffOptions()),
                 TrashedFilter::make(),
             ])
+            ->headerActions([
+                ExportActions::header(ContactExporter::class),
+            ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    ExportActions::bulk(ContactExporter::class),
                     DeleteBulkAction::make(),
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),

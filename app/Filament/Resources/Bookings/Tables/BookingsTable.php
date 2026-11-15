@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Bookings\Tables;
 
 use App\Enums\BookingStatus;
+use App\Filament\Exports\BookingExporter;
+use App\Filament\Support\ExportActions;
 use App\Models\Booking;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -66,9 +68,13 @@ class BookingsTable
                     ),
                 TrashedFilter::make(),
             ])
+            ->headerActions([
+                ExportActions::header(BookingExporter::class),
+            ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    ExportActions::bulk(BookingExporter::class),
                     DeleteBulkAction::make(),
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),

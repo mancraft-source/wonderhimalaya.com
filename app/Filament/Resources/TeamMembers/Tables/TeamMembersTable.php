@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\TeamMembers\Tables;
 
 use App\Filament\Support\SeoFields;
+use App\Filament\Support\SiteLinkActions;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -54,6 +55,7 @@ class TeamMembersTable
                 TernaryFilter::make('is_published')->label('Published'),
             ])
             ->recordActions([
+                SiteLinkActions::openOnSite(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

@@ -23,12 +23,16 @@
 
 /* ---------- Canvas ---------- */
 .fi-body {
-    @apply bg-wh-paper dark:bg-wh-juniper-950;
+    @apply bg-wh-paper dark:bg-gray-950;
 }
 
 .fi-topbar {
-    @apply bg-wh-paper/85 shadow-none ring-0 backdrop-blur-xl dark:bg-wh-juniper-950/85;
+    @apply bg-wh-paper/85 shadow-none ring-0 backdrop-blur-xl dark:bg-gray-950/85;
     border-bottom: 1px solid rgb(31 58 51 / 0.1);
+}
+
+.dark .fi-topbar {
+    border-bottom-color: rgb(255 255 255 / 0.08);
 }
 
 /* Cards, tables and modals sit on warm white instead of pure white. */
@@ -37,7 +41,7 @@
 .fi-wi-stats-overview-stat,
 .fi-modal-window,
 .fi-dropdown-panel {
-    @apply bg-wh-card dark:bg-wh-juniper-900;
+    @apply bg-wh-card dark:bg-gray-900;
 }
 
 .fi-section:not(.fi-section-not-contained),
@@ -76,6 +80,12 @@
 
 .fi-brand-tagline {
     @apply mt-1 block font-sans text-[0.6rem] font-semibold tracking-[0.2em] text-wh-terracotta uppercase;
+}
+
+/* In dark mode the sidebar sits one step darker than the page so it still reads as its own column. */
+.dark .fi-sidebar {
+    background: var(--color-gray-950);
+    box-shadow: inset -1px 0 0 rgb(255 255 255 / 0.06);
 }
 
 /* ---------- Sidebar: Juniper ---------- */
@@ -195,7 +205,7 @@
 }
 
 .fi-simple-main {
-    @apply rounded-[1.75rem] bg-wh-card shadow-[0_40px_80px_-30px_rgb(0_0_0/0.55)] ring-0 dark:bg-wh-juniper-900;
+    @apply rounded-[1.75rem] bg-wh-card shadow-[0_40px_80px_-30px_rgb(0_0_0/0.55)] ring-0 dark:bg-gray-900;
 }
 
 .fi-simple-header .fi-logo {

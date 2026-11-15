@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Site\Concerns\FindsPublished;
 use App\Models\TeamMember;
+use App\Support\Permissions;
 use App\Support\Seo;
 use Illuminate\Contracts\View\View;
 
 class TeamController extends Controller
 {
+    use FindsPublished;
+
     public function index(): View
     {
         $members = TeamMember::where('is_published', true)->with('media')->orderBy('sort')->orderBy('name')->get();
@@ -22,7 +26,7 @@ class TeamController extends Controller
 
     public function show(string $slug): View
     {
-        $member = TeamMember::where('slug', $slug)->where('is_published', true)->with('media')->firstOrFail();
+        $member = $this->scopeVisible(TeamMember::query(), Permissions::CONTENT)->where('slug', $slug)->with('media')->firstOrFail();
 
         return view('site.team.show', [
             'member' => $member,

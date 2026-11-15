@@ -4,8 +4,8 @@ namespace App\Filament\Resources\Posts\Tables;
 
 use App\Enums\PublishStatus;
 use App\Filament\Support\SeoFields;
+use App\Filament\Support\SiteLinkActions;
 use App\Models\Post;
-use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -15,7 +15,6 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -81,12 +80,7 @@ class PostsTable
             ->recordActions([
                 EditAction::make(),
                 ActionGroup::make([
-                    Action::make('view_on_site')
-                        ->label('View on site')
-                        ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
-                        ->url(fn (Post $record): string => url($record->publicPath()))
-                        ->openUrlInNewTab()
-                        ->hidden(fn (Post $record): bool => $record->trashed()),
+                    SiteLinkActions::viewOnSite(),
                     DeleteAction::make(),
                     RestoreAction::make(),
                     ForceDeleteAction::make(),

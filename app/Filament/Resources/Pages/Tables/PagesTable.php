@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Pages\Tables;
 use App\Enums\PublishStatus;
 use App\Filament\Resources\Pages\Schemas\PageForm;
 use App\Filament\Support\SeoFields;
+use App\Filament\Support\SiteLinkActions;
 use App\Models\Page;
-use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -16,7 +16,6 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -71,12 +70,7 @@ class PagesTable
             ->recordActions([
                 EditAction::make(),
                 ActionGroup::make([
-                    Action::make('view_on_site')
-                        ->label('View on site')
-                        ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
-                        ->url(fn (Page $record): string => url($record->publicPath()))
-                        ->openUrlInNewTab()
-                        ->hidden(fn (Page $record): bool => $record->trashed()),
+                    SiteLinkActions::viewOnSite(),
                     DeleteAction::make(),
                     RestoreAction::make(),
                     ForceDeleteAction::make(),

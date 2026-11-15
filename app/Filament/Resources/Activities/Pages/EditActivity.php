@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Activities\Pages;
 
 use App\Filament\Resources\Activities\ActivityResource;
+use App\Filament\Support\SiteLinkActions;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
@@ -13,6 +14,7 @@ class EditActivity extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            ...SiteLinkActions::header(),
             DeleteAction::make(),
         ];
     }

@@ -4,9 +4,11 @@ namespace App\Filament\Resources\Payments\Tables;
 
 use App\Enums\PaymentStatus;
 use App\Enums\PaymentType;
+use App\Filament\Exports\PaymentExporter;
 use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\Payments\PaymentResource;
 use App\Filament\Resources\Quotes\QuoteResource;
+use App\Filament\Support\ExportActions;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Models\Quote;
@@ -62,6 +64,9 @@ class PaymentsTable
                 SelectFilter::make('type')->options(PaymentType::class),
                 SelectFilter::make('gateway')->options(['paypal' => 'PayPal', 'nepal_bank' => 'Nepal bank', 'manual' => 'Manual']),
             ])
+            ->headerActions([
+                ExportActions::header(PaymentExporter::class),
+            ])
             ->recordActions([
                 ActionGroup::make([
                     Action::make('open_link')
@@ -80,6 +85,9 @@ class PaymentsTable
                         ->authorize(fn (): bool => (bool) auth()->user()?->can(Permissions::PAYMENTS))
                         ->action(fn (Payment $record) => $record->update(['status' => PaymentStatus::Cancelled])),
                 ]),
+            ])
+            ->toolbarActions([
+                ExportActions::bulk(PaymentExporter::class),
             ]);
     }
 
