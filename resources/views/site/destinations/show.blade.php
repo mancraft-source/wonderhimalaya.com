@@ -60,7 +60,7 @@
             <x-site.section-heading eyebrow="Journeys" title="Ways to experience {{ $shortName }}" />
             <a href="{{ route('trips.index', ['destination' => $destination->slug]) }}" class="link-arrow shrink-0" data-reveal>Filter these journeys <x-heroicon-m-arrow-right class="size-4" /></a>
         </div>
-        <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="mt-10 sm:mt-14 grid gap-x-8 gap-y-10 sm:gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
             @forelse ($trips as $trip)
                 <x-site.trip-card :trip="$trip" data-reveal />
             @empty

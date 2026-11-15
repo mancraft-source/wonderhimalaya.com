@@ -64,7 +64,7 @@
             <x-site.picture :model="$trip" collection="hero" sizes="100vw" eager class="h-full w-full animate-slow-zoom" />
         </div>
         <div class="scrim-hero absolute inset-0 -z-10"></div>
-        <div class="hero-copy container-page pt-36 pb-12 lg:pb-16">
+        <div class="hero-copy container-page pt-32 pb-10 sm:pt-36 sm:pb-12 lg:pb-16">
             <x-site.breadcrumbs :items="$crumbs" light />
             <div class="mt-6 flex flex-wrap gap-2">
                 @if ($trip->is_fixed_departure)<span class="chip-light">Fixed group departure</span>@endif
@@ -74,7 +74,7 @@
             <h1 class="mt-5 max-w-5xl font-display text-display-lg text-white">{{ $trip->title }}@if ($trip->duration_days) <span class="font-light text-white/70">– {{ $trip->durationLabel() }}</span>@endif</h1>
 
             {{-- Social proof --}}
-            <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/85">
+            <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1.5 text-sm text-white/85 sm:mt-5">
                 <a href="{{ route('reviews') }}" class="flex items-center gap-2 hover:text-white">
                     <span class="flex gap-0.5 text-saffron-300">@for ($i = 0; $i < 5; $i++)<x-heroicon-s-star class="size-4" />@endfor</span>
                     {{ $reviews['google_label'] ?? 'Excellent' }} · {{ $reviews['google_count'] ?? 78 }} Google reviews
@@ -82,12 +82,12 @@
                 <span class="flex items-center gap-2"><x-heroicon-s-trophy class="size-4 text-saffron-300" /> Tripadvisor {{ $reviews['tripadvisor_award'] ?? "Travellers' Choice" }}</span>
             </div>
 
-            <div class="mt-8 flex flex-wrap items-center gap-4">
-                <a href="#departures" class="btn-primary">{{ $hasGroup ? 'Check dates & book' : 'Request a quote' }} <x-heroicon-m-arrow-down class="size-4" /></a>
+            <div class="mt-7 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-4">
+                <a href="#departures" class="btn-primary col-span-2">{{ $hasGroup ? 'Check dates & book' : 'Request a quote' }} <x-heroicon-m-arrow-down class="size-4" /></a>
                 @if ($gallery->isNotEmpty())
-                    <button type="button" class="btn-ghost-light" x-data x-on:click="$dispatch('open-gallery', { i: 0 })"><x-heroicon-o-photo class="size-4" /> See all {{ $gallery->count() + 1 }} photos</button>
+                    <button type="button" class="btn-ghost-light max-sm:!px-3" x-data x-on:click="$dispatch('open-gallery', { i: 0 })"><x-heroicon-o-photo class="size-4 shrink-0" /> <span class="sm:hidden">{{ $gallery->count() + 1 }} photos</span><span class="hidden sm:inline">See all {{ $gallery->count() + 1 }} photos</span></button>
                 @endif
-                <a href="{{ route('trips.pdf', $trip->slug) }}" class="btn-ghost-light"><x-heroicon-o-arrow-down-tray class="size-4" /> Itinerary PDF</a>
+                <a href="{{ route('trips.pdf', $trip->slug) }}" @class(['btn-ghost-light max-sm:!px-3', 'col-span-2' => $gallery->isEmpty()])><x-heroicon-o-arrow-down-tray class="size-4 shrink-0" /> Itinerary PDF</a>
             </div>
         </div>
     </section>
@@ -95,13 +95,13 @@
     {{-- ============================== TRIP FACTS ============================== --}}
     @if ($factRows)
         <section class="border-b border-stone-300/60 bg-stone-50">
-            <dl class="container-page grid grid-cols-2 gap-x-6 gap-y-6 py-8 sm:grid-cols-3 lg:grid-cols-6" data-stagger>
+            <dl class="container-page grid grid-cols-2 gap-x-5 gap-y-5 py-7 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-6 sm:py-8 lg:grid-cols-6" data-stagger>
                 @foreach (array_slice($factRows, 0, 12) as [$label, $value, $icon])
-                    <div class="flex items-start gap-3">
-                        <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-stone-200/70 text-terracotta-500"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span>
+                    <div class="flex min-w-0 items-start gap-3">
+                        <span class="hidden size-10 shrink-0 items-center justify-center sm:flex rounded-full bg-stone-200/70 text-terracotta-500"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span>
                         <div class="min-w-0">
-                            <dt class="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-stone-500">{{ $label }}</dt>
-                            <dd class="mt-0.5 text-[0.95rem] leading-snug font-medium text-navy-800">{{ $value }}</dd>
+                            <dt class="flex items-center gap-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-stone-500 sm:tracking-[0.18em]"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-3.5 shrink-0 text-terracotta-500 sm:hidden" />{{ $label }}</dt>
+                            <dd class="mt-1 text-sm leading-snug font-medium break-words text-navy-800 sm:mt-0.5 sm:text-[0.95rem]">{{ $value }}</dd>
                         </div>
                     </div>
                 @endforeach
@@ -124,8 +124,8 @@
         </div>
     </nav>
 
-    <div class="container-page grid gap-16 py-16 lg:grid-cols-12 lg:py-20">
-        <div class="min-w-0 space-y-24 lg:col-span-8">
+    <div class="container-page grid gap-10 sm:gap-16 py-12 sm:py-16 lg:grid-cols-12 lg:py-20">
+        <div class="min-w-0 space-y-16 sm:space-y-24 lg:col-span-8">
             {{-- ============================== OVERVIEW & HIGHLIGHTS ============================== --}}
             <section id="overview" data-section class="scroll-mt-44">
                 @if ($trip->highlights)
@@ -267,7 +267,7 @@
                     @endif
                     @if ($joinsDaily)
                     @elseif ($groupDepartures->isEmpty())
-                        <div class="rounded-[1.75rem] bg-stone-200/50 p-8">
+                        <div class="rounded-[1.75rem] bg-stone-200/50 p-6 sm:p-8">
                             <p class="font-display text-2xl text-navy-800">No fixed dates published yet.</p>
                             <p class="mt-2 text-ink-soft">We run this journey privately on any date you choose — and can often match you with other travellers.</p>
                             <button type="button" class="btn-dark mt-6" x-on:click="tab = 'private'; $dispatch('pick-departure', { id: 0 })">Choose my own dates</button>
@@ -341,7 +341,7 @@
                         </div>
                         <p class="mt-4 flex items-center gap-2 text-sm text-stone-500"><x-heroicon-o-user-group class="size-4" /> {{ $tripContent['group_discount_note'] }}</p>
                     @else
-                        <div class="rounded-[1.75rem] bg-stone-200/50 p-8">
+                        <div class="rounded-[1.75rem] bg-stone-200/50 p-6 sm:p-8">
                             <p class="font-display text-2xl text-navy-800">{{ $price ? 'From US$'.number_format($price).' per person' : 'Priced to your group' }}</p>
                             <button type="button" class="btn-dark mt-6" x-on:click="$dispatch('pick-departure', { id: 0 })">Request a private-trip quote</button>
                         </div>
@@ -717,10 +717,10 @@
 
     {{-- ============================== SIMILAR TRIPS ============================== --}}
     @if ($related->isNotEmpty())
-        <section class="bg-stone-200/50 py-24">
+        <section class="bg-stone-200/50 py-16 lg:py-24">
             <div class="container-page">
                 <x-site.section-heading eyebrow="Similar trips" title="More journeys {{ $trip->destination ? 'in '.str_replace(' Region', '', $trip->destination->name) : 'like this' }}" />
-                <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3" data-stagger>
+                <div class="mt-10 grid gap-x-8 gap-y-12 sm:mt-14 sm:gap-y-14 sm:grid-cols-2 lg:grid-cols-3" data-stagger>
                     @foreach ($related as $r)
                         <x-site.trip-card :trip="$r" />
                     @endforeach
@@ -730,7 +730,7 @@
     @endif
 
     {{-- Mobile sticky CTA --}}
-    <div class="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-stone-300/70 bg-stone-100/95 px-5 py-3 backdrop-blur-xl lg:hidden">
+    <div class="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-stone-300/70 bg-stone-100/95 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden">
         <div>
             @if ($price)<p class="text-xs text-stone-500">from</p><p class="font-display text-xl leading-none text-navy-800">US${{ number_format($price) }}</p>@else<p class="font-display text-lg text-navy-800">{{ $trip->durationLabel() }}</p>@endif
         </div>

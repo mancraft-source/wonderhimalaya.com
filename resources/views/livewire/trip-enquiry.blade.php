@@ -1,6 +1,6 @@
 <div x-data x-on:scroll-to-enquiry.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })" class="scroll-mt-28">
     @if ($reference)
-        <div class="rounded-[2rem] bg-navy-800 p-8 text-stone-100 sm:p-12" data-reveal>
+        <div class="rounded-[2rem] bg-navy-800 p-6 text-stone-100 sm:p-12" data-reveal>
             <x-heroicon-o-check-badge class="size-12 text-saffron-300" />
             <h3 class="mt-5 font-display text-3xl text-stone-100">Thank you — your request is with us.</h3>
             <p class="mt-3 text-stone-300">A specialist will reply personally within 24 hours with availability and a detailed quote. Reference <span class="data text-saffron-300">{{ $reference }}</span>.</p>
@@ -18,7 +18,7 @@
                 </button>
             </div>
 
-            <form wire:submit="submit" class="grid gap-5 p-6 sm:grid-cols-2 sm:p-10" novalidate>
+            <form wire:submit="submit" class="grid gap-5 px-4 py-6 sm:grid-cols-2 sm:p-10" novalidate>
                 <x-honeypot livewire-model="extraFields" />
 
                 @if ($mode === 'group')

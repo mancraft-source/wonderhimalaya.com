@@ -17,13 +17,13 @@
             @if ($first)
                 <x-site.post-card :post="$first" large class="grid items-center gap-10 lg:grid-cols-2 [&>a]:lg:order-none" />
             @endif
-            <div class="mt-16 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-10 sm:mt-16 grid gap-x-8 gap-y-10 sm:gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($posts as $post)
                     @continue($first && $post->is($first))
                     <x-site.post-card :post="$post" data-reveal />
                 @endforeach
             </div>
-            <div class="mt-16">{{ $posts->links() }}</div>
+            <div class="mt-10 sm:mt-16">{{ $posts->links() }}</div>
         @endif
     </section>
 </x-layouts.site>

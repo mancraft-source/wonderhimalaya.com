@@ -1,12 +1,12 @@
 <div>
     @if ($reference)
-        <div class="card-surface p-10 text-center" data-reveal>
+        <div class="card-surface px-6 py-10 text-center sm:p-10" data-reveal>
             <x-heroicon-o-check-circle class="mx-auto size-12 text-navy-500" />
             <h3 class="mt-5 font-display text-3xl">Message received — dhanyabad!</h3>
             <p class="mt-3 text-ink-soft">A trip specialist will reply within 24 hours. Your reference is <span class="data text-navy-800">{{ $reference }}</span>.</p>
         </div>
     @else
-        <form wire:submit="submit" class="card-surface grid gap-5 p-6 sm:grid-cols-2 sm:p-10" novalidate>
+        <form wire:submit="submit" class="card-surface grid gap-5 px-4 py-6 sm:grid-cols-2 sm:p-10" novalidate>
             <x-honeypot livewire-model="extraFields" />
             <x-site.field label="First name" name="first_name" wire:model="first_name" autocomplete="given-name" required prefix="c" />
             <x-site.field label="Last name" name="last_name" wire:model="last_name" autocomplete="family-name" prefix="c" />

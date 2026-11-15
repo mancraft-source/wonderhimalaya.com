@@ -8,7 +8,7 @@
     </x-site.page-hero>
     <section class="container-page py-16">
         @if ($q !== '' && $trips->isEmpty() && $posts->isEmpty() && $destinations->isEmpty())
-            <div class="rounded-[2rem] bg-stone-200/50 p-10">
+            <div class="rounded-[2rem] bg-stone-200/50 p-6 sm:p-10">
                 <h2 class="font-display text-3xl">Nothing found for “{{ $q }}”.</h2>
                 <p class="mt-3 text-ink-soft">Try a region or a trek name — or tell us what you're dreaming of and we'll design it.</p>
                 <a href="{{ route('tailor-made') }}" class="btn-primary mt-6">Plan a tailor-made trip</a>
@@ -21,10 +21,10 @@
         @endif
         @if ($trips->isNotEmpty())
             <h2 class="font-display text-display-sm">Journeys</h2>
-            <div class="mt-8 grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">@foreach ($trips as $trip)<x-site.trip-card :trip="$trip" />@endforeach</div>
+            <div class="mt-8 grid gap-x-8 gap-y-10 sm:gap-y-14 sm:grid-cols-2 xl:grid-cols-3">@foreach ($trips as $trip)<x-site.trip-card :trip="$trip" />@endforeach</div>
         @endif
         @if ($posts->isNotEmpty())
-            <h2 class="mt-20 font-display text-display-sm">From the Journal</h2>
+            <h2 class="mt-14 sm:mt-20 font-display text-display-sm">From the Journal</h2>
             <div class="mt-8 grid gap-10 md:grid-cols-3">@foreach ($posts as $p)<x-site.post-card :post="$p" />@endforeach</div>
         @endif
     </section>

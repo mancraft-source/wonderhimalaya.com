@@ -1,5 +1,5 @@
 <section class="container-page py-10">
-    <div class="relative overflow-hidden rounded-[2.5rem] bg-terracotta-500 px-8 py-16 text-white sm:px-14 lg:px-20 lg:py-20">
+    <div class="relative overflow-hidden rounded-[1.75rem] sm:rounded-[2.5rem] bg-terracotta-500 px-8 py-16 text-white sm:px-14 lg:px-20 lg:py-20">
         <div class="topo pointer-events-none absolute inset-0 opacity-25 invert"></div>
         <div class="relative grid items-center gap-10 lg:grid-cols-12">
             <div class="lg:col-span-8">

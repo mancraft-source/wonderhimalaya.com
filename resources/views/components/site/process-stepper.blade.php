@@ -8,7 +8,8 @@
 @endphp
 @if ($variant === 'chips')
     <nav {{ $attributes->class('stepper-chips') }} aria-label="{{ $eyebrow }}" data-stepper>
-        <ol class="flex snap-x gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-stepper-track>
+        {{-- relative: the chips' sr-only spans are absolutely positioned and would otherwise escape the scroller and widen the page. --}}
+        <ol class="relative flex snap-x gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-stepper-track>
             @foreach ($steps as $step)
                 <li class="shrink-0 snap-start" data-step-item>
                     <a href="#{{ $step['id'] }}" data-step-link class="stepper-chip">

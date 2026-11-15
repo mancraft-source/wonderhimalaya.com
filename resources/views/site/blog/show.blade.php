@@ -15,7 +15,7 @@
                 <div class="aspect-[16/8] overflow-hidden rounded-[2rem]"><x-site.picture :media="$hero" :alt="$post->title" sizes="100vw" eager class="h-full w-full" /></div>
             </figure>
         @endif
-        <div class="container-page mt-14 grid gap-14 lg:grid-cols-12">
+        <div class="container-page mt-10 sm:mt-14 grid gap-10 sm:gap-14 lg:grid-cols-12">
             <div class="prose prose-lg prose-wh lg:col-span-8 lg:col-start-2">{!! \App\Support\RichText::normalize($post->body) !!}</div>
             <aside class="lg:col-span-3">
                 <div class="space-y-8 lg:sticky lg:top-32">
@@ -28,7 +28,7 @@
         </div>
     </article>
     @if ($more->isNotEmpty())
-        <section class="container-page mt-24 border-t border-stone-300/70 pt-16">
+        <section class="container-page mt-16 sm:mt-24 border-t border-stone-300/70 pt-16">
             <h2 class="font-display text-display-sm">Keep reading</h2>
             <div class="mt-10 grid gap-10 md:grid-cols-3">@foreach ($more as $p)<x-site.post-card :post="$p" />@endforeach</div>
         </section>

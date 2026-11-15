@@ -9,8 +9,8 @@
 <x-layouts.site :seo="$seo">
     <section class="grain relative isolate overflow-hidden bg-stone-200/40">
         <div class="topo pointer-events-none absolute inset-0 opacity-70"></div>
-        <div class="container-page relative z-20 grid items-center gap-12 pt-16 pb-36 lg:grid-cols-12 lg:pt-24 lg:pb-52">
-            <div class="lg:col-span-7" data-reveal>
+        <div class="container-page relative z-20 grid items-center gap-12 pt-12 pb-28 sm:pt-16 sm:pb-36 lg:grid-cols-12 lg:pt-24 lg:pb-52">
+            <div class="min-w-0 lg:col-span-7" data-reveal>
                 <p class="data inline-flex items-center gap-3 rounded-full bg-navy-900 px-4 py-2 text-xs text-saffron-300">
                     <span class="size-1.5 animate-pulse rounded-full bg-terracotta-500"></span> 404 · off the map
                 </p>
@@ -25,7 +25,7 @@
                     <label for="not-found-search" class="sr-only">Search the site</label>
                     <input id="not-found-search" name="q" type="search" value="{{ implode(' ', $keywords) }}" placeholder="Search treks, regions, guides…"
                            class="min-w-0 flex-1 border-0 bg-transparent px-1 py-2.5 text-ink placeholder:text-stone-400 focus:ring-0 focus:outline-none">
-                    <button type="submit" class="btn-primary !px-6 !py-3">Search</button>
+                    <button type="submit" class="btn-primary shrink-0 !px-5 !py-3 sm:!px-6">Search</button>
                 </form>
 
                 <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.95rem]">
@@ -57,7 +57,7 @@
                 <x-site.section-heading :eyebrow="$isMatch ? 'Were you looking for' : 'Popular right now'" :title="$isMatch ? 'One of these journeys?' : 'Start with a favourite'" />
                 <a href="{{ route('trips.index') }}" class="link-arrow shrink-0" data-reveal>All journeys <x-heroicon-m-arrow-right class="size-4" /></a>
             </div>
-            <div class="mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="mt-12 grid gap-x-8 gap-y-10 sm:gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
                 @foreach ($suggestions as $trip)
                     <x-site.trip-card :trip="$trip" data-reveal />
                 @endforeach
@@ -66,7 +66,7 @@
     @endif
 
     @if ($nepal)
-        <section class="container-page pb-20">
+        <section class="container-page pb-14 sm:pb-20">
             <div class="rounded-[2rem] bg-navy-900 px-7 py-9 text-stone-100 sm:px-10 lg:flex lg:items-center lg:justify-between lg:gap-10">
                 <div>
                     <p class="eyebrow eyebrow-light">Or wander by region</p>

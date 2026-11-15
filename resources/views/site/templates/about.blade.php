@@ -22,9 +22,9 @@
     </section>
 
     {{-- Story --}}
-    <section class="grain relative overflow-hidden py-24 lg:py-32">
+    <section class="grain relative overflow-hidden py-16 sm:py-24 lg:py-32">
         <div class="topo pointer-events-none absolute -top-32 -right-40 size-[56rem] opacity-70" aria-hidden="true"></div>
-        <div class="container-page relative grid items-center gap-16 lg:grid-cols-12">
+        <div class="container-page relative grid items-center gap-10 sm:gap-16 lg:grid-cols-12">
             <div class="lg:col-span-5" data-reveal>
                 <div class="relative">
                     <div class="aspect-[4/5] overflow-hidden img-organic">
@@ -49,12 +49,12 @@
     </section>
 
     {{-- Vision & mission --}}
-    <section class="bg-navy-900 py-24 text-stone-100 lg:py-32">
-        <div class="container-page"><div class="grid gap-px overflow-hidden rounded-[2.5rem] bg-white/10 lg:grid-cols-2">
+    <section class="bg-navy-900 py-16 sm:py-24 text-stone-100 lg:py-32">
+        <div class="container-page"><div class="grid gap-px overflow-hidden rounded-[1.75rem] sm:rounded-[2.5rem] bg-white/10 lg:grid-cols-2">
             @foreach ([['Our vision', $c['vision_lead'], $c['vision_body']], ['Our mission', $c['mission_lead'], $c['mission_body']]] as [$label, $lead, $body])
-                <div class="relative bg-navy-900 p-10 lg:p-16" data-reveal>
+                <div class="relative bg-navy-900 p-6 sm:p-10 lg:p-16" data-reveal>
                     <p class="eyebrow eyebrow-light">{{ $label }}</p>
-                    <p class="mt-6 font-display text-3xl leading-snug text-white lg:text-4xl">{{ $lead }}</p>
+                    <p class="mt-5 font-display text-2xl leading-snug text-white sm:mt-6 sm:text-3xl lg:text-4xl">{{ $lead }}</p>
                     <p class="mt-6 text-stone-300">{{ $body }}</p>
                 </div>
             @endforeach
@@ -62,12 +62,12 @@
     </section>
 
     {{-- Values --}}
-    <section class="py-24 lg:py-32">
+    <section class="py-16 sm:py-24 lg:py-32">
         <div class="container-page">
             <x-site.section-heading :eyebrow="$c['values_eyebrow']" :title="e($c['values_title'])" align="center" />
-            <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="mt-10 sm:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 @foreach ($c['values'] as $v)
-                    <div class="card-surface p-8 text-center" data-reveal>
+                    <div class="card-surface p-6 sm:p-8 text-center" data-reveal>
                         <div class="mx-auto flex size-16 items-center justify-center rounded-full bg-stone-200/70 text-terracotta-500">
                             <x-dynamic-component :component="'heroicon-o-'.($v['icon'] ?? 'check-badge')" class="size-7" />
                         </div>
@@ -81,10 +81,10 @@
 
     {{-- Stats --}}
     @if ($stats)
-        <section class="container-page pb-24">
+        <section class="container-page pb-16 sm:pb-24">
             <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4" data-reveal>
                 @foreach ($stats as $s)
-                    <div class="bg-stone-100 p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $s['label'] }}</dt><dd class="mt-3 font-display text-5xl text-navy-800 lg:text-6xl">{{ $s['value'] }}</dd></div>
+                    <div class="bg-stone-100 p-6 sm:p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $s['label'] }}</dt><dd class="mt-3 font-display text-4xl text-navy-800 sm:text-5xl lg:text-6xl">{{ $s['value'] }}</dd></div>
                 @endforeach
             </dl>
         </section>
@@ -92,13 +92,13 @@
 
     {{-- Team --}}
     @if ($founders->isNotEmpty())
-        <section class="bg-stone-200/50 py-24 lg:py-32">
+        <section class="bg-stone-200/50 py-16 sm:py-24 lg:py-32">
             <div class="container-page">
                 <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <x-site.section-heading :eyebrow="$c['team_eyebrow']" :title="e($c['team_title'])" :intro="$c['team_intro']" />
                     <a href="{{ route('team.index') }}" class="link-arrow shrink-0" data-reveal>The whole team <x-heroicon-m-arrow-right class="size-4" /></a>
                 </div>
-                <div class="mt-14 grid grid-cols-2 gap-8 lg:grid-cols-4">
+                <div class="mt-10 sm:mt-14 grid grid-cols-2 gap-8 lg:grid-cols-4">
                     @foreach ($founders as $m)
                         <a href="{{ url($m->publicPath()) }}" class="group" data-reveal>
                             <div class="aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-stone-200"><x-site.picture :model="$m" collection="photo" sizes="25vw" class="h-full w-full transition duration-700 group-hover:scale-[1.03]" /></div>
@@ -112,7 +112,7 @@
     @endif
 
     {{-- Affiliations --}}
-    <section class="py-20">
+    <section class="py-14 sm:py-20">
         <div class="container-page text-center">
             <p class="eyebrow justify-center">Registered & affiliated</p>
             <ul class="mt-10 flex flex-wrap items-center justify-center gap-10">

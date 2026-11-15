@@ -20,7 +20,7 @@
         <div class="topo pointer-events-none absolute -top-24 -right-24 size-[50rem] opacity-80" aria-hidden="true"></div>
         {{-- Distant range on the horizon; the foreground ridge matches the page below. --}}
         <x-site.ridge variant="peaks" overlay to="#f4efe6" back="#c9d6da" />
-        <div class="container-page relative z-20 pt-14 pb-24 lg:pt-20 lg:pb-36">
+        <div class="container-page relative z-20 pt-14 pb-16 sm:pb-24 lg:pt-20 lg:pb-36">
             @if ($crumbs)<x-site.breadcrumbs :items="$crumbs" />@endif
             @if ($eyebrow)<p class="eyebrow mt-8">{{ $eyebrow }}</p>@endif
             <h1 class="mt-5 max-w-5xl font-display text-display-lg">{!! $title !!}</h1>

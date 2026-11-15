@@ -13,7 +13,7 @@
     x-effect="document.documentElement.classList.toggle('overflow-hidden', open)"
 >
     <div class="container-page flex h-20 items-center justify-between gap-6 lg:h-24">
-        <a href="{{ route('home') }}" class="relative z-10" aria-label="Wonder Himalaya — home">
+        <a href="{{ route('home') }}" class="relative z-10" aria-label="Wonder Himalaya — home" data-logo>
             <x-site.logo :light="$transparent" />
         </a>
 
@@ -190,41 +190,82 @@
          x-transition:enter="transition-opacity duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
          x-transition:leave="transition-opacity duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
 
-    {{-- Mobile drawer --}}
-    <div id="mobile-menu" class="fixed inset-0 top-20 z-40 overflow-y-auto bg-stone-100 lg:hidden" x-show="open" x-cloak
-         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-        <nav class="container-page flex flex-col gap-2 py-8" aria-label="Mobile">
+    {{-- Mobile drawer: scrolls on its own (page scroll is locked), items rise in staggered, any link tap closes it. --}}
+    @php
+        $email = $company['email'] ?? 'info@wonderhimalaya.com';
+        $wa = preg_replace('/\D/', '', $company['whatsapp'] ?? '');
+        $drawerHead = 'flex w-full items-center justify-between py-4 text-left font-display text-[1.65rem] leading-tight text-navy-800';
+        $drawerLink = 'block py-4 font-display text-[1.65rem] leading-tight text-navy-800';
+        $whyLinks = [
+            ['About us', url('/about-us')],
+            ['Meet the team', route('team.index')],
+            ['Why travel with us', url('/why-wonder-himalaya')],
+            ['Sustainable tourism', url('/sustainable-tourism')],
+            ['Traveller reviews', route('reviews')],
+            ['For travel partners (B2B)', route('b2b')],
+            ['Travel guide', url('/travel-guide')],
+        ];
+    @endphp
+    <div id="mobile-menu" class="fixed inset-0 top-20 z-40 overflow-y-auto overscroll-contain bg-stone-100 lg:hidden" x-show="open" x-cloak
+         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-on:click="$event.target.closest('a') && (open = false)">
+        <nav class="container-page flex flex-col pt-4 pb-[max(2rem,env(safe-area-inset-bottom))]" aria-label="Mobile">
             <div x-data="{ s: null }" class="divide-y divide-stone-300/70">
-                <div class="py-4">
-                    <button type="button" class="flex w-full items-center justify-between font-display text-2xl text-navy-800" x-on:click="s = s === 'd' ? null : 'd'">Destinations <x-heroicon-m-plus class="size-5" /></button>
-                    <div x-show="s === 'd'" x-collapse class="mt-4 space-y-4">
-                        @foreach ($nav['destinations'] as $country)
-                            <div>
-                                <a href="{{ $country['url'] }}" class="font-semibold text-navy-800">{{ $country['name'] }}</a>
-                                <div class="mt-2 flex flex-wrap gap-2">
-                                    @foreach ($country['children'] as $region)
-                                        <a href="{{ $region['url'] }}" class="chip">{{ $region['name'] }}</a>
-                                    @endforeach
+                <div class="drawer-item" style="--i: 0">
+                    <button type="button" class="{{ $drawerHead }}" x-on:click="s = s === 'd' ? null : 'd'" x-bind:aria-expanded="s === 'd'">Destinations <x-heroicon-m-plus class="size-5 transition-transform duration-300" x-bind:class="s === 'd' && 'rotate-45'" /></button>
+                    <div x-show="s === 'd'" x-collapse>
+                        <div class="space-y-4 pb-5">
+                            @foreach ($nav['destinations'] as $country)
+                                <div>
+                                    <a href="{{ $country['url'] }}" class="inline-block py-1 font-semibold text-navy-800">{{ $country['name'] }}</a>
+                                    @if ($country['children'])
+                                        <div class="mt-1.5 flex flex-wrap gap-2">
+                                            @foreach ($country['children'] as $region)
+                                                <a href="{{ $region['url'] }}" class="chip !py-2 !text-[0.8rem]">{{ $region['name'] }}</a>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-                <div class="py-4">
-                    <button type="button" class="flex w-full items-center justify-between font-display text-2xl text-navy-800" x-on:click="s = s === 'j' ? null : 'j'">Journeys <x-heroicon-m-plus class="size-5" /></button>
-                    <div x-show="s === 'j'" x-collapse class="mt-4 flex flex-wrap gap-2">
-                        @foreach ($nav['activities'] as $activity)
-                            <a href="{{ $activity['url'] }}" class="chip">{{ $activity['name'] }}</a>
-                        @endforeach
+                <div class="drawer-item" style="--i: 1">
+                    <button type="button" class="{{ $drawerHead }}" x-on:click="s = s === 'j' ? null : 'j'" x-bind:aria-expanded="s === 'j'">Journeys <x-heroicon-m-plus class="size-5 transition-transform duration-300" x-bind:class="s === 'j' && 'rotate-45'" /></button>
+                    <div x-show="s === 'j'" x-collapse>
+                        <div class="flex flex-wrap gap-2 pb-5">
+                            @foreach ($nav['activities'] as $activity)
+                                <a href="{{ $activity['url'] }}" class="chip !py-2 !text-[0.8rem]">{{ $activity['name'] }}</a>
+                            @endforeach
+                            <a href="{{ route('trips.index') }}" class="chip !bg-navy-800 !py-2 !text-[0.8rem] !text-stone-100">All journeys</a>
+                        </div>
                     </div>
                 </div>
-                <a href="{{ route('departures') }}" class="block py-4 font-display text-2xl text-navy-800">Group departures</a>
-                <a href="{{ url('/about-us') }}" class="block py-4 font-display text-2xl text-navy-800">About us</a>
-                <a href="{{ route('blog.index') }}" class="block py-4 font-display text-2xl text-navy-800">Journal</a>
-                <a href="{{ route('contact') }}" class="block py-4 font-display text-2xl text-navy-800">Contact</a>
+                <a href="{{ route('departures') }}" class="drawer-item {{ $drawerLink }}" style="--i: 2">Group departures</a>
+                <div class="drawer-item" style="--i: 3">
+                    <button type="button" class="{{ $drawerHead }}" x-on:click="s = s === 'w' ? null : 'w'" x-bind:aria-expanded="s === 'w'">Why us <x-heroicon-m-plus class="size-5 transition-transform duration-300" x-bind:class="s === 'w' && 'rotate-45'" /></button>
+                    <div x-show="s === 'w'" x-collapse>
+                        <ul class="grid grid-cols-1 pb-4 min-[400px]:grid-cols-2 min-[400px]:gap-x-4">
+                            @foreach ($whyLinks as [$label, $href])
+                                <li><a href="{{ $href }}" class="flex items-center gap-2 py-2.5 text-[0.95rem] font-medium text-ink-soft hover:text-terracotta-500"><span class="size-1 shrink-0 rounded-full bg-terracotta-500"></span>{{ $label }}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <a href="{{ route('blog.index') }}" class="drawer-item {{ $drawerLink }}" style="--i: 4">Journal</a>
+                <a href="{{ route('contact') }}" class="drawer-item {{ $drawerLink }}" style="--i: 5">Contact</a>
             </div>
-            <a href="{{ route('tailor-made') }}" class="btn-primary mt-6">Plan your journey</a>
-            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="btn-outline">Call {{ $phone }}</a>
+            <div class="drawer-item mt-6" style="--i: 6">
+                <a href="{{ route('tailor-made') }}" class="btn-primary w-full">Plan your journey <x-heroicon-m-arrow-right class="size-4" /></a>
+            </div>
+            <div @class(['drawer-item mt-3 grid gap-2', 'grid-cols-3' => $wa, 'grid-cols-2' => ! $wa]) style="--i: 7">
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl bg-stone-50 px-2 py-2.5 text-xs font-semibold text-navy-800 ring-1 ring-stone-300/70" aria-label="Call {{ $phone }}"><x-heroicon-o-phone class="size-5 text-terracotta-500" /> Call</a>
+                @if ($wa)
+                    <a href="https://wa.me/{{ $wa }}" target="_blank" rel="noopener" class="flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl bg-stone-50 px-2 py-2.5 text-xs font-semibold text-navy-800 ring-1 ring-stone-300/70" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" class="size-5 text-[#1fa855]" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.56.93.95-3.47-.22-.36a9.4 9.4 0 0 1-1.44-5.01c0-5.19 4.23-9.42 9.43-9.42 2.52 0 4.88.98 6.66 2.76a9.36 9.36 0 0 1 2.76 6.67c0 5.2-4.23 9.42-9.43 9.42M20.07 3.9A11.3 11.3 0 0 0 12.05.57C5.8.57.72 5.65.72 11.9c0 2 .52 3.95 1.52 5.66L.62 23.43l6.01-1.58a11.3 11.3 0 0 0 5.41 1.38h.01c6.25 0 11.33-5.08 11.33-11.33 0-3.03-1.18-5.87-3.31-8.01"/></svg> WhatsApp</a>
+                @endif
+                <a href="mailto:{{ $email }}" class="flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl bg-stone-50 px-2 py-2.5 text-xs font-semibold text-navy-800 ring-1 ring-stone-300/70" aria-label="Email {{ $email }}"><x-heroicon-o-envelope class="size-5 text-terracotta-500" /> Email</a>
+            </div>
+            <p class="drawer-item mt-4 text-center text-sm text-ink-soft" style="--i: 8"><a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="py-1 hover:text-navy-800">{{ $phone }}</a> <span class="text-stone-400">·</span> <a href="mailto:{{ $email }}" class="py-1 hover:text-navy-800">{{ $email }}</a></p>
         </nav>
     </div>
     {{-- Ridge-line edge: the solid header ends in a mountain skyline; the terracotta line traces reading progress. --}}

@@ -173,7 +173,7 @@
                 </div>
 
                 @if ($previous || $next)
-                    <nav class="mt-14 grid gap-4 border-t border-stone-300/70 pt-10 sm:grid-cols-2" aria-label="More in {{ $page->parent?->title ?? 'this section' }}">
+                    <nav class="mt-10 sm:mt-14 grid gap-4 border-t border-stone-300/70 pt-10 sm:grid-cols-2" aria-label="More in {{ $page->parent?->title ?? 'this section' }}">
                         @if ($previous)
                             <a href="{{ url($previous->publicPath()) }}" class="group rounded-2xl p-5 ring-1 ring-stone-300/70 transition hover:bg-stone-50 hover:ring-navy-500">
                                 <span class="flex items-center gap-2 text-xs font-semibold tracking-[0.16em] text-stone-500 uppercase"><x-heroicon-m-arrow-left class="size-4 transition group-hover:-translate-x-1" /> Previous</span>

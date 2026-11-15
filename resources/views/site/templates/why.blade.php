@@ -16,7 +16,7 @@
         </div>
     </section>
 
-    <section class="container-page grid gap-12 py-24 lg:grid-cols-12 lg:py-32">
+    <section class="container-page grid gap-12 py-16 sm:py-24 lg:grid-cols-12 lg:py-32">
         <div class="lg:col-span-4">
             <div class="lg:sticky lg:top-36">
                 <p class="eyebrow">{{ $c['lead_eyebrow'] }}</p>
@@ -37,12 +37,12 @@
     </section>
 
     @if ($testimonials->isNotEmpty())
-        <section class="bg-stone-200/50 py-24">
+        <section class="bg-stone-200/50 py-16 sm:py-24">
             <div class="container-page">
                 <x-site.section-heading :eyebrow="$c['reviews_eyebrow']" :title="e($c['reviews_title'])" />
                 <div class="mt-12 grid gap-6 md:grid-cols-3">
                     @foreach ($testimonials as $t)
-                        <figure class="rounded-[1.75rem] bg-stone-50 p-8 ring-1 ring-stone-300/60" data-reveal>
+                        <figure class="rounded-[1.75rem] bg-stone-50 p-6 sm:p-8 ring-1 ring-stone-300/60" data-reveal>
                             <div class="flex gap-0.5 text-saffron-500">@for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-4" />@endfor</div>
                             <blockquote class="mt-4 text-ink-soft">“{{ str($t->body)->limit(280) }}”</blockquote>
                             <figcaption class="mt-6 text-sm font-semibold text-navy-800">{{ $t->author_name }}<span class="font-normal text-stone-500"> · {{ ucfirst($t->source) }}</span></figcaption>

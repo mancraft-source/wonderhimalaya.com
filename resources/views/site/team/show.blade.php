@@ -1,5 +1,5 @@
 <x-layouts.site :seo="$seo">
-    <section class="container-page grid gap-14 py-14 lg:grid-cols-12 lg:py-20">
+    <section class="container-page grid gap-10 sm:gap-14 py-14 lg:grid-cols-12 lg:py-20">
         <div class="lg:col-span-5">
             <div class="aspect-[4/5] overflow-hidden img-organic bg-stone-200 lg:sticky lg:top-32">
                 <x-site.picture :model="$member" collection="photo" sizes="(min-width: 1024px) 40vw, 100vw" eager class="h-full w-full" />
@@ -23,7 +23,7 @@
             @endif
             @if ($member->bio)<div class="prose prose-lg prose-wh mt-10">{!! \App\Support\RichText::normalize($member->bio) !!}</div>@endif
             @if ($member->praise || $member->quotes)
-                <section class="mt-14">
+                <section class="mt-10 sm:mt-14">
                     <p class="eyebrow">Guest stories</p>
                     <h2 class="mt-4 font-display text-display-sm">What people say about {{ str($member->name)->before(' ') }}</h2>
                     @if ($member->praise)<p class="mt-5 text-lg text-ink-soft">{{ $member->praise }}</p>@endif

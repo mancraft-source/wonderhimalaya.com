@@ -3,7 +3,7 @@
     {{-- Hero --}}
     <section class="relative overflow-hidden bg-navy-900 text-stone-100">
         <div class="topo pointer-events-none absolute inset-0 opacity-30 invert" aria-hidden="true"></div>
-        <div class="container-page relative grid gap-12 py-20 lg:grid-cols-12 lg:py-32">
+        <div class="container-page relative grid gap-12 py-14 sm:py-20 lg:grid-cols-12 lg:py-32">
             <div class="lg:col-span-8">
                 <x-site.breadcrumbs :items="[['label' => 'Travel partners']]" light />
                 <p class="eyebrow eyebrow-light mt-8">{{ $c['hero_eyebrow'] }}</p>
@@ -23,12 +23,12 @@
     </section>
 
     {{-- What we do --}}
-    <section class="py-24 lg:py-32">
+    <section class="py-16 sm:py-24 lg:py-32">
         <div class="container-page">
             <x-site.section-heading :eyebrow="$c['services_eyebrow']" :title="e($c['services_title'])" :intro="$c['services_intro']" />
-            <div class="mt-16 grid gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 md:grid-cols-2 lg:grid-cols-4">
+            <div class="mt-10 sm:mt-16 grid gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 md:grid-cols-2 lg:grid-cols-4">
                 @foreach (collect($c['services'])->map(fn ($x) => [$x['title'] ?? '', $x['text'] ?? '', $x['icon'] ?? 'check-badge']) as [$title, $text, $icon])
-                    <div class="bg-stone-100 p-8 lg:p-10" data-reveal>
+                    <div class="bg-stone-100 p-6 sm:p-8 lg:p-10" data-reveal>
                         <x-dynamic-component :component="'heroicon-o-'.$icon" class="size-9 text-terracotta-500" />
                         <h3 class="mt-8 font-display text-2xl">{{ $title }}</h3>
                         <p class="mt-3 text-ink-soft">{{ $text }}</p>
@@ -39,8 +39,8 @@
     </section>
 
     {{-- Destinations --}}
-    <section class="bg-stone-200/50 py-24 lg:py-32">
-        <div class="container-page grid gap-14 lg:grid-cols-12">
+    <section class="bg-stone-200/50 py-16 sm:py-24 lg:py-32">
+        <div class="container-page grid gap-10 sm:gap-14 lg:grid-cols-12">
             <div class="lg:col-span-4">
                 <x-site.section-heading :eyebrow="$c['destinations_eyebrow']" :title="e($c['destinations_title'])" />
             </div>
@@ -61,19 +61,19 @@
     </section>
 
     {{-- Operational integrity --}}
-    <section class="py-24 lg:py-32">
+    <section class="py-16 sm:py-24 lg:py-32">
         <div class="container-page">
             <x-site.section-heading :eyebrow="$c['integrity_eyebrow']" :title="e($c['integrity_title'])" />
-            <dl class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4">
+            <dl class="mt-10 sm:mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-[2rem] bg-stone-300/60 ring-1 ring-stone-300/60 lg:grid-cols-4">
                 @foreach (collect($c['integrity'])->map(fn ($i) => [$i['value'] ?? '', $i['label'] ?? ''])->merge(collect($stats)->map(fn ($s) => [$s['value'], $s['label']]))->take(4) as [$v, $l])
-                    <div class="bg-stone-100 p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $l }}</dt><dd class="mt-3 font-display text-5xl text-navy-800">{{ $v }}</dd></div>
+                    <div class="bg-stone-100 p-6 sm:p-8 lg:p-10"><dt class="text-sm text-ink-soft">{{ $l }}</dt><dd class="mt-3 font-display text-4xl text-navy-800 sm:text-5xl">{{ $v }}</dd></div>
                 @endforeach
             </dl>
         </div>
     </section>
 
     @if ($testimonials->isNotEmpty())
-        <section class="pb-24">
+        <section class="pb-16 sm:pb-24">
             <div class="container-page grid gap-6 md:grid-cols-3">
                 @foreach ($testimonials as $t)
                     <figure class="rounded-[1.75rem] bg-stone-50 p-7 ring-1 ring-stone-300/60" data-reveal>
@@ -86,8 +86,8 @@
     @endif
 
     {{-- Partnership form --}}
-    <section id="partner-form" class="scroll-mt-28 bg-navy-800 py-24 text-stone-100 lg:py-32">
-        <div class="container-page grid gap-14 lg:grid-cols-12">
+    <section id="partner-form" class="scroll-mt-28 bg-navy-800 py-16 sm:py-24 text-stone-100 lg:py-32">
+        <div class="container-page grid gap-10 sm:gap-14 lg:grid-cols-12">
             <div class="lg:col-span-4">
                 <p class="eyebrow eyebrow-light">{{ $c['form_eyebrow'] }}</p>
                 <h2 class="mt-6 font-display text-display-md text-stone-100">{{ $c['form_title'] }}</h2>

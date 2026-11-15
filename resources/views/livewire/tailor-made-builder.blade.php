@@ -1,7 +1,7 @@
 @php $steps = \App\Livewire\TailorMadeBuilder::STEPS; @endphp
 <div x-data x-on:step-changed.window="$el.scrollIntoView({ behavior: 'smooth', block: 'start' })" class="scroll-mt-28">
     @if ($reference)
-        <div class="mx-auto max-w-2xl rounded-[2.5rem] bg-navy-800 p-10 text-center text-stone-100 sm:p-16" data-reveal>
+        <div class="mx-auto max-w-2xl rounded-[1.75rem] bg-navy-800 px-6 py-10 text-center text-stone-100 sm:rounded-[2.5rem] sm:p-16" data-reveal>
             <svg viewBox="0 0 120 60" class="mx-auto h-16 text-saffron-300" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 58 32 20l14 18 16-24 28 44" /><circle cx="92" cy="12" r="7" /><path d="M10 58c18-6 30 2 46-4s22-14 40-6" stroke-dasharray="2 4" /></svg>
             <h2 class="mt-8 font-display text-display-sm text-stone-100">Your journey is taking shape.</h2>
             <p class="mx-auto mt-4 max-w-lg text-stone-300">{{ $first_name }}, a Kathmandu trip specialist is reading your brief now. Expect a personal reply — with a first draft itinerary — within 24 hours.</p>
@@ -10,7 +10,7 @@
         </div>
     @else
         {{-- Progress --}}
-        <ol class="mb-10 flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar" aria-label="Progress">
+        <ol class="mb-6 flex items-center sm:mb-10 gap-2 overflow-x-auto pb-2 no-scrollbar" aria-label="Progress">
             @foreach ($steps as $i => $label)
                 @php $n = $i + 1; @endphp
                 <li class="flex shrink-0 items-center gap-2">
@@ -30,7 +30,7 @@
             @endforeach
         </ol>
 
-        <form wire:submit="submit" class="rounded-[2.5rem] bg-stone-50 p-6 ring-1 ring-stone-300/60 sm:p-12" novalidate>
+        <form wire:submit="submit" class="-mx-1 rounded-[1.5rem] bg-stone-50 px-4 py-6 ring-1 ring-stone-300/60 sm:mx-0 sm:rounded-[2.5rem] sm:p-12" novalidate>
             <x-honeypot livewire-model="extraFields" />
 
             {{-- 1. Where --}}
@@ -42,7 +42,7 @@
                     @foreach ($this->places as $place)
                         @php $on = in_array($place, $destinations, true); @endphp
                         <button type="button" wire:key="p-{{ md5($place) }}" wire:click="toggle('destinations', @js($place))" aria-pressed="{{ $on ? 'true' : 'false' }}"
-                            @class(['group relative flex min-h-24 flex-col justify-between rounded-3xl p-5 text-left ring-1 transition duration-300',
+                            @class(['group relative flex min-h-24 flex-col justify-between rounded-2xl p-4 text-left sm:rounded-3xl sm:p-5 ring-1 transition duration-300',
                                 'bg-navy-800 text-stone-100 ring-navy-800' => $on,
                                 'bg-white text-navy-800 ring-stone-300 hover:-translate-y-0.5 hover:ring-navy-500' => ! $on])>
                             <span @class(['absolute top-4 right-4 flex size-6 items-center justify-center rounded-full ring-1', 'bg-saffron-500 text-ink ring-saffron-500' => $on, 'ring-stone-300' => ! $on])>
@@ -133,7 +133,7 @@
                         @php $tierCopy = ['standard' => 'Best local tea-houses & hotels, licensed guide, great value.', 'premium' => 'Upgraded lodges with attached bathrooms, boutique hotels, smaller groups.', 'luxury' => 'The finest lodges, 5★ Kathmandu stays, private guide, heli options.']; @endphp
                         @foreach ($this->tiers as $tier)
                             <button type="button" wire:key="t-{{ $tier->id }}" wire:click="$set('tier_id', {{ $tier_id === $tier->id ? 'null' : $tier->id }})"
-                                @class(['rounded-3xl p-6 text-left ring-1 transition', 'bg-navy-800 text-stone-100 ring-navy-800' => $tier_id === $tier->id, 'bg-white ring-stone-300 hover:ring-navy-500' => $tier_id !== $tier->id])>
+                                @class(['rounded-2xl p-5 text-left ring-1 transition sm:rounded-3xl sm:p-6', 'bg-navy-800 text-stone-100 ring-navy-800' => $tier_id === $tier->id, 'bg-white ring-stone-300 hover:ring-navy-500' => $tier_id !== $tier->id])>
                                 <span @class(['block font-display text-2xl', 'text-navy-800' => $tier_id !== $tier->id])>{{ $tier->name }}</span>
                                 <span @class(['mt-2 block text-sm', 'text-stone-300' => $tier_id === $tier->id, 'text-ink-soft' => $tier_id !== $tier->id])>{{ $tier->description ?: ($tierCopy[$tier->slug] ?? '') }}</span>
                             </button>

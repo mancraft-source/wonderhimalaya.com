@@ -17,10 +17,10 @@
         </div>
     </section>
 
-    <section class="container-page py-20 lg:py-28">
+    <section class="container-page py-14 sm:py-20 lg:py-28">
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($siblings as $i => $g)
-                <a href="{{ url($g->publicPath()) }}" class="card-surface group flex flex-col p-8 transition hover:-translate-y-1 hover:ring-navy-500" data-reveal>
+                <a href="{{ url($g->publicPath()) }}" class="card-surface group flex flex-col p-6 sm:p-8 transition hover:-translate-y-1 hover:ring-navy-500" data-reveal>
                     <div class="flex items-start justify-between">
                         <span class="flex size-12 items-center justify-center rounded-full bg-stone-200/80 text-navy-800 transition group-hover:bg-navy-800 group-hover:text-saffron-300"><x-dynamic-component :component="'heroicon-o-'.($icons[$g->slug] ?? 'book-open')" class="size-5" /></span>
                         <span class="data text-stone-400">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
@@ -33,7 +33,7 @@
     </section>
 
     @if ($guides->isNotEmpty())
-        <section class="bg-stone-200/50 py-24">
+        <section class="bg-stone-200/50 py-16 sm:py-24">
             <div class="container-page">
                 <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <x-site.section-heading :eyebrow="$c['guides_eyebrow']" :title="e($c['guides_title'])" :intro="$c['guides_intro']" />

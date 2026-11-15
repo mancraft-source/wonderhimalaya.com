@@ -1,5 +1,5 @@
 <x-layouts.site :seo="$seo">
-    <section class="container-narrow py-32 text-center">
+    <section class="container-narrow py-20 sm:py-32 text-center">
         <x-heroicon-o-check-circle class="mx-auto size-16 text-navy-500" />
         <h1 class="mt-8 font-display text-display-md">Dhanyabad — thank you.</h1>
         <p class="mt-6 text-lg text-ink-soft">Your message is with our team. We'll reply personally within 24 hours.@if ($reference) Your reference is <span class="data text-navy-800">{{ $reference }}</span>.@endif</p>

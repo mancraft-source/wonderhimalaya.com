@@ -75,6 +75,18 @@
     }
 }
 
+/* Phones (< sm): a gentler display scale so headings don't dominate a 360–430px screen. Desktop sizes are untouched. */
+@media (max-width: 639px) {
+    :root {
+        --text-display-xl: clamp(2.5rem, 1.5rem + 6vw, 3.5rem);
+        --text-display-lg: clamp(2rem, 1.25rem + 4vw, 2.5rem);
+        --text-display-lg--line-height: 1.05;
+        --text-display-md: clamp(1.625rem, 1rem + 3vw, 2rem);
+        --text-display-md--line-height: 1.1;
+        --text-display-sm: clamp(1.375rem, 1rem + 2vw, 1.5rem);
+    }
+}
+
 @utility btn {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition duration-300 ease-(--ease-mountain) disabled:cursor-not-allowed disabled:opacity-60;
 }
@@ -97,8 +109,8 @@
     .container-page { @apply mx-auto w-full max-w-[90rem] px-5 sm:px-8 lg:px-12; }
     .container-narrow { @apply mx-auto w-full max-w-3xl px-5 sm:px-8; }
 
-    .eyebrow { @apply inline-flex items-center gap-3 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-terracotta-600; }
-    .eyebrow::before { content: ''; @apply h-px w-8 bg-current; }
+    .eyebrow { @apply inline-flex items-center gap-3 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-terracotta-600 sm:tracking-[0.22em]; }
+    .eyebrow::before { content: ''; @apply h-px w-6 shrink-0 bg-current sm:w-8; }
     .eyebrow-light { @apply text-saffron-300; }
 
     .btn-primary { @apply btn bg-terracotta-500 text-white shadow-[0_10px_30px_-12px_rgba(181,83,46,0.7)] hover:-translate-y-0.5 hover:bg-terracotta-600; }
@@ -438,3 +450,23 @@
    mobile menu (fixed, top-20) into the 80px header once the frosted header kicked in (scrolled, or any inner page).
    While the menu is open the header is solid anyway, so drop the blur. */
 [data-site-header].is-menu-open { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+
+/* The logo's soft halo is for photo heroes only: drop it once the header turns to paper (scrolled) or the menu is open. */
+[data-site-header][data-scrolled] [data-logo] img, [data-site-header].is-menu-open [data-logo] img { filter: none; }
+
+/* Mobile drawer: items rise in, staggered by --i, each time it opens (x-show toggles display, restarting the animation). */
+#mobile-menu .drawer-item { animation: mega-in 0.55s var(--ease-mountain) both; animation-delay: calc(var(--i, 0) * 40ms + 60ms); }
+@media (prefers-reduced-motion: reduce) { #mobile-menu .drawer-item { animation: none; } }
+
+/* Phones: callouts and step headings in long-form copy breathe less. */
+@media (max-width: 639px) {
+    .prose blockquote.callout { padding: 1.5rem 1.25rem 1.5rem 1.5rem; border-radius: 1.5rem; font-size: 1.15rem; }
+    .prose blockquote.callout::before { inset-block: 1.5rem; }
+    .prose p.lead { font-size: 1.15em; }
+    .process-step__num { width: 2.75rem; height: 2.75rem; font-size: 1.25rem; }
+    .prose-process .prose h2.process-step { gap: 0.85rem; }
+    .detail-card { padding: 0.25rem 1.1rem; }
+    .detail-card__note { margin: 0 -1.1rem -0.25rem; padding: 0.85rem 1.1rem; }
+    .prose ul.points > li { padding: 1.1rem 1.1rem 1.1rem 3.25rem; }
+    .prose ul.points > li::before { left: 1.1rem; top: 1.35rem; }
+}

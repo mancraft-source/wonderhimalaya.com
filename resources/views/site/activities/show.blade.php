@@ -32,7 +32,7 @@
 
     <section id="journeys" class="container-page scroll-mt-28 py-16 lg:py-24">
         <x-site.section-heading eyebrow="Journeys" title="{{ $trips->count() }} {{ str('journey')->plural($trips->count()) }} for {{ strtolower($activity->name) }}" />
-        <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="mt-10 sm:mt-14 grid gap-x-8 gap-y-10 sm:gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
             @forelse ($trips as $trip)
                 <x-site.trip-card :trip="$trip" data-reveal />
             @empty

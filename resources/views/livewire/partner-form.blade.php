@@ -1,12 +1,12 @@
 <div>
     @if ($reference)
-        <div class="rounded-[2rem] bg-stone-100 p-10 text-navy-900" data-reveal>
+        <div class="rounded-[1.75rem] bg-stone-100 px-6 py-10 text-navy-900 sm:rounded-[2rem] sm:p-10" data-reveal>
             <x-heroicon-o-hand-raised class="size-12 text-terracotta-500" />
             <h3 class="mt-5 font-display text-3xl">Namaste, partner.</h3>
             <p class="mt-3 text-ink-soft">Our partnerships desk will be in touch within one business day with our B2B rate sheet and sample programmes. Reference <span class="data text-navy-800">{{ $reference }}</span>.</p>
         </div>
     @else
-        <form wire:submit="submit" class="grid gap-5 rounded-[2rem] bg-stone-100 p-6 text-ink sm:grid-cols-2 sm:p-10" novalidate>
+        <form wire:submit="submit" class="grid gap-5 rounded-[1.75rem] bg-stone-100 px-4 py-6 text-ink sm:grid-cols-2 sm:rounded-[2rem] sm:p-10" novalidate>
             <x-honeypot livewire-model="extraFields" />
             <x-site.field label="Company name" name="company_name" wire:model="company_name" autocomplete="organization" required prefix="b2b" />
             <x-site.field label="Website" name="company_website" type="url" wire:model="company_website" placeholder="https://" optional prefix="b2b" />

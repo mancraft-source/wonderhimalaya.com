@@ -16,7 +16,7 @@
     <section class="container-page py-16">
         <div class="columns-1 gap-6 md:columns-2 xl:columns-3">
             @forelse ($testimonials as $t)
-                <figure class="mb-6 break-inside-avoid rounded-[1.75rem] bg-stone-50 p-8 ring-1 ring-stone-300/60">
+                <figure class="mb-6 break-inside-avoid rounded-[1.75rem] bg-stone-50 p-6 sm:p-8 ring-1 ring-stone-300/60">
                     <div class="flex items-center justify-between">
                         <div class="flex gap-0.5 text-saffron-500" aria-label="{{ $t->rating }} out of 5">@for ($i = 0; $i < $t->rating; $i++)<x-heroicon-s-star class="size-4" />@endfor</div>
                         <span class="text-xs uppercase tracking-[0.16em] text-stone-400">{{ $t->source }}</span>

@@ -57,7 +57,7 @@
             </div>
         @empty
             @if ($daily->isEmpty())
-            <div class="rounded-[2rem] bg-stone-200/50 p-10">
+            <div class="rounded-[2rem] bg-stone-200/50 p-6 sm:p-10">
                 <h2 class="font-display text-3xl">New season dates are being finalised.</h2>
                 <p class="mt-3 max-w-2xl text-ink-soft">Our fixed-departure treks below run on set dates through spring and autumn. Tell us when you'd like to travel and we'll place you in a group.</p>
             </div>
@@ -65,7 +65,7 @@
         @endforelse
 
         @if ($stories->isNotEmpty())
-            <div class="mt-20">
+            <div class="mt-14 sm:mt-20">
                 <div class="flex flex-wrap items-end justify-between gap-4">
                     <x-site.section-heading eyebrow="From the trail" title="Read our stories" />
                     <a href="{{ route('blog.index') }}" class="link-arrow">All stories <x-heroicon-m-arrow-right class="size-4" /></a>
@@ -75,9 +75,9 @@
         @endif
 
         @if ($fixedTrips->isNotEmpty() && $daily->count() < $fixedTrips->count())
-            <div class="mt-16">
+            <div class="mt-10 sm:mt-16">
                 <x-site.section-heading eyebrow="Fixed-departure treks" title="Journeys that run on set dates" />
-                <div class="mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
+                <div class="mt-12 grid gap-x-8 gap-y-10 sm:gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
                     @foreach ($fixedTrips as $trip)<x-site.trip-card :trip="$trip" data-reveal />@endforeach
                 </div>
             </div>
