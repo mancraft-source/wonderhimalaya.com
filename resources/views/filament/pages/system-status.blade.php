@@ -25,8 +25,8 @@
 
         {{-- Scheduler --}}
         <x-filament::section :icon="\Filament\Support\Icons\Heroicon::OutlinedClock" heading="Scheduler (cron)">
-            <div class="flex items-center gap-3">
-                <x-filament::badge :color="$scheduler['ok'] ? 'success' : 'danger'" :icon="$scheduler['ok'] ? \Filament\Support\Icons\Heroicon::CheckCircle : \Filament\Support\Icons\Heroicon::ExclamationTriangle">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <x-filament::badge class="shrink-0 whitespace-nowrap" :color="$scheduler['ok'] ? 'success' : 'danger'" :icon="$scheduler['ok'] ? \Filament\Support\Icons\Heroicon::CheckCircle : \Filament\Support\Icons\Heroicon::ExclamationTriangle">
                     {{ $scheduler['ok'] ? 'Running' : 'Not running' }}
                 </x-filament::badge>
                 <span class="text-sm text-gray-700 dark:text-gray-300" @if ($scheduler['ranAt']) title="{{ $scheduler['ranAt']->setTimezone('Asia/Kathmandu')->format('D j M Y, H:i:s') }}" @endif>{{ $scheduler['label'] }}</span>
