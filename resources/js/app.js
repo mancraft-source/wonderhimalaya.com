@@ -342,6 +342,26 @@ function boot() {
     document.querySelectorAll('[data-toc]').forEach(initToc);
     document.querySelectorAll('[data-stepper]').forEach(initStepper);
     document.querySelectorAll('details[data-accordion]').forEach(initAccordion);
+    watchForNewReveals();
+}
+
+/**
+ * Elements added after load — e.g. a Livewire form swapping itself for its thank-you message — must
+ * also be revealed, or they stay at opacity 0 (the tailor-made confirmation was invisible).
+ */
+function watchForNewReveals() {
+    const selector = '[data-reveal], [data-stagger], [data-clip], [data-draw]';
+    let queued = false;
+    new MutationObserver((mutations) => {
+        if (queued || !mutations.some((m) => [...m.addedNodes].some((n) => n.nodeType === 1 && (n.matches(selector) || n.querySelector(selector))))) {
+            return;
+        }
+        queued = true;
+        requestAnimationFrame(() => {
+            queued = false;
+            observeReveals();
+        });
+    }).observe(document.body, { childList: true, subtree: true });
 }
 
 if (document.readyState === 'loading') {
