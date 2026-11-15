@@ -4,7 +4,8 @@
     $socialIcons = ['facebook' => 'Facebook', 'instagram' => 'Instagram', 'tripadvisor' => 'Tripadvisor', 'tiktok' => 'TikTok', 'youtube' => 'YouTube', 'twitter' => 'X'];
 @endphp
 <x-site.mountain-divider class="mt-10 sm:mt-16 -mb-px lg:mt-24" />
-<footer class="relative overflow-hidden bg-navy-900 text-stone-200">
+{{-- Trip pages: leave room for the mobile sticky booking bar so the legal links are reachable. --}}
+<footer @class(['relative overflow-hidden bg-navy-900 text-stone-200', 'max-lg:pb-20' => request()->routeIs('trips.show')])>
     <div class="topo pointer-events-none absolute inset-0 opacity-[0.35] invert" aria-hidden="true"></div>
 
     {{-- Closing call to action (hidden on transactional pages) --}}
